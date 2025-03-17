@@ -470,16 +470,16 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                 String position =rs.getString("position");
                 jobTitle_field.setText(position);
 
-                String sss =rs.getString("sss");
+                String sss =rs.getString("sss_num");
                 sss_field.setText(sss);
 
-                String philhealth =rs.getString("philhealth");
+                String philhealth =rs.getString("philhealth_num");
                 phhealth_field.setText(philhealth);
 
-                String pagibig =rs.getString("pagibig");
+                String pagibig =rs.getString("pagibig_num");
                 pagibig_field.setText(pagibig);
 
-                String tin =rs.getString("tin");
+                String tin =rs.getString("tin_num");
                 tin_field.setText(tin);
 
             }

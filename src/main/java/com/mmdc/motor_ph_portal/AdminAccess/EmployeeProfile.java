@@ -542,72 +542,7 @@ public class EmployeeProfile extends javax.swing.JFrame {
             e.printStackTrace(); // Print the stack trace for debugging
             JOptionPane.showMessageDialog(this, "An error occurred while retrieving employee data: " + e.getMessage());
         }
-        /*try {            
-            Class.forName("org.postgresql.Driver");
-            conn = DriverManager.getConnection(dbConnect.getUrl(), dbConnect.getUser (), dbConnect.getPassword());
-            String sql = "SELECT * FROM public.employee_data WHERE employee_id= ?";
-            
-            pst=conn.prepareStatement(sql);
-            pst.setString(1, employeeNumber_field.getText());
-            rs=pst.executeQuery();
-            if(rs.next()){
-               
-                String firstName =rs.getString("first_name");
-                name_field.setText(firstName);
-                
-                String lastName =rs.getString("last_name");
-                name_field1.setText(lastName);
-                
-                String bday =rs.getString("birthday");
-                bday_field.setText(bday);
-                
-                String address =rs.getString("address");
-                address_field.setText(address);
-                
-                String contactNumber =rs.getString("phone_number");
-                contact_field.setText(contactNumber);
-                
-                String status =rs.getString("status");
-                status_field.setText(status);
-                
-                String position =rs.getString("position");
-                jobTitle_field.setText(position);
-                
-                String sss =rs.getString("sss");
-                sss_field.setText(sss);
-                
-                String philhealth =rs.getString("philhealth");
-                phhealth_field.setText(philhealth);
-                
-                String pagibig =rs.getString("pagibig");
-                pagibig_field.setText(pagibig);
-                
-                String tin =rs.getString("tin");
-                tin_field.setText(tin);
-                                
-            conn.close();              
-            }
-       }
-        catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-            
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (pst != null) {
-                    pst.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-
-            } catch (Exception ex) {
-                
-            }*/
-
-
+        
     }//GEN-LAST:event_employeeNumber_fieldKeyReleased
 
     private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed

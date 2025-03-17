@@ -348,7 +348,7 @@ public class EmployeeTimeLog extends javax.swing.JFrame {
         try {            
             Class.forName("org.postgresql.Driver");
             Connection conn = DriverManager.getConnection(url,user,password);
-            String sql = "SELECT * FROM public.employeetime_log WHERE employee_id= ?";
+            String sql = "SELECT * FROM public.employee_data WHERE employee_id= ?";
             
             pst=conn.prepareStatement(sql);
             pst.setString(1, id_field.getText());
