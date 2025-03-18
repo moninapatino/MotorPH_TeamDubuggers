@@ -1,6 +1,7 @@
 
 package com.mmdc.motor_ph_portal.EmployeeAccess;
 
+import com.mmdc.motor_ph_util.DatabaseConnect;
 import com.motorph_util.Postgresql;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -40,13 +41,13 @@ public class EmployeeTimeLog extends javax.swing.JFrame {
         Dimension size=toolkit.getScreenSize();
         setLocation(size.width/2-getWidth()/2,size.height/2-getHeight()/2);
         
-        conn = Postgresql.java_db();
                 
         //Displaying current Date & Time
         time();
         date();
         
-        
+        DatabaseConnect dbConnect = new DatabaseConnect() {};
+        conn = dbConnect.connect();
     }
 
     public final void time(){
@@ -62,9 +63,11 @@ public class EmployeeTimeLog extends javax.swing.JFrame {
             
      public ArrayList timeLog() {
         ArrayList timeLog = new ArrayList();
+        
+        DatabaseConnect dbConnect = new DatabaseConnect() {};
+        conn = dbConnect.connect();
         try {
-            Class.forName("org.postgresql.Driver");
-            Connection conn = DriverManager.getConnection(url,user,password);
+            
             String sql = "SELECT * FROM public.employeetime_log where employee_id=?";
             pst= conn.prepareStatement(sql);
             pst.setString(1, id_field.getText());
@@ -344,10 +347,9 @@ public class EmployeeTimeLog extends javax.swing.JFrame {
 
     private void id_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_id_fieldKeyReleased
         // search data from table
-
+        DatabaseConnect dbConnect = new DatabaseConnect() {};
+        conn = dbConnect.connect();
         try {            
-            Class.forName("org.postgresql.Driver");
-            Connection conn = DriverManager.getConnection(url,user,password);
             String sql = "SELECT * FROM public.employee_data WHERE employee_id= ?";
             
             pst=conn.prepareStatement(sql);
@@ -402,9 +404,9 @@ public class EmployeeTimeLog extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel)attendance_table.getModel();
         model.addRow(new Object[]{firstName_field.getText(), lastName_field.getText(), date.getText(), time.getText()});
         
+        DatabaseConnect dbConnect = new DatabaseConnect() {};
+        conn = dbConnect.connect();
         try {
-            Class.forName("org.postgresql.Driver");
-            Connection conn = DriverManager.getConnection(url,user,password);
             pst=conn.prepareStatement("INSERT INTO public.employeetime_log(employee_id, first_name, last_name, date, time_in, time_out)values(?,?,?,?,?,?)");
             
             pst.setString(1, id_field.getText());
@@ -427,9 +429,9 @@ public class EmployeeTimeLog extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel)attendance_table.getModel();
         model.addRow(new Object[]{firstName_field.getText(), lastName_field.getText(), date.getText(),"", time.getText()});
         
+        DatabaseConnect dbConnect = new DatabaseConnect() {};
+        conn = dbConnect.connect();
         try {
-            Class.forName("org.postgresql.Driver");
-            Connection conn = DriverManager.getConnection(url,user,password);
             pst=conn.prepareStatement("INSERT INTO public.employeetime_log(employee_id, first_name, last_name, date, time_in, time_out)values(?,?,?,?,?,?)");
             
             pst.setString(1, id_field.getText());

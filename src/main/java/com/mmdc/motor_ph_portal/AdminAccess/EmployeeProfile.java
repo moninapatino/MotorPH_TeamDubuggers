@@ -7,18 +7,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.WindowConstants;
-import com.motorph_util.Postgresql;
-import java.sql.DriverManager;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
 
 public class EmployeeProfile extends javax.swing.JFrame {
-
     Connection conn = null;
     ResultSet rs = null;
     PreparedStatement pst = null;
-
+    
     public EmployeeProfile() {
         initComponents();
         setTitle("Motor PH Employee Profile");
@@ -27,8 +24,6 @@ public class EmployeeProfile extends javax.swing.JFrame {
         Toolkit toolkit = getToolkit();
         Dimension size = toolkit.getScreenSize();
         setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
-
-        conn = Postgresql.java_db();
 
         //Displaying date and Time
         time();
@@ -512,12 +507,23 @@ public class EmployeeProfile extends javax.swing.JFrame {
 
     private void employeeNumber_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_employeeNumber_fieldKeyReleased
         // type employee number
-
+            
         String employeeId = employeeNumber_field.getText();
+        if (employeeId.isEmpty()) {
+       
+            clear(); // Clear fields if input is empty
+            return;
+        }
         // Call the getAAEmployeeById method
-        DatabaseConnect dbConnect = new DatabaseConnect() {
-        };
+        DatabaseConnect dbConnect = new DatabaseConnect() {};       
+        Connection conn = dbConnect.connect();
+
         try {
+            String sql = "SELECT * FROM public.employeetime_log where employee_id=?";
+            pst= conn.prepareStatement(sql);
+            pst.setString(1, employeeNumber_field.getText());
+            rs = pst.executeQuery();
+            
             Admin_Class employee = dbConnect.getAAEmployeeById(employeeId);
 
             // Check if the employee is found and populate the fields
@@ -534,13 +540,13 @@ public class EmployeeProfile extends javax.swing.JFrame {
                 pagibig_field.setText(employee.getPagibigNum());
                 tin_field.setText(employee.getTinNum());
             } else {
-                JOptionPane.showMessageDialog(this, "Error");
+                JOptionPane.showMessageDialog(this, "Employee not found.", "Search Result", JOptionPane.INFORMATION_MESSAGE);
+                clear(); // Clear fields if employee is not found
             }
         } catch (Exception e) {
-            // Print the error message to the console
             System.err.println("Error retrieving employee data: " + e.getMessage());
-            e.printStackTrace(); // Print the stack trace for debugging
-            JOptionPane.showMessageDialog(this, "An error occurred while retrieving employee data: " + e.getMessage());
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "An error occurred while retrieving employee data. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
         }
         
     }//GEN-LAST:event_employeeNumber_fieldKeyReleased
@@ -559,13 +565,18 @@ public class EmployeeProfile extends javax.swing.JFrame {
         Admin_Class employee = new Admin_Class(null, null, lastName, null, null,
                 phoneNumber, null, null, null,
                 null, status, position, null, 0.0, 0.0,
-                0.0, 0.0, 0.0, 0.0, 0.0, null, null);
-
+                0.0, 0.0, 0.0, 0.0, 0.0, null, null,null);
+        
+        if(employeeID.equals("")){
+            JOptionPane.showMessageDialog(this, "Enter Employee ID!");
+        }
         int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to update this?", "Employee Profile Updating...", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
 
             dbConnect.updateEmployee(employee); // Call the updateEmployee method
-        } else if (result == JOptionPane.NO_OPTION) {
+        } 
+        
+        else if (result == JOptionPane.NO_OPTION) {
             JOptionPane.showMessageDialog(this, "Data not successfully updated!");
         }
 
@@ -575,42 +586,55 @@ public class EmployeeProfile extends javax.swing.JFrame {
         // ADD EMPLOYEE RECORD
 
         try {
-            String employeeID = employeeNumber_field.getText();
-            String firstName = firstname_field.getText();
-            String lastName = lastname_field.getText();
-            String birthday = bday_field.getText();
-            String address = address_field.getText();
-            String phoneNumber = contact_field.getText();
-            String status = status_field.getText();
-            String position = jobTitle_field.getText();
-            String sssNum = sss_field.getText();
-            String philHealthNum = phhealth_field.getText();
-            String pagibigNum = pagibig_field.getText();
-            String tinNum = tin_field.getText();
+            // Retrieve input values from fields
+            String employeeID = employeeNumber_field.getText().trim();
+            String firstName = firstname_field.getText().trim();
+            String lastName = lastname_field.getText().trim();
+            String birthday = bday_field.getText().trim();
+            String address = address_field.getText().trim();
+            String phoneNumber = contact_field.getText().trim();
+            String status = status_field.getText().trim();
+            String position = jobTitle_field.getText().trim();
+            String sssNum = sss_field.getText().trim();
+            String philHealthNum = phhealth_field.getText().trim();
+            String pagibigNum = pagibig_field.getText().trim();
+            String tinNum = tin_field.getText().trim();
+
+            // Validate input fields
+            if (employeeID.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || birthday.isEmpty()
+                    || address.isEmpty() || phoneNumber.isEmpty() || status.isEmpty() || position.isEmpty()
+                    || sssNum.isEmpty() || philHealthNum.isEmpty() || pagibigNum.isEmpty() || tinNum.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return; // Exit the method if validation fails
+            }
 
             // Create an Employee object
             Admin_Class newEmployee = new Admin_Class(employeeID, firstName, lastName, birthday, address,
                     phoneNumber, sssNum, philHealthNum, tinNum,
                     pagibigNum, status, position, null, 0.0, 0.0,
-                    0.0, 0.0, 0.0, 0.0, 0.0, null, null);
+                    0.0, 0.0, 0.0, 0.0, 0.0, null, null, null);
 
-            // Create an instance of DatabaseManager
+            // Create an instance of DatabaseConnect
             DatabaseConnect dbConnect = new DatabaseConnect() {
+                // Implement any abstract methods if necessary
             };
 
             // Call the addEmployee method
             dbConnect.addEmployee(newEmployee);
             JOptionPane.showMessageDialog(this, "Employee Profile Added!");
-            conn.close();
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e);
+            JOptionPane.showMessageDialog(this, "Error adding employee: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
         // DELETE RECORD
         String employeeId = employeeNumber_field.getText();
+
+        if (employeeId.equals("")) {
+            JOptionPane.showMessageDialog(this, "Enter Employee ID!");
+        }
 
         int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this?", "Employee Profile Deleting...", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {

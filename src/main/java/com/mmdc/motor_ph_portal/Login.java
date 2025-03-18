@@ -3,7 +3,6 @@ package com.mmdc.motor_ph_portal;
 import com.mmdc.motor_ph_portal.AdminAccess.Admin_Class;
 import com.mmdc.motor_ph_portal.EmployeeAccess.Employee_Class;
 import com.mmdc.motor_ph_util.DatabaseConnect;
-import com.motorph_util.Postgresql;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.Connection;
@@ -27,8 +26,6 @@ public class Login extends javax.swing.JFrame {
         Toolkit toolkit = getToolkit();
         Dimension size = toolkit.getScreenSize();
         setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
-
-        conn = Postgresql.java_db();
 
     }
 
@@ -162,12 +159,10 @@ public class Login extends javax.swing.JFrame {
         String username = userIDText1.getText();
         String password = passwordText1.getText();
 
-        DatabaseConnect dbConnect = new DatabaseConnect() {
-        };
+        DatabaseConnect dbConnect = new DatabaseConnect() {};
+        conn = dbConnect.connect();
 
         try {
-            Class.forName("org.postgresql.Driver");
-            Connection conn = DriverManager.getConnection(dbConnect.getUrl(), dbConnect.getUser(), dbConnect.getPassword());
             String sql = "SELECT employee_id, first_name, last_name, birthday, address, phone_number, "
                     + "sss_num, philhealth_num, tin_num, pagibig_num, status, position, "
                     + "supervisor, basic_salary, sss_c, rice_s, phone_a, clothing_a, "
@@ -206,7 +201,7 @@ public class Login extends javax.swing.JFrame {
                     Admin_Class admin = new Admin_Class(employeeID, firstName, lastName, birthday, address, phoneNumber,
                             sssNum, philHealthNum, tinNum, pagibigNum, status, position,
                             supervisor, basicSalary, sssC, riceA, phoneA, clothingA,
-                            grossSemiMonthlyRate, hourlyRate, username, password);
+                            grossSemiMonthlyRate, hourlyRate, username, password,role);
                     admin.login(username, password);
                     dispose();
                 } else {

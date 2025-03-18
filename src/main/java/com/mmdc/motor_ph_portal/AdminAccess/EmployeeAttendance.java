@@ -1,6 +1,7 @@
 
 package com.mmdc.motor_ph_portal.AdminAccess;
 
+import com.mmdc.motor_ph_util.DatabaseConnect;
 import com.motorph_util.Postgresql;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -23,6 +24,7 @@ public class EmployeeAttendance extends javax.swing.JFrame {
     Connection conn = null;
     ResultSet rs = null;
     PreparedStatement pst = null;
+    DatabaseConnect dbConnect = new DatabaseConnect() {};
           
        
     public EmployeeAttendance() {
@@ -52,16 +54,12 @@ public class EmployeeAttendance extends javax.swing.JFrame {
     date.setText(dates.format(now));
     }
     
-    private static final String url = "jdbc:postgresql://localhost:5432/postgres";
-    private static final String user = "postgres";
-    private static final String password = "@dm1n";
-    
     public ArrayList show_table() {
         ArrayList userList = new ArrayList();
         
         try {
             Class.forName("org.postgresql.Driver");
-            Connection conn = DriverManager.getConnection(url,user,password);
+            Connection conn = dbConnect.connect();
             String sql = "SELECT * FROM public.attendance_record";
             pst= conn.prepareStatement(sql);
             rs = pst.executeQuery();
@@ -332,7 +330,7 @@ public class EmployeeAttendance extends javax.swing.JFrame {
         // Pay Period Function
          try {
             Class.forName("org.postgresql.Driver");
-            Connection conn = DriverManager.getConnection(url,user,password);
+            Connection conn = dbConnect.connect();
             String sql = "SELECT * FROM public.attendance_record WHERE employee_id =?";
             pst= conn.prepareStatement(sql);
             pst.setString(1, id_field.getText());

@@ -55,10 +55,8 @@ public abstract class User {
         this.hourlyRate = hourlyRate;
     }
     public abstract void login(String username, String password);
-
-    public String getEmployeeID() {
-        return employeeID;
-    }
+  
+    
 
     public String getFirstName() {
         return firstName;
