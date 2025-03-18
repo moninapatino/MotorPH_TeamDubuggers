@@ -1,5 +1,6 @@
 package com.mmdc.motor_ph_portal.AdminAccess;
 
+import com.mmdc.motor_ph_portal.EmployeeAccess.Employee_Class;
 import com.mmdc.motor_ph_util.DatabaseConnect;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -15,6 +16,8 @@ public class EmployeeProfile extends javax.swing.JFrame {
     Connection conn = null;
     ResultSet rs = null;
     PreparedStatement pst = null;
+    DatabaseConnect dbConnect = new DatabaseConnect() {};
+
     
     public EmployeeProfile() {
         initComponents();
@@ -28,6 +31,7 @@ public class EmployeeProfile extends javax.swing.JFrame {
         //Displaying date and Time
         time();
         date();
+        conn = dbConnect.connect();
     }
 
     public final void time() {
@@ -501,61 +505,34 @@ public class EmployeeProfile extends javax.swing.JFrame {
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
 
-        clear();
-
+         clear();
     }//GEN-LAST:event_clearButtonActionPerformed
 
     private void employeeNumber_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_employeeNumber_fieldKeyReleased
         // type employee number
-            
         String employeeId = employeeNumber_field.getText();
-        if (employeeId.isEmpty()) {
-       
-            clear(); // Clear fields if input is empty
-            return;
-        }
-        // Call the getAAEmployeeById method
-        DatabaseConnect dbConnect = new DatabaseConnect() {};       
-        Connection conn = dbConnect.connect();
-
-        try {
-            String sql = "SELECT * FROM public.employeetime_log where employee_id=?";
-            pst= conn.prepareStatement(sql);
-            pst.setString(1, employeeNumber_field.getText());
-            rs = pst.executeQuery();
-            
-            Admin_Class employee = dbConnect.getAAEmployeeById(employeeId);
-
-            // Check if the employee is found and populate the fields
-            if (employee != null) {
-                firstname_field.setText(employee.getFirstName());
-                lastname_field.setText(employee.getLastName());
-                bday_field.setText(employee.getBirthday());
-                address_field.setText(employee.getAddress());
-                contact_field.setText(employee.getPhoneNumber());
-                status_field.setText(employee.getStatus());
-                jobTitle_field.setText(employee.getPosition());
-                sss_field.setText(employee.getSssNum());
-                phhealth_field.setText(employee.getPhilHealthNum());
-                pagibig_field.setText(employee.getPagibigNum());
-                tin_field.setText(employee.getTinNum());
-            } else {
-                JOptionPane.showMessageDialog(this, "Employee not found.", "Search Result", JOptionPane.INFORMATION_MESSAGE);
-                clear(); // Clear fields if employee is not found
-            }
-        } catch (Exception e) {
-            System.err.println("Error retrieving employee data: " + e.getMessage());
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "An error occurred while retrieving employee data. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        Employee_Class employee = dbConnect.getEmployeeDetails(employeeId);
         
+        if (employee != null) {
+        firstname_field.setText(employee.getFirstName());
+        lastname_field.setText(employee.getLastName());
+        bday_field.setText(employee.getBirthday());
+        address_field.setText(employee.getAddress());
+        contact_field.setText(employee.getPhoneNumber());
+        status_field.setText(employee.getStatus());
+        jobTitle_field.setText(employee.getPosition());
+        sss_field.setText(employee.getSssNum());
+        phhealth_field.setText(employee.getPhilHealthNum());
+        pagibig_field.setText(employee.getPagibigNum());
+        tin_field.setText(employee.getTinNum());
+    
+}
     }//GEN-LAST:event_employeeNumber_fieldKeyReleased
 
     private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
         // Update Information from SQL
-        DatabaseConnect dbConnect = new DatabaseConnect() {
-        };
-        String lastName = lastname_field.getText();
+        
+       /* String lastName = lastname_field.getText();
         String phoneNumber = contact_field.getText();
         String position = jobTitle_field.getText();
         String status = status_field.getText();
@@ -579,7 +556,7 @@ public class EmployeeProfile extends javax.swing.JFrame {
         else if (result == JOptionPane.NO_OPTION) {
             JOptionPane.showMessageDialog(this, "Data not successfully updated!");
         }
-
+*/
     }//GEN-LAST:event_updateBtnActionPerformed
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
@@ -587,18 +564,29 @@ public class EmployeeProfile extends javax.swing.JFrame {
 
         try {
             // Retrieve input values from fields
-            String employeeID = employeeNumber_field.getText().trim();
-            String firstName = firstname_field.getText().trim();
-            String lastName = lastname_field.getText().trim();
-            String birthday = bday_field.getText().trim();
-            String address = address_field.getText().trim();
-            String phoneNumber = contact_field.getText().trim();
-            String status = status_field.getText().trim();
-            String position = jobTitle_field.getText().trim();
-            String sssNum = sss_field.getText().trim();
-            String philHealthNum = phhealth_field.getText().trim();
-            String pagibigNum = pagibig_field.getText().trim();
-            String tinNum = tin_field.getText().trim();
+            String employeeID = employeeNumber_field.getText();
+            String firstName = firstname_field.getText();
+            String lastName = lastname_field.getText();
+            String birthday = bday_field.getText();
+            String address = address_field.getText();
+            String phoneNumber = contact_field.getText();
+            String status = status_field.getText();
+            String position = jobTitle_field.getText();
+            String sssNum = sss_field.getText();
+            String philHealthNum = phhealth_field.getText();
+            String pagibigNum = pagibig_field.getText();
+            String tinNum = tin_field.getText();
+            String supervisor = null;
+            double basicSalary = 0.0;
+            double sssC = 0.0;
+            double riceA = 0.0;
+            double phoneA = 0.0;
+            double clothingA = 0.0;
+            double grossSemiMonthlyRate = 0.0;
+            double hourlyRate = 0.0;
+            String username = null;
+            String password = null;
+            String role = null;
 
             // Validate input fields
             if (employeeID.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || birthday.isEmpty()
@@ -610,16 +598,13 @@ public class EmployeeProfile extends javax.swing.JFrame {
 
             // Create an Employee object
             Admin_Class newEmployee = new Admin_Class(employeeID, firstName, lastName, birthday, address,
-                    phoneNumber, sssNum, philHealthNum, tinNum,
-                    pagibigNum, status, position, null, 0.0, 0.0,
-                    0.0, 0.0, 0.0, 0.0, 0.0, null, null, null);
+            phoneNumber, sssNum, philHealthNum, tinNum,
+            pagibigNum, status, position, supervisor, 
+            basicSalary, sssC, riceA, phoneA, 
+            clothingA, grossSemiMonthlyRate, hourlyRate, 
+            username, password, role);
 
-            // Create an instance of DatabaseConnect
-            DatabaseConnect dbConnect = new DatabaseConnect() {
-                // Implement any abstract methods if necessary
-            };
-
-            // Call the addEmployee method
+            // call the method from DatabaseConnect
             dbConnect.addEmployee(newEmployee);
             JOptionPane.showMessageDialog(this, "Employee Profile Added!");
 
@@ -639,8 +624,7 @@ public class EmployeeProfile extends javax.swing.JFrame {
         int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this?", "Employee Profile Deleting...", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
 
-            DatabaseConnect dbConnect = new DatabaseConnect() {
-            };
+            
             dbConnect.deleteEmployee(employeeId); // Call the deleteEmployee method
 
         } else if (result == JOptionPane.NO_OPTION) {
@@ -682,7 +666,6 @@ public class EmployeeProfile extends javax.swing.JFrame {
                 {
                     new EmployeeProfile().setVisible(true);
                 }
-
             }
         });
 

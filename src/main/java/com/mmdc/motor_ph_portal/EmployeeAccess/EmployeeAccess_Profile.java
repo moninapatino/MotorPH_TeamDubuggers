@@ -37,7 +37,6 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         //Displaying current Date & Time
         time();
         date();
-        
     }
         
     public final void time(){

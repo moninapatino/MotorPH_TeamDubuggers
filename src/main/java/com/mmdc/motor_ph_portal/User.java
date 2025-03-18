@@ -31,6 +31,7 @@ public abstract class User {
               double basicSalary, double sssC, double riceA, double phoneA, 
               double clothingA, double grossSemiMonthlyRate, double hourlyRate, 
               String username, String password) {
+        
         this.employeeID = employeeID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -56,8 +57,10 @@ public abstract class User {
     }
     public abstract void login(String username, String password);
   
+    public String getEmployeeID() {
+        return employeeID;
+    }
     
-
     public String getFirstName() {
         return firstName;
     }

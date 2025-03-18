@@ -1,7 +1,9 @@
 
 package com.mmdc.motor_ph_portal.EmployeeAccess;
 
+import com.mmdc.motor_ph_portal.AdminAccess.TimeLogEntry;
 import com.mmdc.motor_ph_util.DatabaseConnect;
+import com.mmdc.motor_ph_util.DatabaseConnector;
 import com.motorph_util.Postgresql;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -25,12 +27,9 @@ public class EmployeeTimeLog extends javax.swing.JFrame {
     Connection conn = null;
     ResultSet rs = null;
     PreparedStatement pst = null;
+    DatabaseConnect dbConnect = new DatabaseConnect() {};
+    DatabaseConnector dbConnector = new DatabaseConnector();
           
-    private static final String url = "jdbc:postgresql://localhost:5432/postgres";
-    private static final String user = "postgres";
-    private static final String password = "@dm1n";
-       
-    
     public EmployeeTimeLog() {
         initComponents();
         
@@ -46,7 +45,7 @@ public class EmployeeTimeLog extends javax.swing.JFrame {
         time();
         date();
         
-        DatabaseConnect dbConnect = new DatabaseConnect() {};
+        //DB connect
         conn = dbConnect.connect();
     }
 
@@ -59,15 +58,41 @@ public class EmployeeTimeLog extends javax.swing.JFrame {
     DateTimeFormatter dates = DateTimeFormatter.ofPattern("MMM d, y");
     LocalDateTime now =LocalDateTime.now();
     date.setText(dates.format(now));
-    }
-            
-     public ArrayList timeLog() {
-        ArrayList timeLog = new ArrayList();
+    
+
+   /* public void loadTimeLog() {
+    String employeeId = id_field.getText(); // Get the employee ID from the input field
+   
+    
+    // Retrieve the time log entries for the specified employee ID
+    ArrayList<TimeLogEntry> timeLogEntries = dbConnector.getTimeLog(employeeId);
+    
+    // Clear the existing table model
+    DefaultTableModel leave_table = (DefaultTableModel) attendance_table.getModel();
+    leave_table.setRowCount(0);
+    
+    // Populate the table with the retrieved time log entries
+    for (TimeLogEntry entry : timeLogEntries) {
+        Vector<String> row = new Vector<>();
+        row.add(entry.getFirstName());
+        row.add(entry.getLastName());
+        row.add(entry.getDate());
+        row.add(entry.getTimeIn());
+        row.add(entry.getTimeOut());
         
-        DatabaseConnect dbConnect = new DatabaseConnect() {};
-        conn = dbConnect.connect();
+        // Add the row to the table model
+        leave_table.addRow(row);
+        
+    }
+    attendance_table.revalidate();
+    attendance_table.repaint();
+    
+    */
+     }
+     
+     public ArrayList loadTimeLog() {
+        ArrayList timeLog = new ArrayList();
         try {
-            
             String sql = "SELECT * FROM public.employeetime_log where employee_id=?";
             pst= conn.prepareStatement(sql);
             pst.setString(1, id_field.getText());
@@ -96,7 +121,6 @@ public class EmployeeTimeLog extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }  
         return timeLog;
-        
      }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -347,52 +371,19 @@ public class EmployeeTimeLog extends javax.swing.JFrame {
 
     private void id_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_id_fieldKeyReleased
         // search data from table
-        DatabaseConnect dbConnect = new DatabaseConnect() {};
-        conn = dbConnect.connect();
-        try {            
-            String sql = "SELECT * FROM public.employee_data WHERE employee_id= ?";
-            
-            pst=conn.prepareStatement(sql);
-            pst.setString(1, id_field.getText());
-            rs=pst.executeQuery();
-            if(rs.next()){
-               
-                String firstName =rs.getString("first_name");
-                firstName_field.setText(firstName);
-                
-                String lastName =rs.getString("last_name");
-                lastName_field.setText(lastName);
-                                                             
-                timeLog();         
-            }
-       }
-        catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-            
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (pst != null) {
-                    pst.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-
-            } catch (Exception ex) {
-                
-            }
-        }
         
+        String employeeId = id_field.getText();
+        Employee_Class employee = dbConnect.getEmployeeDetails(employeeId);
+            if (employee != null) {
+                firstName_field.setText(employee.getFirstName());
+                lastName_field.setText(employee.getLastName());
+            }               
+         loadTimeLog();                 
         
     }//GEN-LAST:event_id_fieldKeyReleased
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // back to Employee Access Portal
-        
-        String username = "";
 
         EmployeeAccessPortal employeeAccessPortal = new EmployeeAccessPortal ();
         employeeAccessPortal.setVisible(true);
@@ -401,53 +392,31 @@ public class EmployeeTimeLog extends javax.swing.JFrame {
 
     private void timeInBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeInBtnActionPerformed
         // Time In Function + insert to SQL
-        DefaultTableModel model = (DefaultTableModel)attendance_table.getModel();
+        DefaultTableModel model = (DefaultTableModel) attendance_table.getModel();
         model.addRow(new Object[]{firstName_field.getText(), lastName_field.getText(), date.getText(), time.getText()});
-        
-        DatabaseConnect dbConnect = new DatabaseConnect() {};
-        conn = dbConnect.connect();
-        try {
-            pst=conn.prepareStatement("INSERT INTO public.employeetime_log(employee_id, first_name, last_name, date, time_in, time_out)values(?,?,?,?,?,?)");
-            
-            pst.setString(1, id_field.getText());
-            pst.setString(2, firstName_field.getText());
-            pst.setString(3, lastName_field.getText());
-            pst.setString(4, date.getText());
-            pst.setString(5, time.getText());
-            pst.setString(6, "");
-            pst.executeUpdate();
-                    
+
+        boolean success = dbConnector.logTimeIn(id_field.getText(), firstName_field.getText(), lastName_field.getText(), date.getText(), time.getText());
+
+        if (success) {
             JOptionPane.showMessageDialog(this, "Time In Successfully Added");
-        } 
-        catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e);
-}
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to add Time In");
+    }
+
     }//GEN-LAST:event_timeInBtnActionPerformed
 
     private void timeOutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeOutBtnActionPerformed
         // Time Out Function + insert to SQL
-        DefaultTableModel model = (DefaultTableModel)attendance_table.getModel();
+        DefaultTableModel model = (DefaultTableModel) attendance_table.getModel();
         model.addRow(new Object[]{firstName_field.getText(), lastName_field.getText(), date.getText(),"", time.getText()});
-        
-        DatabaseConnect dbConnect = new DatabaseConnect() {};
-        conn = dbConnect.connect();
-        try {
-            pst=conn.prepareStatement("INSERT INTO public.employeetime_log(employee_id, first_name, last_name, date, time_in, time_out)values(?,?,?,?,?,?)");
-            
-            pst.setString(1, id_field.getText());
-            pst.setString(2, firstName_field.getText());
-            pst.setString(3, lastName_field.getText());
-            pst.setString(4, date.getText());
-            pst.setString(5, "");
-            pst.setString(6, time.getText());
-            pst.executeUpdate();
-                    
+
+        boolean success = dbConnector.logTimeIn(id_field.getText(), firstName_field.getText(), lastName_field.getText(), date.getText(), time.getText());
+
+        if (success) {
             JOptionPane.showMessageDialog(this, "Time Out Successfully Added");
-        } 
-        catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e);
-}
-    
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to add Time Out");
+        }
     }//GEN-LAST:event_timeOutBtnActionPerformed
 
     /**

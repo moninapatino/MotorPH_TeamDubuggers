@@ -86,9 +86,9 @@
               </Group>
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="date" min="-2" max="-2" attributes="0"/>
+                  <Component id="dateNow" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="time" min="-2" max="-2" attributes="0"/>
+                  <Component id="timeNow" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -117,8 +117,8 @@
                   <Component id="backButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="date" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="time" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="dateNow" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="timeNow" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -188,7 +188,7 @@
             <Property name="text" type="java.lang.String" value="Greetings!"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="date">
+        <Component class="javax.swing.JLabel" name="dateNow">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial" size="13" style="1"/>
@@ -330,7 +330,7 @@
             <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="id_fieldKeyReleased"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="time">
+        <Component class="javax.swing.JLabel" name="timeNow">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial" size="13" style="1"/>

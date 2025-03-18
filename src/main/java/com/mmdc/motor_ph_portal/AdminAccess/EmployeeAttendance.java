@@ -2,30 +2,24 @@
 package com.mmdc.motor_ph_portal.AdminAccess;
 
 import com.mmdc.motor_ph_util.DatabaseConnect;
-import com.motorph_util.Postgresql;
+import com.mmdc.motor_ph_util.DatabaseConnector;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.WindowConstants;
 import javax.swing.*;
-import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
-import java.sql.ResultSetMetaData;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Vector;
 import javax.swing.table.TableRowSorter;
 
 
 public class EmployeeAttendance extends javax.swing.JFrame {
-    Connection conn = null;
-    ResultSet rs = null;
-    PreparedStatement pst = null;
+    
     DatabaseConnect dbConnect = new DatabaseConnect() {};
-          
+    DatabaseConnector dbConnector = new DatabaseConnector();
        
     public EmployeeAttendance() {
         initComponents();
@@ -37,63 +31,28 @@ public class EmployeeAttendance extends javax.swing.JFrame {
         Dimension size=toolkit.getScreenSize();
         setLocation(size.width/2-getWidth()/2,size.height/2-getHeight()/2);
         
-        conn = Postgresql.java_db();
         show_table();
-        time();
-        date();
+        setTime();
+        setDate();
     }
     
-    public final void time(){
+    public final void setTime(){
     DateTimeFormatter times = DateTimeFormatter.ofPattern("hh:mm:ss a");
     LocalDateTime now =LocalDateTime.now();
-    time.setText(times.format(now));
+    timeNow.setText(times.format(now));
     }
-      public final void date(){
+      public final void setDate(){
     DateTimeFormatter dates = DateTimeFormatter.ofPattern("MMMM d, y");
     LocalDateTime now =LocalDateTime.now();
-    date.setText(dates.format(now));
+    dateNow.setText(dates.format(now));
     }
     
-    public ArrayList show_table() {
-        ArrayList userList = new ArrayList();
-        
-        try {
-            Class.forName("org.postgresql.Driver");
-            Connection conn = dbConnect.connect();
-            String sql = "SELECT * FROM public.attendance_record";
-            pst= conn.prepareStatement(sql);
-            rs = pst.executeQuery();
-            
-            ResultSetMetaData rsmd=rs.getMetaData();
-            int n=rsmd.getColumnCount();
-            
-            DefaultTableModel attendanceTable = (DefaultTableModel)attendance_table.getModel();
-            attendanceTable.setRowCount(0);
-            while(rs.next()){
-                Vector v=new Vector();
-                for (int i=0;i<n;i++){
-                    v.add(rs.getString("date"));
-                    v.add(rs.getString("employee_id"));
-                    v.add(rs.getString("first_name"));
-                    v.add(rs.getString("last_name"));
-                    v.add(rs.getString("clock_in"));
-                    v.add(rs.getString("clock_out"));
-                    v.add(rs.getString("late"));
-                    v.add(rs.getString("overtime"));
-                    v.add(rs.getString("hours_worked"));
-                                       
-                    
-                }
-                attendanceTable.addRow(v);
-            }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null,ex);
-        }
-        return userList;
+    public void show_table() {
+        DefaultTableModel attendanceTable = (DefaultTableModel) attendance_table.getModel();
+        dbConnector.show_table(attendanceTable);
     }
-    
+ 
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -103,13 +62,13 @@ public class EmployeeAttendance extends javax.swing.JFrame {
         attendance_title = new javax.swing.JLabel();
         logo = new javax.swing.JLabel();
         greetings = new javax.swing.JLabel();
-        date = new javax.swing.JLabel();
+        dateNow = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         attendance_table = new javax.swing.JTable();
         backButton = new javax.swing.JButton();
         noe_title1 = new javax.swing.JLabel();
         id_field = new javax.swing.JTextField();
-        time = new javax.swing.JLabel();
+        timeNow = new javax.swing.JLabel();
         payPeriodComboBox = new javax.swing.JComboBox<>();
         payperiod_lbl = new javax.swing.JLabel();
         hoursWorked_lbl = new javax.swing.JLabel();
@@ -151,9 +110,9 @@ public class EmployeeAttendance extends javax.swing.JFrame {
         greetings.setForeground(new java.awt.Color(250, 250, 255));
         greetings.setText("Greetings!");
 
-        date.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
-        date.setForeground(new java.awt.Color(250, 250, 255));
-        date.setText("Date");
+        dateNow.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
+        dateNow.setForeground(new java.awt.Color(250, 250, 255));
+        dateNow.setText("Date");
 
         attendance_table.setBackground(new java.awt.Color(250, 250, 255));
         attendance_table.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -199,9 +158,9 @@ public class EmployeeAttendance extends javax.swing.JFrame {
             }
         });
 
-        time.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
-        time.setForeground(new java.awt.Color(250, 250, 255));
-        time.setText("Time");
+        timeNow.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
+        timeNow.setForeground(new java.awt.Color(250, 250, 255));
+        timeNow.setText("Time");
 
         payPeriodComboBox.setBackground(new java.awt.Color(250, 250, 255));
         payPeriodComboBox.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -263,9 +222,9 @@ public class EmployeeAttendance extends javax.swing.JFrame {
                 .addGap(33, 33, 33))
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(date)
+                .addComponent(dateNow)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(time)
+                .addComponent(timeNow)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
@@ -290,8 +249,8 @@ public class EmployeeAttendance extends javax.swing.JFrame {
                 .addComponent(backButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(date)
-                    .addComponent(time))
+                    .addComponent(dateNow)
+                    .addComponent(timeNow))
                 .addContainerGap())
         );
 
@@ -328,28 +287,12 @@ public class EmployeeAttendance extends javax.swing.JFrame {
 
     private void payPeriodComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payPeriodComboBoxActionPerformed
         // Pay Period Function
-         try {
-            Class.forName("org.postgresql.Driver");
-            Connection conn = dbConnect.connect();
-            String sql = "SELECT * FROM public.attendance_record WHERE employee_id =?";
-            pst= conn.prepareStatement(sql);
-            pst.setString(1, id_field.getText());
-            rs = pst.executeQuery();
-            
-            if(rs.next()){
-                if (payPeriodComboBox.getSelectedItem() == "January 1-15, 2024"){
-                    String hoursWorked1 =rs.getString("first_cutOff");
-                    hoursworked_field.setText(hoursWorked1);
-                }else if (payPeriodComboBox.getSelectedItem() == "January 16-31, 2024"){
-                    String hoursWorked2 =rs.getString("second_cutOff");
-                    hoursworked_field.setText(hoursWorked2);
-                }
-            }
-            
-           
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null,ex);
-        }
+        String employeeId = id_field.getText();
+        String selectedPayPeriod = (String) payPeriodComboBox.getSelectedItem();
+    
+        String hoursWorked = dbConnect.getHoursWorked(employeeId, selectedPayPeriod);
+        hoursworked_field.setText(hoursWorked);
+        
     }//GEN-LAST:event_payPeriodComboBoxActionPerformed
 
     /**
@@ -393,7 +336,7 @@ public class EmployeeAttendance extends javax.swing.JFrame {
     private javax.swing.JLabel attendance_title;
     private javax.swing.JButton backButton;
     private javax.swing.JPanel darkbluePanel;
-    private javax.swing.JLabel date;
+    private javax.swing.JLabel dateNow;
     private javax.swing.JLabel greetings;
     private javax.swing.JLabel hoursWorked_lbl;
     private javax.swing.JTextField hoursworked_field;
@@ -404,6 +347,6 @@ public class EmployeeAttendance extends javax.swing.JFrame {
     private javax.swing.JLabel noe_title1;
     private javax.swing.JComboBox<String> payPeriodComboBox;
     private javax.swing.JLabel payperiod_lbl;
-    private javax.swing.JLabel time;
+    private javax.swing.JLabel timeNow;
     // End of variables declaration//GEN-END:variables
 }

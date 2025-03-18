@@ -82,10 +82,6 @@
               <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
-                          <Component id="greetings" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
@@ -103,31 +99,35 @@
                                   <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
                                   <Component id="id_field" min="-2" pref="153" max="-2" attributes="0"/>
                               </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="leaveNum" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                                  <Component id="leaveNum_field" min="-2" pref="153" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Component id="lbl_leaveType" alignment="1" min="-2" max="-2" attributes="0"/>
                               <Component id="lbl_status" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="lbl_date" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="39" pref="39" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="date_field" min="-2" pref="141" max="-2" attributes="0"/>
-                              <Component id="leaveType_field" min="-2" pref="141" max="-2" attributes="0"/>
-                              <Group type="102" attributes="0">
-                                  <Component id="approve_rb" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="reject_rb" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="lbl_enddate" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_startdate" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <Group type="102" alignment="1" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+                          <Component id="greetings" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="enddate_field" min="-2" pref="141" max="-2" attributes="0"/>
+                      <Component id="leaveType_field" min="-2" pref="141" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Component id="approve_rb" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="leaveNum" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="39" pref="39" max="-2" attributes="0"/>
-                          <Component id="leaveNum_field" min="-2" pref="141" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                          <Component id="reject_rb" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <Component id="startdate_field" min="-2" pref="141" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="100" max="32767" attributes="0"/>
               </Group>
@@ -139,17 +139,24 @@
                   <Component id="darkbluepanel" min="-2" pref="75" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="greetings" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="leaveNum" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="leaveNum_field" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                          <Component id="leaveNum" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                          <Component id="leaveNum_field" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lbl_startdate" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="startdate_field" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="noe_title1" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="id_field" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lbl_date" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="date_field" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbl_enddate" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="enddate_field" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
@@ -176,7 +183,7 @@
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="jScrollPane1" min="-2" pref="181" max="-2" attributes="0"/>
-                          <EmptySpace pref="32" max="32767" attributes="0"/>
+                          <EmptySpace pref="24" max="32767" attributes="0"/>
                           <Component id="backButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       </Group>
@@ -319,18 +326,24 @@
                   <Color blue="8a" green="65" red="5c" type="rgb"/>
                 </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="7" rowCount="0">
+                  <Table columnCount="8" rowCount="0">
                     <Column editable="false" title="Leave No." type="java.lang.String"/>
                     <Column editable="false" title="Employee ID" type="java.lang.String"/>
                     <Column editable="false" title="First Name" type="java.lang.String"/>
                     <Column editable="false" title="Last Name" type="java.lang.Object"/>
-                    <Column editable="false" title="Date" type="java.lang.String"/>
+                    <Column editable="false" title="Start Date" type="java.lang.String"/>
+                    <Column editable="true" title="End Date" type="java.lang.Object"/>
                     <Column editable="false" title="Leave Type" type="java.lang.String"/>
                     <Column editable="true" title="Status" type="java.lang.String"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
@@ -390,6 +403,9 @@
               <Color blue="8a" green="65" red="5c" type="rgb"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="id_fieldKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="time">
           <Properties>
@@ -485,7 +501,7 @@
             <Property name="text" type="java.lang.String" value="Status :"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="lbl_date">
+        <Component class="javax.swing.JLabel" name="lbl_enddate">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial" size="13" style="0"/>
@@ -493,10 +509,10 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="fa" red="fa" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Date :"/>
+            <Property name="text" type="java.lang.String" value="End Date :"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="date_field">
+        <Component class="javax.swing.JTextField" name="enddate_field">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="fa" red="fa" type="rgb"/>
@@ -594,6 +610,30 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="leaveNum_field">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="fa" red="fa" type="rgb"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Gadugi" size="12" style="0"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="8a" green="65" red="5c" type="rgb"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lbl_startdate">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Arial" size="13" style="0"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="fa" red="fa" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Start Date :"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="startdate_field">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="fa" red="fa" type="rgb"/>

@@ -212,7 +212,7 @@ public class Login extends javax.swing.JFrame {
                     emp.login(username, password);
                     dispose();
                 }
-                JOptionPane.showMessageDialog(null, "Log in Successful");
+                
 
             } else if (userIDText1.getText().equals("")) {
                 JOptionPane.showMessageDialog(null, "Please Fill Out User ID");
