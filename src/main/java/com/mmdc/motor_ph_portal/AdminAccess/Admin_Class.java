@@ -35,8 +35,5 @@ public class Admin_Class extends User {
         return "Admin";
     } 
 
-   
-    
-    
-    
+  
 }

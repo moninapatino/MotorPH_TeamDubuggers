@@ -1,6 +1,6 @@
 package com.mmdc.motor_ph_portal.AdminAccess;
 
-import com.mmdc.motor_ph_portal.EmployeeAccess.Employee_Class;
+import com.mmdc.motor_ph_portal.AdminAccess.Admin_Class;
 import com.mmdc.motor_ph_util.DatabaseConnect;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -48,7 +48,7 @@ public class EmployeeProfile extends javax.swing.JFrame {
 
     public final void clear() {
         // Clear data from textbox
-        employeeNumber_field.setText("");
+        id_field.setText("");
         firstname_field.setText("");
         lastname_field.setText("");
         bday_field.setText("");
@@ -81,7 +81,7 @@ public class EmployeeProfile extends javax.swing.JFrame {
         firstname_field = new javax.swing.JTextField();
         bday_field = new javax.swing.JTextField();
         contact_field = new javax.swing.JTextField();
-        employeeNumber_field = new javax.swing.JTextField();
+        id_field = new javax.swing.JTextField();
         jobTitle_field = new javax.swing.JTextField();
         status_field = new javax.swing.JTextField();
         govIdNum_title = new javax.swing.JLabel();
@@ -187,12 +187,12 @@ public class EmployeeProfile extends javax.swing.JFrame {
         contact_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         contact_field.setForeground(new java.awt.Color(92, 101, 138));
 
-        employeeNumber_field.setBackground(new java.awt.Color(250, 250, 255));
-        employeeNumber_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        employeeNumber_field.setForeground(new java.awt.Color(92, 101, 138));
-        employeeNumber_field.addKeyListener(new java.awt.event.KeyAdapter() {
+        id_field.setBackground(new java.awt.Color(250, 250, 255));
+        id_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        id_field.setForeground(new java.awt.Color(92, 101, 138));
+        id_field.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                employeeNumber_fieldKeyReleased(evt);
+                id_fieldKeyReleased(evt);
             }
         });
 
@@ -338,7 +338,7 @@ public class EmployeeProfile extends javax.swing.JFrame {
                                                         .addGroup(mainPanelLayout.createSequentialGroup()
                                                             .addComponent(en_title)
                                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                            .addComponent(employeeNumber_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                            .addComponent(id_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                                     .addGroup(mainPanelLayout.createSequentialGroup()
                                                         .addComponent(noe_title1)
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -424,7 +424,7 @@ public class EmployeeProfile extends javax.swing.JFrame {
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(en_title)
-                            .addComponent(employeeNumber_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(id_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(firstname_field, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -479,7 +479,7 @@ public class EmployeeProfile extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        mainPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {bday_field, contact_field, employeeNumber_field, firstname_field, jobTitle_field, lastname_field, pagibig_field, phhealth_field, sss_field, status_field, tin_field});
+        mainPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {bday_field, contact_field, firstname_field, id_field, jobTitle_field, lastname_field, pagibig_field, phhealth_field, sss_field, status_field, tin_field});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -508,38 +508,41 @@ public class EmployeeProfile extends javax.swing.JFrame {
          clear();
     }//GEN-LAST:event_clearButtonActionPerformed
 
-    private void employeeNumber_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_employeeNumber_fieldKeyReleased
-        // type employee number
-        String employeeId = employeeNumber_field.getText();
-        Admin_Class employee = new Admin_Class (employeeId, null, null, null, null,
-                    null, null, null, null,
-                    null, null, null, null,
-                    null, null, null);
-            dbConnect.getEmployeeDetails(employee);
-        if (employee != null) {
-        firstname_field.setText(employee.getFirstName());
-        lastname_field.setText(employee.getLastName());
-        bday_field.setText(employee.getBirthday());
-        address_field.setText(employee.getAddress());
-        contact_field.setText(employee.getPhoneNumber());
-        status_field.setText(employee.getStatus());
-        jobTitle_field.setText(employee.getPosition());
-        sss_field.setText(employee.getSssNum());
-        phhealth_field.setText(employee.getPhilHealthNum());
-        pagibig_field.setText(employee.getPagibigNum());
-        tin_field.setText(employee.getTinNum());
-    
-}
-    }//GEN-LAST:event_employeeNumber_fieldKeyReleased
+    private void id_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_id_fieldKeyReleased
+        // type employee number        
+        String employeeId = id_field.getText();         
+        try {
+             conn = dbConnect.connect();
+            Admin_Class employee = dbConnect.getEmployeeDetails(employeeId);
+            if (employee != null) {
+                firstname_field.setText(employee.getFirstName());
+                lastname_field.setText(employee.getLastName());
+                bday_field.setText(employee.getBirthday());
+                address_field.setText(employee.getAddress());
+                contact_field.setText(employee.getPhoneNumber());
+                status_field.setText(employee.getStatus());
+                jobTitle_field.setText(employee.getPosition());
+                sss_field.setText(employee.getSssNum());
+                phhealth_field.setText(employee.getPhilHealthNum());
+                pagibig_field.setText(employee.getPagibigNum());
+                tin_field.setText(employee.getTinNum());
+            } else {
+            }   // Handle the case where no employee was found
+            }catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "No employee found with ID: " + employeeId, "Error", JOptionPane.ERROR_MESSAGE);
+                
+       } 
+
+    }//GEN-LAST:event_id_fieldKeyReleased
 
     private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
         // Update Information from SQL
         
-       String lastName = lastname_field.getText();
+        String lastName = lastname_field.getText();
         String phoneNumber = contact_field.getText();
         String position = jobTitle_field.getText();
         String status = status_field.getText();
-        String employeeID = employeeNumber_field.getText();
+        String employeeID = id_field.getText();
 
         // Create an Employee object
         Admin_Class employee = new Admin_Class(employeeID, null, lastName, null, null,
@@ -567,7 +570,7 @@ public class EmployeeProfile extends javax.swing.JFrame {
 
         try {
             // Retrieve input values from fields
-            String employeeID = employeeNumber_field.getText();
+            String employeeID = id_field.getText();
             String firstName = firstname_field.getText();
             String lastName = lastname_field.getText();
             String birthday = bday_field.getText();
@@ -609,7 +612,7 @@ public class EmployeeProfile extends javax.swing.JFrame {
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
         // DELETE RECORD
-        String employeeId = employeeNumber_field.getText();
+        String employeeId = id_field.getText();
 
         if (employeeId.equals("")) {
             JOptionPane.showMessageDialog(this, "Enter Employee ID!");
@@ -678,11 +681,11 @@ public class EmployeeProfile extends javax.swing.JFrame {
     private javax.swing.JTextField contact_field;
     private javax.swing.JLabel date;
     private javax.swing.JButton deleteBtn;
-    private javax.swing.JTextField employeeNumber_field;
     private javax.swing.JLabel en_title;
     private javax.swing.JTextField firstname_field;
     private javax.swing.JLabel govIdNum_title;
     private javax.swing.JLabel greetings;
+    private javax.swing.JTextField id_field;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

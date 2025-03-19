@@ -427,11 +427,7 @@ public class EmpAccessLeave extends javax.swing.JFrame {
         // SEARCH EMPLOYEE NAME
             String employeeId = id_field.getText();         
             conn = dbConnect.connect();
-            Admin_Class employee = new Admin_Class (employeeId, null, null, null, null,
-                    null, null, null, null,
-                    null, null, null, null,
-                    null, null, null);
-            dbConnect.getEmployeeDetails(employee);
+            Admin_Class employee = dbConnect.getEmployeeDetails(employeeId);
             if (employee != null) {
                 firstName_field.setText(employee.getFirstName());
                 lastName_field.setText(employee.getLastName());

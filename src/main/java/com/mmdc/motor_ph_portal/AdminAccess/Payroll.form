@@ -64,12 +64,12 @@
                                               <Group type="102" alignment="1" attributes="0">
                                                   <Component id="noe_label" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                                  <Component id="ename_field" linkSize="1" min="-2" pref="195" max="-2" attributes="0"/>
+                                                  <Component id="firstname_field" linkSize="1" min="-2" pref="195" max="-2" attributes="0"/>
                                               </Group>
                                               <Group type="102" alignment="1" attributes="0">
                                                   <Component id="noe_label1" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                                  <Component id="ename_field1" linkSize="1" min="-2" pref="192" max="-2" attributes="0"/>
+                                                  <Component id="lastname_field" linkSize="1" min="-2" pref="192" max="-2" attributes="0"/>
                                               </Group>
                                               <Group type="102" attributes="0">
                                                   <Component id="employeeid_label" min="-2" max="-2" attributes="0"/>
@@ -216,13 +216,13 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="ename_field" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="firstname_field" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="noe_label" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="clearButton1" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="ename_field1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lastname_field" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="noe_label1" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -705,7 +705,7 @@
             <Property name="text" type="java.lang.String" value="Employee ID :"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="ename_field">
+        <Component class="javax.swing.JTextField" name="firstname_field">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -944,7 +944,7 @@
             <Property name="text" type="java.lang.String" value="Last Name :"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="ename_field1">
+        <Component class="javax.swing.JTextField" name="lastname_field">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">

@@ -68,7 +68,7 @@
                                                           <Group type="102" alignment="0" attributes="0">
                                                               <Component id="en_title" min="-2" max="-2" attributes="0"/>
                                                               <EmptySpace min="-2" max="-2" attributes="0"/>
-                                                              <Component id="employeeNumber_field" min="-2" pref="184" max="-2" attributes="0"/>
+                                                              <Component id="id_field" min="-2" pref="184" max="-2" attributes="0"/>
                                                           </Group>
                                                       </Group>
                                                       <Group type="102" alignment="1" attributes="0">
@@ -179,7 +179,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="en_title" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="employeeNumber_field" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="id_field" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -432,7 +432,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="employeeNumber_field">
+        <Component class="javax.swing.JTextField" name="id_field">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="fa" red="fa" type="rgb"/>
@@ -445,7 +445,7 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="employeeNumber_fieldKeyReleased"/>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="id_fieldKeyReleased"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="jobTitle_field">

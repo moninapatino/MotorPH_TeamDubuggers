@@ -105,11 +105,7 @@ public class LeaveManagement extends javax.swing.JFrame {
         }
         return leaveRecords;
     }
-                 
-   
-    
-   
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -609,16 +605,13 @@ public class LeaveManagement extends javax.swing.JFrame {
 
     private void id_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_id_fieldKeyReleased
         // serach by employee id
-        String employeeId = id_field.getText();
-        Admin_Class employee = new Admin_Class (employeeId, null, null, null, null,
-                    null, null, null, null,
-                    null, null, null, null,
-                    null, null, null);
-            dbConnect.getEmployeeDetails(employee);
+        String employeeId = id_field.getText();         
+            conn = dbConnect.connect();
+            Admin_Class employee = dbConnect.getEmployeeDetails(employeeId);
             if (employee != null) {
                 firstName_field.setText(employee.getFirstName());
                 lastName_field.setText(employee.getLastName());
-            } 
+            }
             DefaultTableModel attendanceTable = (DefaultTableModel) leaveTable.getModel();
             TableRowSorter<DefaultTableModel> table = new TableRowSorter<>(attendanceTable);
             leaveTable.setRowSorter(table);

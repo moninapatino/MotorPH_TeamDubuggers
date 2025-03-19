@@ -1,25 +1,20 @@
 
 package com.mmdc.motor_ph_portal.EmployeeAccess;
 
+import com.mmdc.motor_ph_portal.AdminAccess.Admin_Class;
+import com.mmdc.motor_ph_portal.User;
 import com.mmdc.motor_ph_util.DatabaseConnect;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import javax.swing.WindowConstants;
-import com.motorph_util.Postgresql;
-import java.sql.DriverManager;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import javax.swing.JOptionPane;
 
 
 public class EmployeeAccess_Profile extends javax.swing.JFrame {
-
     Connection conn = null;
-    ResultSet rs = null;
-    PreparedStatement pst = null;
+    DatabaseConnect dbConnect = new DatabaseConnect() {};
      
     public EmployeeAccess_Profile() {
         initComponents();
@@ -32,8 +27,6 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         Dimension size=toolkit.getScreenSize();
         setLocation(size.width/2-getWidth()/2,size.height/2-getHeight()/2);
                 
-        conn = Postgresql.java_db();
-        
         //Displaying current Date & Time
         time();
         date();
@@ -67,25 +60,16 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         en_title = new javax.swing.JLabel();
         jt_title = new javax.swing.JLabel();
         s_title = new javax.swing.JLabel();
-        name_field = new javax.swing.JTextField();
+        firstname_field = new javax.swing.JTextField();
         bday_field = new javax.swing.JTextField();
         contact_field = new javax.swing.JTextField();
         employeeNumber_field = new javax.swing.JTextField();
         jobTitle_field = new javax.swing.JTextField();
         status_field = new javax.swing.JTextField();
-        govIdNum_title = new javax.swing.JLabel();
-        sss_title = new javax.swing.JLabel();
-        pagibig_title = new javax.swing.JLabel();
-        phhealth_title = new javax.swing.JLabel();
-        tin_title = new javax.swing.JLabel();
-        sss_field = new javax.swing.JTextField();
-        pagibig_field = new javax.swing.JTextField();
-        phhealth_field = new javax.swing.JTextField();
-        tin_field = new javax.swing.JTextField();
         backButton = new javax.swing.JButton();
         clearButton = new javax.swing.JButton();
         noe_title1 = new javax.swing.JLabel();
-        name_field1 = new javax.swing.JTextField();
+        lastname_field = new javax.swing.JTextField();
         address_title = new javax.swing.JLabel();
         address_field = new javax.swing.JTextField();
         time = new javax.swing.JLabel();
@@ -160,10 +144,10 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         s_title.setForeground(new java.awt.Color(250, 250, 255));
         s_title.setText("Status :");
 
-        name_field.setEditable(false);
-        name_field.setBackground(new java.awt.Color(250, 250, 255));
-        name_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
-        name_field.setForeground(new java.awt.Color(92, 101, 138));
+        firstname_field.setEditable(false);
+        firstname_field.setBackground(new java.awt.Color(250, 250, 255));
+        firstname_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
+        firstname_field.setForeground(new java.awt.Color(92, 101, 138));
 
         bday_field.setEditable(false);
         bday_field.setBackground(new java.awt.Color(250, 250, 255));
@@ -194,46 +178,6 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         status_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
         status_field.setForeground(new java.awt.Color(92, 101, 138));
 
-        govIdNum_title.setFont(new java.awt.Font("Arial", 2, 12)); // NOI18N
-        govIdNum_title.setForeground(new java.awt.Color(250, 250, 255));
-        govIdNum_title.setText("Government ID Numbers");
-
-        sss_title.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        sss_title.setForeground(new java.awt.Color(250, 250, 255));
-        sss_title.setText("SSS Number :");
-
-        pagibig_title.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        pagibig_title.setForeground(new java.awt.Color(250, 250, 255));
-        pagibig_title.setText("PAG-IBIG Number :");
-
-        phhealth_title.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        phhealth_title.setForeground(new java.awt.Color(250, 250, 255));
-        phhealth_title.setText("PhilHealth Number :");
-
-        tin_title.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        tin_title.setForeground(new java.awt.Color(250, 250, 255));
-        tin_title.setText("TIN :");
-
-        sss_field.setEditable(false);
-        sss_field.setBackground(new java.awt.Color(250, 250, 255));
-        sss_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
-        sss_field.setForeground(new java.awt.Color(92, 101, 138));
-
-        pagibig_field.setEditable(false);
-        pagibig_field.setBackground(new java.awt.Color(250, 250, 255));
-        pagibig_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
-        pagibig_field.setForeground(new java.awt.Color(92, 101, 138));
-
-        phhealth_field.setEditable(false);
-        phhealth_field.setBackground(new java.awt.Color(250, 250, 255));
-        phhealth_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
-        phhealth_field.setForeground(new java.awt.Color(92, 101, 138));
-
-        tin_field.setEditable(false);
-        tin_field.setBackground(new java.awt.Color(250, 250, 255));
-        tin_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
-        tin_field.setForeground(new java.awt.Color(92, 101, 138));
-
         backButton.setBackground(new java.awt.Color(253, 56, 29));
         backButton.setForeground(new java.awt.Color(250, 250, 255));
         backButton.setText("Back");
@@ -257,10 +201,15 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         noe_title1.setForeground(new java.awt.Color(250, 250, 255));
         noe_title1.setText("Last Name :");
 
-        name_field1.setEditable(false);
-        name_field1.setBackground(new java.awt.Color(250, 250, 255));
-        name_field1.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
-        name_field1.setForeground(new java.awt.Color(92, 101, 138));
+        lastname_field.setEditable(false);
+        lastname_field.setBackground(new java.awt.Color(250, 250, 255));
+        lastname_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
+        lastname_field.setForeground(new java.awt.Color(92, 101, 138));
+        lastname_field.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lastname_fieldActionPerformed(evt);
+            }
+        });
 
         address_title.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         address_title.setForeground(new java.awt.Color(250, 250, 255));
@@ -280,74 +229,59 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 717, Short.MAX_VALUE)
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(47, 47, 47)
-                        .addComponent(greetings)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(tin_title)
-                                    .addComponent(phhealth_title)
-                                    .addComponent(pagibig_title)
-                                    .addComponent(govIdNum_title)
-                                    .addComponent(sss_title))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(pagibig_field, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
-                                    .addComponent(phhealth_field)
-                                    .addComponent(tin_field)
-                                    .addComponent(sss_field)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                                .addContainerGap(72, Short.MAX_VALUE)
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                                            .addComponent(noe_title)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(name_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(mainPanelLayout.createSequentialGroup()
-                                            .addComponent(en_title)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(employeeNumber_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(mainPanelLayout.createSequentialGroup()
-                                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(noe_title1)
-                                            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(address_title)
-                                                .addComponent(b_title)))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(bday_field, javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(name_field1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
-                                            .addComponent(address_field))))))
-                        .addGap(18, 18, 18)))
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jt_title, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(s_title, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(cn_title, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(clearButton)
-                            .addComponent(backButton))
-                        .addGap(65, 65, 65))
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(contact_field, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
-                            .addComponent(jobTitle_field)
-                            .addComponent(status_field))
-                        .addGap(56, 56, 56))))
-            .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(date)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(time)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addGap(47, 47, 47)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(greetings)
+                            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                                        .addComponent(noe_title)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(firstname_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(mainPanelLayout.createSequentialGroup()
+                                        .addComponent(en_title)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(employeeNumber_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(mainPanelLayout.createSequentialGroup()
+                                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(noe_title1)
+                                        .addGroup(mainPanelLayout.createSequentialGroup()
+                                            .addComponent(b_title)
+                                            .addGap(1, 1, 1)))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(bday_field, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                                        .addComponent(lastname_field, javax.swing.GroupLayout.Alignment.TRAILING)))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(clearButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(backButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                                .addComponent(cn_title)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(contact_field, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jt_title)
+                                    .addComponent(s_title))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jobTitle_field, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                                    .addComponent(status_field)))))
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGap(55, 55, 55)
+                        .addComponent(address_title)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(address_field)))
+                .addGap(56, 56, 56))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -355,68 +289,44 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(greetings)
-                .addGap(20, 20, 20)
+                .addGap(68, 68, 68)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cn_title)
-                            .addComponent(contact_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(clearButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(backButton)
+                        .addGap(17, 17, 17)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jt_title)
-                            .addComponent(jobTitle_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(s_title)
-                            .addComponent(status_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(date)
+                            .addComponent(time)))
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(en_title)
-                            .addComponent(employeeNumber_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(employeeNumber_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(contact_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cn_title))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(name_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(noe_title))
+                            .addComponent(firstname_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(noe_title)
+                            .addComponent(jobTitle_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jt_title))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(name_field1)
-                            .addComponent(noe_title1))
+                            .addComponent(lastname_field)
+                            .addComponent(noe_title1)
+                            .addComponent(s_title)
+                            .addComponent(status_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(b_title)
-                            .addComponent(bday_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(address_title)
-                    .addComponent(address_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(govIdNum_title)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                        .addComponent(clearButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(backButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(sss_title)
-                            .addComponent(sss_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(bday_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(pagibig_title)
-                            .addComponent(pagibig_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(phhealth_title)
-                            .addComponent(phhealth_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tin_title)
-                            .addComponent(tin_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(17, 17, 17)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(date)
-                    .addComponent(time))
+                            .addComponent(address_title)
+                            .addComponent(address_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(161, 161, 161)))
                 .addContainerGap())
         );
 
@@ -436,79 +346,25 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
 
     private void employeeNumber_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_employeeNumber_fieldKeyReleased
         // type employee number
-        DatabaseConnect dbConnect = new DatabaseConnect() {}; 
+        conn = dbConnect.connect();
+        String employeeId = employeeNumber_field.getText();
+        Admin_Class employee = dbConnect.getEmployeeDetails(employeeId);
+        if (employee != null) {
+        firstname_field.setText(employee.getFirstName());
+        lastname_field.setText(employee.getLastName());
+        bday_field.setText(employee.getBirthday());
+        address_field.setText(employee.getAddress());
+        contact_field.setText(employee.getPhoneNumber());
+        status_field.setText(employee.getStatus());
+        jobTitle_field.setText(employee.getPosition());
+        }
         
-        try {
-            Class.forName("org.postgresql.Driver");
-            Connection conn = DriverManager.getConnection(dbConnect.getUrl(), dbConnect.getUser (), dbConnect.getPassword());
-            String sql = "SELECT * FROM public.employee_data WHERE employee_id= ?";
-
-            pst=conn.prepareStatement(sql);
-            pst.setString(1, employeeNumber_field.getText());
-            rs=pst.executeQuery();
-            if(rs.next()){
-
-                String firstName =rs.getString("first_name");
-                name_field.setText(firstName);
-
-                String lastName =rs.getString("last_name");
-                name_field1.setText(lastName);
-
-                String bday =rs.getString("birthday");
-                bday_field.setText(bday);
-                
-                String address =rs.getString("address");
-                address_field.setText(address);
-
-                String contactNumber =rs.getString("phone_number");
-                contact_field.setText(contactNumber);
-
-                String status =rs.getString("status");
-                status_field.setText(status);
-
-                String position =rs.getString("position");
-                jobTitle_field.setText(position);
-
-                String sss =rs.getString("sss_num");
-                sss_field.setText(sss);
-
-                String philhealth =rs.getString("philhealth_num");
-                phhealth_field.setText(philhealth);
-
-                String pagibig =rs.getString("pagibig_num");
-                pagibig_field.setText(pagibig);
-
-                String tin =rs.getString("tin_num");
-                tin_field.setText(tin);
-
-            }
-        }
-        catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (pst != null) {
-                    pst.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-
-            } catch (Exception ex) {
-
-            }
-        }
 
     }//GEN-LAST:event_employeeNumber_fieldKeyReleased
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // back to Employee Access Portal
-        String username = "";
-        
+
         EmployeeAccessPortal employeeAccessPortal = new EmployeeAccessPortal ();
         employeeAccessPortal.setVisible(true);               
         setVisible(false); 
@@ -518,19 +374,19 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
 
         // Clear data from textbox
         employeeNumber_field.setText("");
-        name_field.setText("");
-        name_field1.setText("");
+        firstname_field.setText("");
+        lastname_field.setText("");
         bday_field.setText("");
         address_field.setText("");
         contact_field.setText("");
         status_field.setText("");
         jobTitle_field.setText("");
-        sss_field.setText("");
-        phhealth_field.setText("");
-        pagibig_field.setText("");
-        tin_field.setText("");
 
     }//GEN-LAST:event_clearButtonActionPerformed
+
+    private void lastname_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastname_fieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lastname_fieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -580,28 +436,19 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     private javax.swing.JLabel date;
     private javax.swing.JTextField employeeNumber_field;
     private javax.swing.JLabel en_title;
-    private javax.swing.JLabel govIdNum_title;
+    private javax.swing.JTextField firstname_field;
     private javax.swing.JLabel greetings;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jobTitle_field;
     private javax.swing.JLabel jt_title;
+    private javax.swing.JTextField lastname_field;
     private javax.swing.JLabel logo;
     private javax.swing.JPanel mainPanel;
-    private javax.swing.JTextField name_field;
-    private javax.swing.JTextField name_field1;
     private javax.swing.JLabel noe_title;
     private javax.swing.JLabel noe_title1;
-    private javax.swing.JTextField pagibig_field;
-    private javax.swing.JLabel pagibig_title;
-    private javax.swing.JTextField phhealth_field;
-    private javax.swing.JLabel phhealth_title;
     private javax.swing.JLabel s_title;
-    private javax.swing.JTextField sss_field;
-    private javax.swing.JLabel sss_title;
     private javax.swing.JTextField status_field;
     private javax.swing.JLabel time;
-    private javax.swing.JTextField tin_field;
-    private javax.swing.JLabel tin_title;
     // End of variables declaration//GEN-END:variables
 }

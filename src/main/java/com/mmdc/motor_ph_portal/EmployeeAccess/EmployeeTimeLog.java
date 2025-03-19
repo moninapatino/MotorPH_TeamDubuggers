@@ -2,14 +2,11 @@
 package com.mmdc.motor_ph_portal.EmployeeAccess;
 
 import com.mmdc.motor_ph_portal.AdminAccess.Admin_Class;
-import com.mmdc.motor_ph_portal.AdminAccess.TimeLogEntry;
 import com.mmdc.motor_ph_util.DatabaseConnect;
 import com.mmdc.motor_ph_util.DatabaseConnector;
-import com.motorph_util.Postgresql;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -344,16 +341,13 @@ public class EmployeeTimeLog extends javax.swing.JFrame {
     private void id_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_id_fieldKeyReleased
         // search data from table
         
-        String employeeId = id_field.getText();
-        Admin_Class employee = new Admin_Class (employeeId, null, null, null, null,
-                    null, null, null, null,
-                    null, null, null, null,
-                    null, null, null);
-            dbConnect.getEmployeeDetails(employee);
+        String employeeId = id_field.getText();         
+            conn = dbConnect.connect();
+            Admin_Class employee = dbConnect.getEmployeeDetails(employeeId);
             if (employee != null) {
                 firstName_field.setText(employee.getFirstName());
                 lastName_field.setText(employee.getLastName());
-            }               
+            }       
          loadTimeLog();                 
         
     }//GEN-LAST:event_id_fieldKeyReleased

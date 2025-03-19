@@ -2,11 +2,10 @@
 package com.mmdc.motor_ph_portal.AdminAccess;
 
 import com.mmdc.motor_ph_util.DatabaseConnect;
-import com.motorph_util.Postgresql;
+
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.DecimalFormat;
@@ -115,7 +114,7 @@ public class Payroll extends javax.swing.JFrame {
         pagibig_field = new javax.swing.JTextField();
         pHealth_field = new javax.swing.JTextField();
         employeeid_label = new javax.swing.JLabel();
-        ename_field = new javax.swing.JTextField();
+        firstname_field = new javax.swing.JTextField();
         totalA_field = new javax.swing.JTextField();
         totalD_field = new javax.swing.JTextField();
         basicsalary_label = new javax.swing.JLabel();
@@ -134,7 +133,7 @@ public class Payroll extends javax.swing.JFrame {
         tax3_radio = new javax.swing.JRadioButton();
         netpay_field = new javax.swing.JTextField();
         noe_label1 = new javax.swing.JLabel();
-        ename_field1 = new javax.swing.JTextField();
+        lastname_field = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -301,10 +300,10 @@ public class Payroll extends javax.swing.JFrame {
         employeeid_label.setForeground(new java.awt.Color(250, 250, 255));
         employeeid_label.setText("Employee ID :");
 
-        ename_field.setEditable(false);
-        ename_field.setBackground(new java.awt.Color(250, 250, 255));
-        ename_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
-        ename_field.setForeground(new java.awt.Color(92, 101, 138));
+        firstname_field.setEditable(false);
+        firstname_field.setBackground(new java.awt.Color(250, 250, 255));
+        firstname_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
+        firstname_field.setForeground(new java.awt.Color(92, 101, 138));
 
         totalA_field.setBackground(new java.awt.Color(250, 250, 255));
         totalA_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
@@ -398,10 +397,10 @@ public class Payroll extends javax.swing.JFrame {
         noe_label1.setForeground(new java.awt.Color(250, 250, 255));
         noe_label1.setText("Last Name :");
 
-        ename_field1.setEditable(false);
-        ename_field1.setBackground(new java.awt.Color(250, 250, 255));
-        ename_field1.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
-        ename_field1.setForeground(new java.awt.Color(92, 101, 138));
+        lastname_field.setEditable(false);
+        lastname_field.setBackground(new java.awt.Color(250, 250, 255));
+        lastname_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
+        lastname_field.setForeground(new java.awt.Color(92, 101, 138));
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -424,11 +423,11 @@ public class Payroll extends javax.swing.JFrame {
                                             .addGroup(mainPanelLayout.createSequentialGroup()
                                                 .addComponent(noe_label)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(ename_field, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(firstname_field, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGroup(mainPanelLayout.createSequentialGroup()
                                                 .addComponent(noe_label1)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(ename_field1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(lastname_field, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGroup(mainPanelLayout.createSequentialGroup()
                                                 .addComponent(employeeid_label)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -517,7 +516,7 @@ public class Payroll extends javax.swing.JFrame {
                         .addGap(21, 21, 21))))
         );
 
-        mainPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {employeeid_field, ename_field, ename_field1});
+        mainPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {employeeid_field, firstname_field, lastname_field});
 
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -538,12 +537,12 @@ public class Payroll extends javax.swing.JFrame {
                         .addGap(15, 15, 15))
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(ename_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(firstname_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(noe_label)
                             .addComponent(clearButton1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(ename_field1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lastname_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(noe_label1))
                         .addGap(18, 18, 18)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -684,68 +683,32 @@ public class Payroll extends javax.swing.JFrame {
 
     private void employeeid_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_employeeid_fieldKeyReleased
         // enter employee_id
-        try {
-            
-            String sql = "SELECT * FROM public.employee_data WHERE employee_id= ?";
-            
-            pst=conn.prepareStatement(sql);
-            pst.setString(1, employeeid_field.getText());
-            rs=pst.executeQuery();
-            if(rs.next()){
-                
-                String firstName =rs.getString("first_name");
-                ename_field.setText(firstName);
-                
-                String lastName =rs.getString("last_name");
-                ename_field1.setText(lastName);
-                
-                String hourly_rate =rs.getString("hourly_rate");
-                hourlyRate_field.setText(hourly_rate);
-                
-                String rice_s =rs.getString("rice_s");
-                riceA_field.setText(rice_s);
-                
-                String phone_a =rs.getString("phone_a");
-                phoneA_field.setText(phone_a);
-                
-                String clothing_a =rs.getString("clothing_a");
-                clothing_field.setText(clothing_a);
-                
-                String sss_c =rs.getString("sss_c");
-                sss_field.setText(sss_c);
-                
-                String basic_salary =rs.getString("basic_salary");
-                basicsalary_field.setText(basic_salary);
-                                           
-            }
-            
-        }
-        catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex);
-            
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (pst != null) {
-                    pst.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
+        String employeeId = employeeid_field.getText();
+        PayrollDetails employee = new PayrollDetails (employeeId, null, null, 0.0, 
+                                              0.0, 0.0, 0.0, 
+                                              0.0, 0.0) {};
+        
+            dbConnect.getPayrollDetails(employee);
 
-            } catch (Exception ex) {
-                
-            }
-        }
+    if (employee != null) {
+        firstname_field.setText(employee.getFirstName());
+        lastname_field.setText(employee.getLastName());
+        hourlyRate_field.setText(String.format("%.2f", employee.getHourlyRate()));
+        riceA_field.setText(String.format("%.2f", employee.getRiceA()));
+        phoneA_field.setText(String.format("%.2f", employee.getPhoneA()));
+        clothing_field.setText(String.format("%.2f", employee.getClothingAllowance()));
+        sss_field.setText(String.format("%.2f", employee.getSssC()));
+        basicsalary_field.setText(String.format("%.2f", employee.getBasicSalary()));
+    } else {
+        JOptionPane.showMessageDialog(null, "Employee not found.");
+    }
     }//GEN-LAST:event_employeeid_fieldKeyReleased
 
     private void clearButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButton1ActionPerformed
         // Clear data from textbox
         employeeid_field.setText("");
-        ename_field.setText("");
-        ename_field1.setText("");
+        firstname_field.setText("");
+        lastname_field.setText("");
         hourlyRate_field.setText("");
         riceA_field.setText("");
         phoneA_field.setText("");
@@ -817,8 +780,8 @@ public class Payroll extends javax.swing.JFrame {
         
         paySlipArea.setText(paySlipArea.getText()+"Date : "+date.getText()+"\n");
         paySlipArea.setText(paySlipArea.getText()+"Time : "+time.getText()+"\n");
-        paySlipArea.setText(paySlipArea.getText()+"Employee First Name : "+ename_field.getText()+"\n");
-        paySlipArea.setText(paySlipArea.getText()+"Employee Last Name : "+ename_field1.getText()+"\n");
+        paySlipArea.setText(paySlipArea.getText()+"Employee First Name : "+firstname_field.getText()+"\n");
+        paySlipArea.setText(paySlipArea.getText()+"Employee Last Name : "+lastname_field.getText()+"\n");
         paySlipArea.setText(paySlipArea.getText()+"Employee ID : "+employeeid_field.getText()+"\n");
         paySlipArea.setText(paySlipArea.getText()+"*******************************************\n");
         
@@ -904,8 +867,7 @@ public class Payroll extends javax.swing.JFrame {
     private javax.swing.JLabel date;
     private javax.swing.JTextField employeeid_field;
     private javax.swing.JLabel employeeid_label;
-    private javax.swing.JTextField ename_field;
-    private javax.swing.JTextField ename_field1;
+    private javax.swing.JTextField firstname_field;
     private javax.swing.JLabel greetings;
     private javax.swing.JTextField grosspay_field;
     private javax.swing.JLabel grosspay_label;
@@ -915,6 +877,7 @@ public class Payroll extends javax.swing.JFrame {
     private javax.swing.JLabel hr_label;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField lastname_field;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JTextField netpay_field;
     private javax.swing.JLabel netpay_label;
