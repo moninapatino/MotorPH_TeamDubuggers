@@ -1,6 +1,7 @@
 package com.mmdc.motor_ph_util;
 
 import com.mmdc.motor_ph_portal.AdminAccess.Admin_Class;
+import com.mmdc.motor_ph_portal.AdminAccess.PayrollCalculation;
 import com.mmdc.motor_ph_portal.AdminAccess.PayrollDetails;
 import com.mmdc.motor_ph_portal.LeaveRecord;
 import java.sql.Connection;
@@ -292,17 +293,17 @@ public abstract class DatabaseConnect {
 
     }
     // PAYROLL DETAILS KEY RELEASE
-    public PayrollDetails getPayrollDetails(PayrollDetails employeeId) {
-        PayrollDetails employee = employeeId;
+    public PayrollCalculation getPayrollDetails(String employeeId) {
+        PayrollCalculation employee = null;
 
         try {
             conn = connect();
             String sql = "SELECT * FROM public.employee_data WHERE employee_id = ?";
             pst = conn.prepareStatement(sql);
-            pst.setString(1, employee.getEmployeeID());
+            pst.setString(1, employeeId);
             rs = pst.executeQuery();
             if (rs.next()) {
-                return new PayrollDetails(
+                employee = new PayrollCalculation(
                         rs.getString("employee_id"),
                         rs.getString("first_name"),
                         rs.getString("last_name"),
@@ -312,12 +313,12 @@ public abstract class DatabaseConnect {
                         rs.getDouble("clothing_a"),
                         rs.getDouble("sss_c"),
                         rs.getDouble("basic_salary")
-                ) {};
+                );
             }
         } catch (Exception ex) {
             ex.printStackTrace(); // Log the exception
         }
-        return null; // Return null if no employee is found
+        return employee; // Return null if no employee is found
     }
 
   

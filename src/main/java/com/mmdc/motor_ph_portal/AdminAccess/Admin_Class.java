@@ -6,8 +6,7 @@ import javax.swing.JOptionPane;
 
 
 public class Admin_Class extends User {
-  
-
+ 
     public Admin_Class(String employeeID, String firstName, String lastName, String birthday, String address, 
               String phoneNumber, String sssNum, String philHealthNum, String tinNum, 
               String pagibigNum, String status, String position, String supervisor, 

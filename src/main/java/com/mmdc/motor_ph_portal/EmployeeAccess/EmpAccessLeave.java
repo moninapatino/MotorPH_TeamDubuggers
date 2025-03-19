@@ -447,12 +447,12 @@ public class EmpAccessLeave extends javax.swing.JFrame {
         String leaveType = leaveTypeComboBox.getSelectedItem().toString();
         String status = "Pending";
 
-        // Add the leave request to the table
+        
         DefaultTableModel model = (DefaultTableModel) leaveTable.getModel();
         model.addRow(new Object[]{leaveNum, employeeId, firstName, lastName, startDate, endDate, leaveType});
         LeaveRecord leaveRecord = new LeaveRecord(leaveNum, employeeId, firstName, lastName, startDate, endDate, leaveType, status);
         
-        // Call the LeaveManager to add the leave request to the database
+        
          dbConnect.addLeaveRequest(leaveRecord); 
             JOptionPane.showMessageDialog(null, "Leave request added successfully!");
             refreshList();

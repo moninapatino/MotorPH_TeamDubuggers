@@ -74,7 +74,7 @@
                                               <Group type="102" attributes="0">
                                                   <Component id="employeeid_label" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                                  <Component id="employeeid_field" linkSize="1" min="-2" pref="195" max="-2" attributes="0"/>
+                                                  <Component id="id_field" linkSize="1" min="-2" pref="195" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
                                           <EmptySpace min="-2" pref="103" max="-2" attributes="0"/>
@@ -203,7 +203,7 @@
                   <Component id="greetings" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="employeeid_field" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="id_field" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="employeeid_label" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -567,7 +567,7 @@
             <Property name="text" type="java.lang.String" value="Total Allowances:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="employeeid_field">
+        <Component class="javax.swing.JTextField" name="id_field">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="fa" red="fa" type="rgb"/>
@@ -580,7 +580,7 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="employeeid_fieldKeyReleased"/>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="id_fieldKeyReleased"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="hoursWorked_field">

@@ -15,8 +15,6 @@ import javax.swing.WindowConstants;
 import javax.swing.JOptionPane;
 
 
-
-
 public class Payroll extends javax.swing.JFrame {
     Connection conn = null;
     ResultSet rs = null;
@@ -104,7 +102,7 @@ public class Payroll extends javax.swing.JFrame {
         pagibig_label = new javax.swing.JLabel();
         td_label = new javax.swing.JLabel();
         ta_label = new javax.swing.JLabel();
-        employeeid_field = new javax.swing.JTextField();
+        id_field = new javax.swing.JTextField();
         hoursWorked_field = new javax.swing.JTextField();
         phoneA_field = new javax.swing.JTextField();
         hourlyRate_field = new javax.swing.JTextField();
@@ -248,12 +246,12 @@ public class Payroll extends javax.swing.JFrame {
         ta_label.setForeground(new java.awt.Color(250, 250, 255));
         ta_label.setText("Total Allowances:");
 
-        employeeid_field.setBackground(new java.awt.Color(250, 250, 255));
-        employeeid_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
-        employeeid_field.setForeground(new java.awt.Color(92, 101, 138));
-        employeeid_field.addKeyListener(new java.awt.event.KeyAdapter() {
+        id_field.setBackground(new java.awt.Color(250, 250, 255));
+        id_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
+        id_field.setForeground(new java.awt.Color(92, 101, 138));
+        id_field.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                employeeid_fieldKeyReleased(evt);
+                id_fieldKeyReleased(evt);
             }
         });
 
@@ -431,7 +429,7 @@ public class Payroll extends javax.swing.JFrame {
                                             .addGroup(mainPanelLayout.createSequentialGroup()
                                                 .addComponent(employeeid_label)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(employeeid_field, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addComponent(id_field, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addGap(103, 103, 103)
                                         .addComponent(clearButton1))
                                     .addGroup(mainPanelLayout.createSequentialGroup()
@@ -516,7 +514,7 @@ public class Payroll extends javax.swing.JFrame {
                         .addGap(21, 21, 21))))
         );
 
-        mainPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {employeeid_field, firstname_field, lastname_field});
+        mainPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {firstname_field, id_field, lastname_field});
 
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -526,7 +524,7 @@ public class Payroll extends javax.swing.JFrame {
                 .addComponent(greetings)
                 .addGap(17, 17, 17)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(employeeid_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(id_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(employeeid_label))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -652,12 +650,13 @@ public class Payroll extends javax.swing.JFrame {
             clothingA= Double.parseDouble(clothing_field.getText());
             basicSalary= Double.parseDouble(basicsalary_field.getText());
             sssC= Double.parseDouble(sss_field.getText());
-            hourlyRate= Double.parseDouble(hourlyRate_field.getText());
-        
+    
+            //CALCULATION FOR ALLOWANCE
             totalAllowances = riceA + phoneA + clothingA;
             String totalA = Double.toString(totalAllowances);
             totalA_field.setText(totalA);
                                
+            //CALCULATION FOR DEDUCTIONS
             phealthC = basicSalary * 0.05/2;
             String philHealth = Double.toString(phealthC);
             pHealth_field.setText(philHealth);
@@ -670,6 +669,7 @@ public class Payroll extends javax.swing.JFrame {
             String totalD = Double.toString(totalDeductions);
             totalD_field.setText(totalD);
                         
+            //CALCULATION FOR GROSS PAY
             grossPay = hourlyRate * hoursWorked + totalAllowances - totalDeductions;
             String grossPayF = Double.toString(grossPay);
             grossPayF = new DecimalFormat("#.0#").format(grossPay);
@@ -681,32 +681,34 @@ public class Payroll extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_calculateButtonActionPerformed
 
-    private void employeeid_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_employeeid_fieldKeyReleased
+    private void id_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_id_fieldKeyReleased
         // enter employee_id
-        String employeeId = employeeid_field.getText();
-        PayrollDetails employee = new PayrollDetails (employeeId, null, null, 0.0, 
-                                              0.0, 0.0, 0.0, 
-                                              0.0, 0.0) {};
-        
-            dbConnect.getPayrollDetails(employee);
+            
+        String employeeId = id_field.getText();         
+        try {
+             conn = dbConnect.connect();
+            PayrollCalculation employee = dbConnect.getPayrollDetails(employeeId);
 
-    if (employee != null) {
-        firstname_field.setText(employee.getFirstName());
-        lastname_field.setText(employee.getLastName());
-        hourlyRate_field.setText(String.format("%.2f", employee.getHourlyRate()));
-        riceA_field.setText(String.format("%.2f", employee.getRiceA()));
-        phoneA_field.setText(String.format("%.2f", employee.getPhoneA()));
-        clothing_field.setText(String.format("%.2f", employee.getClothingAllowance()));
-        sss_field.setText(String.format("%.2f", employee.getSssC()));
-        basicsalary_field.setText(String.format("%.2f", employee.getBasicSalary()));
+        if (employee != null) {
+        
+            // Update UI fields using getters
+                hourlyRate_field.setText(String.format("%.2f", employee.getHourlyRate()));
+                riceA_field.setText(String.format("%.2f", employee.getRiceA()));
+                phoneA_field.setText(String.format("%.2f", employee.getPhoneA()));
+                clothing_field.setText(String.format("%.2f", employee.getClothingAllowance()));
+                sss_field.setText(String.format("%.2f", employee.getSssC()));
+                basicsalary_field.setText(String.format("%.2f", employee.getBasicSalary()));
+       
     } else {
         JOptionPane.showMessageDialog(null, "Employee not found.");
+    }}catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "No employee found with ID: " + employeeId, "Error", JOptionPane.ERROR_MESSAGE);
     }
-    }//GEN-LAST:event_employeeid_fieldKeyReleased
+    }//GEN-LAST:event_id_fieldKeyReleased
 
     private void clearButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButton1ActionPerformed
         // Clear data from textbox
-        employeeid_field.setText("");
+        id_field.setText("");
         firstname_field.setText("");
         lastname_field.setText("");
         hourlyRate_field.setText("");
@@ -782,7 +784,7 @@ public class Payroll extends javax.swing.JFrame {
         paySlipArea.setText(paySlipArea.getText()+"Time : "+time.getText()+"\n");
         paySlipArea.setText(paySlipArea.getText()+"Employee First Name : "+firstname_field.getText()+"\n");
         paySlipArea.setText(paySlipArea.getText()+"Employee Last Name : "+lastname_field.getText()+"\n");
-        paySlipArea.setText(paySlipArea.getText()+"Employee ID : "+employeeid_field.getText()+"\n");
+        paySlipArea.setText(paySlipArea.getText()+"Employee ID : "+id_field.getText()+"\n");
         paySlipArea.setText(paySlipArea.getText()+"*******************************************\n");
         
         paySlipArea.setText(paySlipArea.getText()+"Basic Salary : "+basicsalary_field.getText()+"\n");
@@ -865,7 +867,6 @@ public class Payroll extends javax.swing.JFrame {
     private javax.swing.JLabel clothingA_label;
     private javax.swing.JTextField clothing_field;
     private javax.swing.JLabel date;
-    private javax.swing.JTextField employeeid_field;
     private javax.swing.JLabel employeeid_label;
     private javax.swing.JTextField firstname_field;
     private javax.swing.JLabel greetings;
@@ -875,6 +876,7 @@ public class Payroll extends javax.swing.JFrame {
     private javax.swing.JTextField hoursWorked_field;
     private javax.swing.JLabel hoursWorked_lb;
     private javax.swing.JLabel hr_label;
+    private javax.swing.JTextField id_field;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField lastname_field;

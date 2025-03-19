@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Vector;
+import javax.swing.ButtonGroup;
 import javax.swing.RowFilter;
 import javax.swing.table.TableRowSorter;
 
@@ -20,7 +21,7 @@ import javax.swing.table.TableRowSorter;
 
 public class LeaveManagement extends javax.swing.JFrame {
     Connection conn = null;
-   
+     private ButtonGroup buttonGroup;
     
     DatabaseConnect dbConnect = new DatabaseConnect() {};
     DatabaseConnector dbConnector = new DatabaseConnector();  
@@ -35,11 +36,17 @@ public class LeaveManagement extends javax.swing.JFrame {
         Toolkit toolkit=getToolkit();
         Dimension size=toolkit.getScreenSize();
         setLocation(size.width/2-getWidth()/2,size.height/2-getHeight()/2);
-        
         conn = dbConnect.connect();
         loadLeaveRecords();
         time();
         date();
+        
+        // BUTTON GROUPING - which ensures that only one button can be selected at a time.
+        buttonGroup = new ButtonGroup();
+        buttonGroup.add(approve_rb);
+        buttonGroup.add(reject_rb);
+    
+        
     }
     
     public final void time(){
@@ -555,11 +562,11 @@ public class LeaveManagement extends javax.swing.JFrame {
                     if ("Approved".equals(statusRB)) {
                         approve_rb.setSelected(true);
                         reject_rb.setSelected(false);
-                    } else {
+                    } else if ("Rejected".equals(statusRB)){
                         reject_rb.setSelected(true);
                         approve_rb.setSelected(false);
                     }
-                    if (statusRB.equals("")) {
+                    else if (statusRB.equals("")) {
                         reject_rb.setSelected(false);
                         approve_rb.setSelected(false);
                     }

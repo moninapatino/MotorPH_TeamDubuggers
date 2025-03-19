@@ -2,7 +2,6 @@
 package com.mmdc.motor_ph_portal.EmployeeAccess;
 
 import com.mmdc.motor_ph_portal.AdminAccess.Admin_Class;
-import com.mmdc.motor_ph_portal.User;
 import com.mmdc.motor_ph_util.DatabaseConnect;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -358,7 +357,6 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         status_field.setText(employee.getStatus());
         jobTitle_field.setText(employee.getPosition());
         }
-        
 
     }//GEN-LAST:event_employeeNumber_fieldKeyReleased
 

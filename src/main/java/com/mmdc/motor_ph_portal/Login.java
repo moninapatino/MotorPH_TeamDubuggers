@@ -6,7 +6,6 @@ import com.mmdc.motor_ph_util.DatabaseConnect;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
