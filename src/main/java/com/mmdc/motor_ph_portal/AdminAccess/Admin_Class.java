@@ -11,15 +11,12 @@ public class Admin_Class extends User {
     public Admin_Class(String employeeID, String firstName, String lastName, String birthday, String address, 
               String phoneNumber, String sssNum, String philHealthNum, String tinNum, 
               String pagibigNum, String status, String position, String supervisor, 
-              double basicSalary, double sssC, double riceA, double phoneA, 
-              double clothingA, double grossSemiMonthlyRate, double hourlyRate, 
               String username, String password, String role) {
-        super( employeeID,  firstName,  lastName,  birthday,  address, 
-               phoneNumber,  sssNum,  philHealthNum,  tinNum, 
-               pagibigNum,  status,  position,  supervisor, 
-               basicSalary,  sssC,  riceA,  phoneA, 
-               clothingA,  grossSemiMonthlyRate,  hourlyRate, 
-               username,  password);
+        super(employeeID, firstName, lastName, birthday, address, 
+              phoneNumber, sssNum, philHealthNum, tinNum, 
+              pagibigNum, status, position, supervisor, 
+              0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 
+              username, password);
         
     }
    

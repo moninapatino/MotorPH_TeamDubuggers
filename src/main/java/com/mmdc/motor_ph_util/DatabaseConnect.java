@@ -60,21 +60,21 @@ public abstract class DatabaseConnect {
 
     }
     
-    public Employee_Class getEmployeeDetails(String employeeId) {
+    public Admin_Class getEmployeeDetails(Admin_Class employeeId) {
         Connection conn = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
-        Employee_Class employee = null;
+        Admin_Class employee = employeeId;
 
         try {
             conn = connect();
             String sql = "SELECT * FROM public.employee_data WHERE employee_id = ?";
             pst = conn.prepareStatement(sql);
-            pst.setString(1, employeeId);
+            pst.setString(1, employee.getEmployeeID());
             rs = pst.executeQuery();
 
             if (rs.next()) {
-                employee = new Employee_Class(
+                employee = new Admin_Class(
                         rs.getString("employee_id"),
                         rs.getString("first_name"),
                         rs.getString("last_name"),
@@ -89,8 +89,10 @@ public abstract class DatabaseConnect {
                         rs.getString("position"),   
                         rs.getString("supervisor"),
                         rs.getString("username"),
-                        rs.getString("password")
+                        rs.getString("password"),
+                        rs.getString("role")
                 );
+                
             }
         } catch (Exception ex) {
             ex.printStackTrace(); // Consider logging this instead
@@ -137,8 +139,8 @@ public abstract class DatabaseConnect {
         }
      
     } 
-      public void updateEmployee(Employee_Class employeeId) {
-        Employee_Class employee = null;
+      public void updateEmployee(Admin_Class employeeId) {
+        Admin_Class employee = employeeId;
         String sql = "UPDATE public.employee_data SET last_name = ?, phone_number = ?, position = ?, status = ? WHERE employee_id = ?";
 
         try (Connection conn = connect();

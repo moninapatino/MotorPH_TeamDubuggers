@@ -1,6 +1,7 @@
 
 package com.mmdc.motor_ph_portal.EmployeeAccess;
 
+import com.mmdc.motor_ph_portal.AdminAccess.Admin_Class;
 import com.mmdc.motor_ph_portal.AdminAccess.TimeLogEntry;
 import com.mmdc.motor_ph_util.DatabaseConnect;
 import com.mmdc.motor_ph_util.DatabaseConnector;
@@ -58,38 +59,9 @@ public class EmployeeTimeLog extends javax.swing.JFrame {
     DateTimeFormatter dates = DateTimeFormatter.ofPattern("MMM d, y");
     LocalDateTime now =LocalDateTime.now();
     date.setText(dates.format(now));
-    
-
-   /* public void loadTimeLog() {
-    String employeeId = id_field.getText(); // Get the employee ID from the input field
-   
-    
-    // Retrieve the time log entries for the specified employee ID
-    ArrayList<TimeLogEntry> timeLogEntries = dbConnector.getTimeLog(employeeId);
-    
-    // Clear the existing table model
-    DefaultTableModel leave_table = (DefaultTableModel) attendance_table.getModel();
-    leave_table.setRowCount(0);
-    
-    // Populate the table with the retrieved time log entries
-    for (TimeLogEntry entry : timeLogEntries) {
-        Vector<String> row = new Vector<>();
-        row.add(entry.getFirstName());
-        row.add(entry.getLastName());
-        row.add(entry.getDate());
-        row.add(entry.getTimeIn());
-        row.add(entry.getTimeOut());
-        
-        // Add the row to the table model
-        leave_table.addRow(row);
-        
-    }
-    attendance_table.revalidate();
-    attendance_table.repaint();
-    
-    */
      }
-     
+
+   
      public ArrayList loadTimeLog() {
         ArrayList timeLog = new ArrayList();
         try {
@@ -373,7 +345,11 @@ public class EmployeeTimeLog extends javax.swing.JFrame {
         // search data from table
         
         String employeeId = id_field.getText();
-        Employee_Class employee = dbConnect.getEmployeeDetails(employeeId);
+        Admin_Class employee = new Admin_Class (employeeId, null, null, null, null,
+                    null, null, null, null,
+                    null, null, null, null,
+                    null, null, null);
+            dbConnect.getEmployeeDetails(employee);
             if (employee != null) {
                 firstName_field.setText(employee.getFirstName());
                 lastName_field.setText(employee.getLastName());

@@ -200,8 +200,7 @@ public class Login extends javax.swing.JFrame {
                 if ("Admin".equalsIgnoreCase(role)) {
                     Admin_Class admin = new Admin_Class(employeeID, firstName, lastName, birthday, address, phoneNumber,
                             sssNum, philHealthNum, tinNum, pagibigNum, status, position,
-                            supervisor, basicSalary, sssC, riceA, phoneA, clothingA,
-                            grossSemiMonthlyRate, hourlyRate, username, password,role);
+                            supervisor, username, password,role);
                     admin.login(username, password);
                     dispose();
                 } else {

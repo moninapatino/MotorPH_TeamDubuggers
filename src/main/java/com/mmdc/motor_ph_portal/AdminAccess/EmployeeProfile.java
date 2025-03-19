@@ -511,8 +511,11 @@ public class EmployeeProfile extends javax.swing.JFrame {
     private void employeeNumber_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_employeeNumber_fieldKeyReleased
         // type employee number
         String employeeId = employeeNumber_field.getText();
-        Employee_Class employee = dbConnect.getEmployeeDetails(employeeId);
-        
+        Admin_Class employee = new Admin_Class (employeeId, null, null, null, null,
+                    null, null, null, null,
+                    null, null, null, null,
+                    null, null, null);
+            dbConnect.getEmployeeDetails(employee);
         if (employee != null) {
         firstname_field.setText(employee.getFirstName());
         lastname_field.setText(employee.getLastName());
@@ -532,17 +535,17 @@ public class EmployeeProfile extends javax.swing.JFrame {
     private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
         // Update Information from SQL
         
-       /* String lastName = lastname_field.getText();
+       String lastName = lastname_field.getText();
         String phoneNumber = contact_field.getText();
         String position = jobTitle_field.getText();
         String status = status_field.getText();
         String employeeID = employeeNumber_field.getText();
 
         // Create an Employee object
-        Admin_Class employee = new Admin_Class(null, null, lastName, null, null,
-                phoneNumber, null, null, null,
-                null, status, position, null, 0.0, 0.0,
-                0.0, 0.0, 0.0, 0.0, 0.0, null, null,null);
+        Admin_Class employee = new Admin_Class(employeeID, null, lastName, null, null,
+                    phoneNumber, null, null, null,
+                    null, status, position, null,
+                    null, null, null);
         
         if(employeeID.equals("")){
             JOptionPane.showMessageDialog(this, "Enter Employee ID!");
@@ -556,7 +559,7 @@ public class EmployeeProfile extends javax.swing.JFrame {
         else if (result == JOptionPane.NO_OPTION) {
             JOptionPane.showMessageDialog(this, "Data not successfully updated!");
         }
-*/
+
     }//GEN-LAST:event_updateBtnActionPerformed
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
@@ -577,13 +580,6 @@ public class EmployeeProfile extends javax.swing.JFrame {
             String pagibigNum = pagibig_field.getText();
             String tinNum = tin_field.getText();
             String supervisor = null;
-            double basicSalary = 0.0;
-            double sssC = 0.0;
-            double riceA = 0.0;
-            double phoneA = 0.0;
-            double clothingA = 0.0;
-            double grossSemiMonthlyRate = 0.0;
-            double hourlyRate = 0.0;
             String username = null;
             String password = null;
             String role = null;
@@ -598,11 +594,9 @@ public class EmployeeProfile extends javax.swing.JFrame {
 
             // Create an Employee object
             Admin_Class newEmployee = new Admin_Class(employeeID, firstName, lastName, birthday, address,
-            phoneNumber, sssNum, philHealthNum, tinNum,
-            pagibigNum, status, position, supervisor, 
-            basicSalary, sssC, riceA, phoneA, 
-            clothingA, grossSemiMonthlyRate, hourlyRate, 
-            username, password, role);
+                    phoneNumber, sssNum, philHealthNum, tinNum,
+                    pagibigNum, status, position, supervisor,
+                    username, password, role);
 
             // call the method from DatabaseConnect
             dbConnect.addEmployee(newEmployee);
