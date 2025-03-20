@@ -14,7 +14,7 @@ public class Employee_Class extends User {
         super(employeeID, firstName, lastName, birthday, address, 
               phoneNumber, sssNum, philHealthNum, tinNum, 
               pagibigNum, status, position, supervisor, 
-              0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 
+              0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 
               username, password);
         
     }
@@ -33,6 +33,10 @@ public class Employee_Class extends User {
     public String getRole() {
         return "Employee";
     } 
+
+    @Override
+    public void payrollCalc(String employeeId) {
+    }
 
   
 }

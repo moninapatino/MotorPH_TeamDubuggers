@@ -2,12 +2,12 @@
 package com.mmdc.motor_ph_portal.AdminAccess;
 
 import com.mmdc.motor_ph_util.DatabaseConnect;
-
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,27 +19,11 @@ public class Payroll extends javax.swing.JFrame {
     Connection conn = null;
     ResultSet rs = null;
     PreparedStatement pst = null;
-    
-    DatabaseConnect dbConnect = new DatabaseConnect() {};
-    
-    double hourlyRate;
-    double hoursWorked;
-    double basicSalary;
-    double totalAllowances;
-    double totalDeductions;
-    double riceA;
-    double phoneA;
-    double clothingA;
-    double sssC;
-    double phealthC;
-    double pagibigC;
-    double grossPay;
-    double netPay;
-    double tax2;
-    double tax3;
-    double taxF;
-    
-    
+   
+    DatabaseConnect dbConnect = new DatabaseConnect() {
+    };
+
+
     public Payroll() {
         initComponents();
         setTitle ("Employee Payroll");
@@ -67,17 +51,8 @@ public class Payroll extends javax.swing.JFrame {
     LocalDateTime now =LocalDateTime.now();
     date.setText(dates.format(now));
     }
-      public void netPay() {
-        taxF= Double.parseDouble(tax_field.getText());
-        
-        netPay = grossPay - taxF;
-        String netPayF = Double.toString(netPay);
-        netPayF = new DecimalFormat("#.#").format(netPay);
-        netpay_field.setText(netPayF);
-        
-      }
-    
-        
+     
+ 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -118,7 +93,7 @@ public class Payroll extends javax.swing.JFrame {
         basicsalary_label = new javax.swing.JLabel();
         grosspay_label = new javax.swing.JLabel();
         netpay_label = new javax.swing.JLabel();
-        basicsalary_field = new javax.swing.JTextField();
+        basicSalary_field = new javax.swing.JTextField();
         grosspay_field = new javax.swing.JTextField();
         tax_field = new javax.swing.JTextField();
         tax_label = new javax.swing.JLabel();
@@ -126,9 +101,6 @@ public class Payroll extends javax.swing.JFrame {
         date = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         paySlipArea = new javax.swing.JTextArea();
-        tax1_radio = new javax.swing.JRadioButton();
-        tax2_radio = new javax.swing.JRadioButton();
-        tax3_radio = new javax.swing.JRadioButton();
         netpay_field = new javax.swing.JTextField();
         noe_label1 = new javax.swing.JLabel();
         lastname_field = new javax.swing.JTextField();
@@ -324,9 +296,9 @@ public class Payroll extends javax.swing.JFrame {
         netpay_label.setForeground(new java.awt.Color(250, 250, 255));
         netpay_label.setText("Net Pay:");
 
-        basicsalary_field.setBackground(new java.awt.Color(250, 250, 255));
-        basicsalary_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
-        basicsalary_field.setForeground(new java.awt.Color(92, 101, 138));
+        basicSalary_field.setBackground(new java.awt.Color(250, 250, 255));
+        basicSalary_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
+        basicSalary_field.setForeground(new java.awt.Color(92, 101, 138));
 
         grosspay_field.setBackground(new java.awt.Color(250, 250, 255));
         grosspay_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
@@ -359,33 +331,6 @@ public class Payroll extends javax.swing.JFrame {
         paySlipArea.setForeground(new java.awt.Color(92, 101, 138));
         paySlipArea.setRows(5);
         jScrollPane1.setViewportView(paySlipArea);
-
-        tax1_radio.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        tax1_radio.setForeground(new java.awt.Color(250, 250, 255));
-        tax1_radio.setText("Gross Pay = 20,832 and below");
-        tax1_radio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tax1_radioActionPerformed(evt);
-            }
-        });
-
-        tax2_radio.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        tax2_radio.setForeground(new java.awt.Color(250, 250, 255));
-        tax2_radio.setText("Gross Pay = 20,833 to below 33,333");
-        tax2_radio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tax2_radioActionPerformed(evt);
-            }
-        });
-
-        tax3_radio.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        tax3_radio.setForeground(new java.awt.Color(250, 250, 255));
-        tax3_radio.setText("Gross Pay = 33,333 to below 66,667");
-        tax3_radio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tax3_radioActionPerformed(evt);
-            }
-        });
 
         netpay_field.setBackground(new java.awt.Color(250, 250, 255));
         netpay_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
@@ -436,26 +381,19 @@ public class Payroll extends javax.swing.JFrame {
                                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(mainPanelLayout.createSequentialGroup()
                                                 .addGap(12, 12, 12)
-                                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                                     .addGroup(mainPanelLayout.createSequentialGroup()
-                                                        .addGap(42, 42, 42)
+                                                        .addComponent(hr_label)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(hourlyRate_field, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addGroup(mainPanelLayout.createSequentialGroup()
+                                                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                            .addComponent(phoneA_label)
+                                                            .addComponent(riceA_label))
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                            .addComponent(tax1_radio)
-                                                            .addComponent(tax2_radio)
-                                                            .addComponent(tax3_radio)))
-                                                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                        .addGroup(mainPanelLayout.createSequentialGroup()
-                                                            .addComponent(hr_label)
-                                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                            .addComponent(hourlyRate_field, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                        .addGroup(mainPanelLayout.createSequentialGroup()
-                                                            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                .addComponent(phoneA_label)
-                                                                .addComponent(riceA_label))
-                                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                .addComponent(phoneA_field, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addComponent(riceA_field, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                                            .addComponent(phoneA_field, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                            .addComponent(riceA_field, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                                             .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                                 .addGroup(mainPanelLayout.createSequentialGroup()
                                                     .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -464,7 +402,7 @@ public class Payroll extends javax.swing.JFrame {
                                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                     .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addComponent(grosspay_field, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(basicsalary_field, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                        .addComponent(basicSalary_field, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                                 .addGroup(mainPanelLayout.createSequentialGroup()
                                                     .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                                         .addComponent(ta_label)
@@ -473,7 +411,7 @@ public class Payroll extends javax.swing.JFrame {
                                                     .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addComponent(clothing_field, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(totalA_field, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                                        .addGap(34, 34, 34)
+                                        .addGap(63, 63, 63)
                                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addGroup(mainPanelLayout.createSequentialGroup()
                                                 .addComponent(hoursWorked_lb)
@@ -596,18 +534,12 @@ public class Payroll extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(basicsalary_label)
-                                    .addComponent(basicsalary_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(basicSalary_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(grosspay_label)
-                                    .addComponent(grosspay_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addComponent(tax1_radio)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tax2_radio)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tax3_radio)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                                    .addComponent(grosspay_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(payslipButton)
                             .addComponent(calculateButton))
@@ -640,70 +572,37 @@ public class Payroll extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
-    private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
-        // calculate pay
-        try {
-            hourlyRate= Double.parseDouble(hourlyRate_field.getText());
-            hoursWorked= Double.parseDouble(hoursWorked_field.getText());
-            riceA= Double.parseDouble(riceA_field.getText());
-            phoneA= Double.parseDouble(phoneA_field.getText());
-            clothingA= Double.parseDouble(clothing_field.getText());
-            basicSalary= Double.parseDouble(basicsalary_field.getText());
-            sssC= Double.parseDouble(sss_field.getText());
-    
-            //CALCULATION FOR ALLOWANCE
-            totalAllowances = riceA + phoneA + clothingA;
-            String totalA = Double.toString(totalAllowances);
-            totalA_field.setText(totalA);
-                               
-            //CALCULATION FOR DEDUCTIONS
-            phealthC = basicSalary * 0.05/2;
-            String philHealth = Double.toString(phealthC);
-            pHealth_field.setText(philHealth);
-        
-            pagibigC = basicSalary * 0.02;
-            String pagibig = Double.toString(phealthC);
-            pagibig_field.setText(pagibig);
-        
-            totalDeductions = phealthC + pagibigC + sssC;
-            String totalD = Double.toString(totalDeductions);
-            totalD_field.setText(totalD);
-                        
-            //CALCULATION FOR GROSS PAY
-            grossPay = hourlyRate * hoursWorked + totalAllowances - totalDeductions;
-            String grossPayF = Double.toString(grossPay);
-            grossPayF = new DecimalFormat("#.0#").format(grossPay);
-            grosspay_field.setText(grossPayF);
-                             
-        }
-        catch (Exception ex) {
-          JOptionPane.showMessageDialog(null, "Please enter Number of hours worked");  
-        }
-    }//GEN-LAST:event_calculateButtonActionPerformed
-
     private void id_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_id_fieldKeyReleased
         // enter employee_id
-            
-        String employeeId = id_field.getText();         
+
         try {
-             conn = dbConnect.connect();
+            conn = dbConnect.connect(); // Establish the connection
+            String employeeId = id_field.getText();
+            System.out.println("Employee ID: " + employeeId); // Debugging output
+
             PayrollCalculation employee = dbConnect.getPayrollDetails(employeeId);
 
-        if (employee != null) {
-        
-            // Update UI fields using getters
-                hourlyRate_field.setText(String.format("%.2f", employee.getHourlyRate()));
+            if (employee != null) {
+                firstname_field.setText(employee.getFirstName());
+                lastname_field.setText(employee.getLastName());
+                sss_field.setText(String.format("%.2f", employee.getSssC()));
                 riceA_field.setText(String.format("%.2f", employee.getRiceA()));
                 phoneA_field.setText(String.format("%.2f", employee.getPhoneA()));
-                clothing_field.setText(String.format("%.2f", employee.getClothingAllowance()));
-                sss_field.setText(String.format("%.2f", employee.getSssC()));
-                basicsalary_field.setText(String.format("%.2f", employee.getBasicSalary()));
-       
-    } else {
-        JOptionPane.showMessageDialog(null, "Employee not found.");
-    }}catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "No employee found with ID: " + employeeId, "Error", JOptionPane.ERROR_MESSAGE);
+                clothing_field.setText(String.format("%.2f", employee.getClothingA()));
+                hourlyRate_field.setText(String.format("%.2f", employee.getHourlyRate()));
+            } else {
+                
+            }
+        } catch (Exception e) {
+            // Display the employeeId in the error message
+            JOptionPane.showMessageDialog(null, "No employee found with ID: " 
+                    + id_field.getText(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace(); 
+           
+            if (conn != null) {
+                
     }
+}
     }//GEN-LAST:event_id_fieldKeyReleased
 
     private void clearButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButton1ActionPerformed
@@ -716,7 +615,7 @@ public class Payroll extends javax.swing.JFrame {
         phoneA_field.setText("");
         clothing_field.setText("");
         sss_field.setText("");
-        basicsalary_field.setText("");
+        basicSalary_field.setText("");
         totalA_field.setText("");
         pHealth_field.setText("");
         pagibig_field.setText("");
@@ -726,52 +625,11 @@ public class Payroll extends javax.swing.JFrame {
         grosspay_field.setText("");
         netpay_field.setText("");
         hoursWorked_field.setText("");
-        tax1_radio.setSelected(false);
-        tax2_radio.setSelected(false);
-        tax3_radio.setSelected(false);
         paySlipArea.setText("");
         
         
                 
     }//GEN-LAST:event_clearButton1ActionPerformed
-
-    private void tax1_radioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tax1_radioActionPerformed
-        // tax1 = no tax
-         
-        if (tax1_radio.isSelected()){
-            tax_field.setText("0");
-            
-            netPay();
-        }
-        
-    }//GEN-LAST:event_tax1_radioActionPerformed
-
-    private void tax2_radioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tax2_radioActionPerformed
-        // tax 2 = radio button
-        tax2 = (grossPay - 20833) *.2;
-        
-        if (tax2_radio.isSelected()){
-            String tax_2 = Double.toString(tax2);
-            tax_2 = new DecimalFormat("#.0#").format(tax2);
-            tax_field.setText(tax_2);
-            
-            netPay();
-        }
-        
-    }//GEN-LAST:event_tax2_radioActionPerformed
-
-    private void tax3_radioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tax3_radioActionPerformed
-        // tax3 radio button
-        tax3 = (grossPay - 33333) * .25 + 2500;
-        if (tax3_radio.isSelected()){
-            String tax_3 = Double.toString(tax3);
-            tax_3 = new DecimalFormat("#.0#").format(tax3);
-            tax_field.setText(tax_3);
-            
-            netPay();
-        }
-                
-    }//GEN-LAST:event_tax3_radioActionPerformed
 
     private void payslipButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payslipButtonActionPerformed
         // payslip area
@@ -787,7 +645,7 @@ public class Payroll extends javax.swing.JFrame {
         paySlipArea.setText(paySlipArea.getText()+"Employee ID : "+id_field.getText()+"\n");
         paySlipArea.setText(paySlipArea.getText()+"*******************************************\n");
         
-        paySlipArea.setText(paySlipArea.getText()+"Basic Salary : "+basicsalary_field.getText()+"\n");
+        paySlipArea.setText(paySlipArea.getText()+"Basic Salary : "+basicSalary_field.getText()+"\n");
         paySlipArea.setText(paySlipArea.getText()+"Hourly Rate : "+hourlyRate_field.getText()+"\n");
         paySlipArea.setText(paySlipArea.getText()+"Number of Hours Worked : "+hoursWorked_field.getText()+"\n");
         
@@ -818,6 +676,80 @@ public class Payroll extends javax.swing.JFrame {
         paySlipArea.setText(paySlipArea.getText()+"Net Pay : "+netpay_field.getText()+"\n");
         
     }//GEN-LAST:event_payslipButtonActionPerformed
+
+    private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
+        // calculate pay
+        
+        
+       try {
+            
+            Double hourlyRate = Double.parseDouble(hourlyRate_field.getText()); 
+            Double riceA = Double.parseDouble(riceA_field.getText());
+            Double phoneA = Double.parseDouble(phoneA_field.getText());
+            Double clothingA = Double.parseDouble(clothing_field.getText());
+            //Double basicSalary = Double.parseDouble(clothing_field.getText());
+            Double hoursWorked = Double.parseDouble(hoursWorked_field.getText());
+            Double sssC = Double.parseDouble(sss_field.getText());
+            
+  
+            // Create an instance of PayrollCalculation
+              PayrollCalculation payroll = new PayrollCalculation (null, null, null, 0.0, sssC,
+                    riceA, phoneA, clothingA, hourlyRate, hoursWorked, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0);
+ 
+            // Call the calculatePayroll method
+            
+            double totalAllowances = payroll.calculateTotalAllowances();
+            double philhealthC = payroll.calculatePhilHealth();
+            double pagibigC = payroll.calculatePagibig();
+            double totalDeductions = payroll.calculateTotalDeductions();
+            double grossPay = payroll.calculateGrossPay();
+            double basicSalary = payroll.calculateBasicSalary();
+            double tax = payroll.calculateTax();
+            double netPay = payroll.calculateNetPay();
+           
+           String totalA = Double.toString(totalAllowances);
+           totalA = new DecimalFormat("#.0#").format(totalAllowances);           
+           totalA_field.setText(totalA); 
+           
+           String pHeathC = Double.toString(philhealthC);
+           pHeathC = new DecimalFormat("#.0#").format(philhealthC);           
+           pHealth_field.setText(pHeathC);
+           
+           String pagibigCon = Double.toString(pagibigC);
+           pagibigCon = new DecimalFormat("#.0#").format(pagibigC);           
+           pagibig_field.setText(pagibigCon);
+           
+           String totalD = Double.toString(totalDeductions);
+           totalD = new DecimalFormat("#.0#").format(totalDeductions);           
+           totalD_field.setText(totalD);
+           
+           String basicS = Double.toString(basicSalary);
+           basicS = new DecimalFormat("#.0#").format(basicSalary);
+           basicSalary_field.setText(basicS);
+           
+           String grossPayF = Double.toString(grossPay);
+            grossPayF = new DecimalFormat("#.0#").format(grossPay);
+            grosspay_field.setText(grossPayF);
+            
+           String totalTax = Double.toString(tax);
+            totalTax = new DecimalFormat("#.0#").format(tax);
+            tax_field.setText(totalTax);
+            
+            String netPayF = Double.toString(netPay);
+            netPayF = new DecimalFormat("#.0#").format(netPay);
+            netpay_field.setText(netPayF);
+            
+            
+
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Enter number of hours worked.");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "An error occurred: " + ex.getMessage());
+        }
+    
+    }//GEN-LAST:event_calculateButtonActionPerformed
 
             
             
@@ -860,7 +792,7 @@ public class Payroll extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LOGO;
     private javax.swing.JButton backButton;
-    private javax.swing.JTextField basicsalary_field;
+    private javax.swing.JTextField basicSalary_field;
     private javax.swing.JLabel basicsalary_label;
     private javax.swing.JButton calculateButton;
     private javax.swing.JButton clearButton1;
@@ -899,9 +831,6 @@ public class Payroll extends javax.swing.JFrame {
     private javax.swing.JTextField sss_field;
     private javax.swing.JLabel sss_label;
     private javax.swing.JLabel ta_label;
-    private javax.swing.JRadioButton tax1_radio;
-    private javax.swing.JRadioButton tax2_radio;
-    private javax.swing.JRadioButton tax3_radio;
     private javax.swing.JTextField tax_field;
     private javax.swing.JLabel tax_label;
     private javax.swing.JLabel td_label;

@@ -2,7 +2,6 @@ package com.mmdc.motor_ph_util;
 
 import com.mmdc.motor_ph_portal.AdminAccess.Admin_Class;
 import com.mmdc.motor_ph_portal.AdminAccess.PayrollCalculation;
-import com.mmdc.motor_ph_portal.AdminAccess.PayrollDetails;
 import com.mmdc.motor_ph_portal.LeaveRecord;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -302,21 +301,40 @@ public abstract class DatabaseConnect {
             pst = conn.prepareStatement(sql);
             pst.setString(1, employeeId);
             rs = pst.executeQuery();
+            
             if (rs.next()) {
                 employee = new PayrollCalculation(
                         rs.getString("employee_id"),
                         rs.getString("first_name"),
                         rs.getString("last_name"),
-                        rs.getDouble("hourly_rate"),
+                        rs.getDouble("basic_salary"),
+                        rs.getDouble("sss_c"),
                         rs.getDouble("rice_s"),
                         rs.getDouble("phone_a"),
-                        rs.getDouble("clothing_a"),
-                        rs.getDouble("sss_c"),
-                        rs.getDouble("basic_salary")
+                        rs.getDouble("clothing_a"),                 
+                        rs.getDouble("hourly_rate"),
+                        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+                        
+                                
+                    
                 );
             }
         } catch (Exception ex) {
             ex.printStackTrace(); // Log the exception
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pst != null) {
+                    pst.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace(); // Handle closing exceptions
+            }
         }
         return employee; // Return null if no employee is found
     }

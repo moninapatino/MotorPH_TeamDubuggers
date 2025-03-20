@@ -162,10 +162,7 @@ public class Login extends javax.swing.JFrame {
         conn = dbConnect.connect();
 
         try {
-            String sql = "SELECT employee_id, first_name, last_name, birthday, address, phone_number, "
-                    + "sss_num, philhealth_num, tin_num, pagibig_num, status, position, "
-                    + "supervisor, basic_salary, sss_c, rice_s, phone_a, clothing_a, "
-                    + "grosssemi_monthly_rate, hourly_rate, role "
+            String sql = "SELECT employee_id, first_name, last_name, role "
                     + "FROM public.employee_data WHERE username = ? AND password = ?";
 
             pst = conn.prepareStatement(sql);
@@ -177,35 +174,18 @@ public class Login extends javax.swing.JFrame {
                 String employeeID = rs.getString("employee_id");
                 String firstName = rs.getString("first_name");
                 String lastName = rs.getString("last_name");
-                String birthday = rs.getString("birthday");
-                String address = rs.getString("address");
-                String phoneNumber = rs.getString("phone_number");
-                String sssNum = rs.getString("sss_num");
-                String philHealthNum = rs.getString("philhealth_num");
-                String tinNum = rs.getString("tin_num");
-                String pagibigNum = rs.getString("pagibig_num");
-                String status = rs.getString("status");
-                String position = rs.getString("position");
-                String supervisor = rs.getString("supervisor");
-                double basicSalary = rs.getDouble("basic_salary");
-                double sssC = rs.getDouble("sss_c");
-                double riceA = rs.getDouble("rice_s");
-                double phoneA = rs.getDouble("phone_a");
-                double clothingA = rs.getDouble("clothing_a");
-                double grossSemiMonthlyRate = rs.getDouble("grosssemi_monthly_rate");
-                double hourlyRate = rs.getDouble("hourly_rate");
                 String role = rs.getString("role");
 
                 if ("Admin".equalsIgnoreCase(role)) {
-                    Admin_Class admin = new Admin_Class(employeeID, firstName, lastName, birthday, address, phoneNumber,
-                            sssNum, philHealthNum, tinNum, pagibigNum, status, position,
-                            supervisor, username, password,role);
+                    Admin_Class admin = new Admin_Class(employeeID, firstName, lastName, null, null, null,
+                            null, null, null, null, null, null,
+                            null, username, password,role);
                     admin.login(username, password);
                     dispose();
                 } else {
-                    Employee_Class emp = new Employee_Class(employeeID, firstName, lastName, birthday, address,
-                            phoneNumber, sssNum, philHealthNum, tinNum,
-                            pagibigNum, status, position, supervisor,
+                    Employee_Class emp = new Employee_Class(employeeID, firstName, lastName, null, null,
+                            null, null, null, null,
+                            null, null, null, null,
                             username, password);
                     emp.login(username, password);
                     dispose();

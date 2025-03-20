@@ -140,7 +140,6 @@ public class EmployeeTimeLog extends javax.swing.JFrame {
             darkbluePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(attendance_title, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, darkbluePanelLayout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(logo)
                 .addGap(14, 14, 14))
         );

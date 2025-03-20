@@ -1,6 +1,8 @@
 
 package com.mmdc.motor_ph_portal;
 
+import javax.swing.JOptionPane;
+
 public abstract class User {
     protected String employeeID;
     protected String firstName;
@@ -22,14 +24,15 @@ public abstract class User {
     protected double riceA;
     protected double phoneA;
     protected double clothingA;
-    protected double grossSemiMonthlyRate;
     protected double hourlyRate;
+    protected double hoursWorked;
+    
 
     public User(String employeeID, String firstName, String lastName, String birthday, String address, 
               String phoneNumber, String sssNum, String philHealthNum, String tinNum, 
               String pagibigNum, String status, String position, String supervisor, 
               double basicSalary, double sssC, double riceA, double phoneA, 
-              double clothingA, double grossSemiMonthlyRate, double hourlyRate, 
+              double clothingA, double hourlyRate, 
               String username, String password) {
         
         this.employeeID = employeeID;
@@ -52,11 +55,14 @@ public abstract class User {
         this.riceA = riceA;
         this.phoneA = phoneA;
         this.clothingA = clothingA;
-        this.grossSemiMonthlyRate = grossSemiMonthlyRate;
         this.hourlyRate = hourlyRate;
     }
     public abstract void login(String username, String password);
-  
+    
+    public abstract void payrollCalc(String employeeId); {
+
+       
+}
     public String getEmployeeID() {
         return employeeID;
     }
@@ -135,10 +141,6 @@ public abstract class User {
 
     public double getClothingA() {
         return clothingA;
-    }
-
-    public double getGrossSemiMonthlyRate() {
-        return grossSemiMonthlyRate;
     }
 
     public double getHourlyRate() {
