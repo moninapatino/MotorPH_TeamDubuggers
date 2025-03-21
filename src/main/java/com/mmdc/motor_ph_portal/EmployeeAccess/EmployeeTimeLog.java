@@ -362,7 +362,7 @@ public class EmployeeTimeLog extends javax.swing.JFrame {
     private void timeInBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeInBtnActionPerformed
         // Time In Function + insert to SQL
         DefaultTableModel model = (DefaultTableModel) attendance_table.getModel();
-        model.addRow(new Object[]{firstName_field.getText(), lastName_field.getText(), date.getText(), time.getText()});
+        model.addRow(new Object[]{firstName_field.getText(), lastName_field.getText(), date.getText(), time.getText(),""});
 
         boolean success = dbConnector.logTimeIn(id_field.getText(), firstName_field.getText(), lastName_field.getText(), date.getText(), time.getText());
 
@@ -379,7 +379,7 @@ public class EmployeeTimeLog extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) attendance_table.getModel();
         model.addRow(new Object[]{firstName_field.getText(), lastName_field.getText(), date.getText(),"", time.getText()});
 
-        boolean success = dbConnector.logTimeIn(id_field.getText(), firstName_field.getText(), lastName_field.getText(), date.getText(), time.getText());
+        boolean success = dbConnector.logTimeOut(id_field.getText(), firstName_field.getText(), lastName_field.getText(), date.getText(), time.getText());
 
         if (success) {
             JOptionPane.showMessageDialog(this, "Time Out Successfully Added");

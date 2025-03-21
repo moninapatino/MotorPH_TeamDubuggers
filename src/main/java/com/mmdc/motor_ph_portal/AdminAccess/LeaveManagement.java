@@ -17,50 +17,50 @@ import javax.swing.ButtonGroup;
 import javax.swing.RowFilter;
 import javax.swing.table.TableRowSorter;
 
-
-
 public class LeaveManagement extends javax.swing.JFrame {
+
     Connection conn = null;
-     private ButtonGroup buttonGroup;
-    
-    DatabaseConnect dbConnect = new DatabaseConnect() {};
-    DatabaseConnector dbConnector = new DatabaseConnector();  
-    
+    private ButtonGroup buttonGroup;
+
+    DatabaseConnect dbConnect = new DatabaseConnect() {
+    };
+    DatabaseConnector dbConnector = new DatabaseConnector();
+
     public LeaveManagement() {
         initComponents();
-        
-        setTitle ("Motor PH Employee Leave Management");
+
+        setTitle("Motor PH Employee Leave Management");
         setSize(780, 600);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
-        Toolkit toolkit=getToolkit();
-        Dimension size=toolkit.getScreenSize();
-        setLocation(size.width/2-getWidth()/2,size.height/2-getHeight()/2);
+        Toolkit toolkit = getToolkit();
+        Dimension size = toolkit.getScreenSize();
+        setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
         conn = dbConnect.connect();
         loadLeaveRecords();
         time();
         date();
-        
+
         // BUTTON GROUPING - which ensures that only one button can be selected at a time.
         buttonGroup = new ButtonGroup();
         buttonGroup.add(approve_rb);
         buttonGroup.add(reject_rb);
-    
-        
+
     }
-    
-    public final void time(){
-    DateTimeFormatter times = DateTimeFormatter.ofPattern("hh:mm:ss a");
-    LocalDateTime now =LocalDateTime.now();
-    time.setText(times.format(now));
+
+    public final void time() {
+        DateTimeFormatter times = DateTimeFormatter.ofPattern("hh:mm:ss a");
+        LocalDateTime now = LocalDateTime.now();
+        time.setText(times.format(now));
     }
-      public final void date(){
-    DateTimeFormatter dates = DateTimeFormatter.ofPattern("MMMM d, y");
-    LocalDateTime now =LocalDateTime.now();
-    date.setText(dates.format(now));
+
+    public final void date() {
+        DateTimeFormatter dates = DateTimeFormatter.ofPattern("MMMM d, y");
+        LocalDateTime now = LocalDateTime.now();
+        date.setText(dates.format(now));
     }
-    
-      public void clear(){
+
+    public void clear() {
         leaveNum_field.setText("");
         id_field.setText("");
         firstName_field.setText("");
@@ -71,10 +71,10 @@ public class LeaveManagement extends javax.swing.JFrame {
         approve_rb.setSelected(false);
         reject_rb.setSelected(false);
     }
-      
-     public void loadLeaveRecords() {
+
+    public void loadLeaveRecords() {
         ArrayList<LeaveRecord> leaveRecords = dbConnect.userList();
-        
+
         DefaultTableModel leaveTableModel = (DefaultTableModel) leaveTable.getModel();
         leaveTableModel.setRowCount(0); // Clear existing rows
 
@@ -89,12 +89,12 @@ public class LeaveManagement extends javax.swing.JFrame {
             row.add(record.getLeaveType());
             row.add(record.getStatus());
             leaveTableModel.addRow(row);
-        }              
-   }
-   
+        }
+    }
+
     public ArrayList refreshList() {
-         ArrayList<LeaveRecord> leaveRecords = dbConnect.refreshList();
-        
+        ArrayList<LeaveRecord> leaveRecords = dbConnect.refreshList();
+
         DefaultTableModel leaveTableModel = (DefaultTableModel) leaveTable.getModel();
         leaveTableModel.setRowCount(0); // Clear existing rows
 
@@ -484,38 +484,39 @@ public class LeaveManagement extends javax.swing.JFrame {
         // back to Employee Portal
         EmployeePortal employeePortal = new EmployeePortal();
         employeePortal.show();
-        
+
         dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
         // Update data to SQL
-        try {   
+        try {
             String status = "";
-            if (approve_rb.isSelected()){
-               status = "Approved";
+            if (approve_rb.isSelected()) {
+                status = "Approved";
             }
-            if (reject_rb.isSelected()){
+            if (reject_rb.isSelected()) {
                 status = "Rejected";
             }
 
-            DefaultTableModel leaveRecord1 = (DefaultTableModel)leaveTable.getModel();
+            DefaultTableModel leaveRecord1 = (DefaultTableModel) leaveTable.getModel();
             int i = leaveTable.getSelectedRow();
             String leaveNum = leaveNum_field.getText();
             LeaveRecord leaveRecord = new LeaveRecord(
-            leaveNum,
-            status,
-            leaveRecord1.getValueAt(i, 2).toString(), 
-            leaveRecord1.getValueAt(i, 3).toString(), 
-            leaveRecord1.getValueAt(i, 4).toString(), 
-            leaveRecord1.getValueAt(i, 5).toString(), 
-            leaveRecord1.getValueAt(i, 6).toString(), 
-            leaveRecord1.getValueAt(i, 7).toString()  
-    );
+                    leaveNum,
+                    leaveRecord1.getValueAt(i, 2).toString(),
+                    leaveRecord1.getValueAt(i, 3).toString(),
+                    leaveRecord1.getValueAt(i, 4).toString(),
+                    leaveRecord1.getValueAt(i, 5).toString(),
+                    leaveRecord1.getValueAt(i, 6).toString(),
+                    leaveRecord1.getValueAt(i, 7).toString(),
+                    status
+            );
             // Update the leave record
             if (dbConnector.updateLeaveRecord(leaveRecord)) {
                 enddate_field.setText(leaveRecord.getEndDate());
                 JOptionPane.showMessageDialog(this, "Leave Record Updated!");
+                refreshList();
             } else {
                 JOptionPane.showMessageDialog(this, "Failed to update leave record.");
             }
@@ -527,54 +528,51 @@ public class LeaveManagement extends javax.swing.JFrame {
             } else if (status.equals("Rejected")) {
                 reject_rb.setSelected(true);
                 approve_rb.setSelected(false);
-            }       
-                
-            JOptionPane.showMessageDialog(this, "Leave Record Updated!");
+            }
+
             conn.close();
-        } 
-        catch (Exception e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e);
         }
-        
-        refreshList();
+
+
     }//GEN-LAST:event_updateBtnActionPerformed
 
     private void leaveTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_leaveTableMouseClicked
         // Selected Row Function
-                
-        DefaultTableModel leaveRecord1 = (DefaultTableModel)leaveTable.getModel();
+
+        DefaultTableModel leaveRecord1 = (DefaultTableModel) leaveTable.getModel();
         int i = leaveTable.getSelectedRow();
-        
+
         try {
-            leaveNum_field.setText(leaveRecord1.getValueAt(i, 0) .toString());
-            id_field.setText(leaveRecord1.getValueAt(i, 1) .toString());
-            firstName_field.setText(leaveRecord1.getValueAt(i, 2) .toString());
-            lastName_field.setText(leaveRecord1.getValueAt(i, 3) .toString());
-            startdate_field.setText(leaveRecord1.getValueAt(i, 4) .toString());
-            enddate_field.setText(leaveRecord1.getValueAt(i, 5) .toString());
-            leaveType_field.setText(leaveRecord1.getValueAt(i, 6) .toString());
-            String statusRB = leaveRecord1.getValueAt(i, 7) .toString();
-             if (i >= 0) {
+            leaveNum_field.setText(leaveRecord1.getValueAt(i, 0).toString());
+            id_field.setText(leaveRecord1.getValueAt(i, 1).toString());
+            firstName_field.setText(leaveRecord1.getValueAt(i, 2).toString());
+            lastName_field.setText(leaveRecord1.getValueAt(i, 3).toString());
+            startdate_field.setText(leaveRecord1.getValueAt(i, 4).toString());
+            enddate_field.setText(leaveRecord1.getValueAt(i, 5).toString());
+            leaveType_field.setText(leaveRecord1.getValueAt(i, 6).toString());
+            String statusRB = leaveRecord1.getValueAt(i, 7).toString();
+            if (i >= 0) {
                 Object statusObj = leaveRecord1.getValueAt(i, 7);
 
                 if (statusObj != null) {
-                  
+
                     if ("Approved".equals(statusRB)) {
                         approve_rb.setSelected(true);
                         reject_rb.setSelected(false);
-                    } else if ("Rejected".equals(statusRB)){
+                    } else if ("Rejected".equals(statusRB)) {
                         reject_rb.setSelected(true);
                         approve_rb.setSelected(false);
-                    }
-                    else if (statusRB.equals("")) {
+                    } else if (statusRB.equals("")) {
                         reject_rb.setSelected(false);
                         approve_rb.setSelected(false);
                     }
                 }
-                }
-        } catch (Exception e){
-
             }
+        } catch (Exception e) {
+
+        }
     }//GEN-LAST:event_leaveTableMouseClicked
 
     private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
@@ -584,25 +582,25 @@ public class LeaveManagement extends javax.swing.JFrame {
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
         // DELETE RECORD
-                
+
         try {
-            int result = JOptionPane.showConfirmDialog(null,"Are you sure you want to delete this?", "Employee Profile Deleting...", JOptionPane.YES_NO_OPTION);
-            if (result == JOptionPane.YES_OPTION){
-            String leaveNum = leaveNum_field.getText(); // Get the leave number from the field
-             LeaveRecord leaveRecord = new LeaveRecord(leaveNum, null, null, null,
+            int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this?", "Employee Profile Deleting...", JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
+                String leaveNum = leaveNum_field.getText(); // Get the leave number from the field
+                LeaveRecord leaveRecord = new LeaveRecord(leaveNum, null, null, null,
                         null, null, null, null);
-             
-            // Attempt to delete the leave record
-            if (dbConnector.deleteLeaveRecord(leaveRecord)) {
-                JOptionPane.showMessageDialog(null, "Selected Record Deleted");
-                clear(); // Clear the fields after deletion
-            } else {
-                JOptionPane.showMessageDialog(null, "No record found with the specified leave number.");
+
+                // Attempt to delete the leave record
+                if (dbConnector.deleteLeaveRecord(leaveRecord)) {
+                    JOptionPane.showMessageDialog(null, "Selected Record Deleted");
+                    clear(); // Clear the fields after deletion
+                } else {
+                    JOptionPane.showMessageDialog(null, "No record found with the specified leave number.");
+                }
+            } else if (result == JOptionPane.NO_OPTION) {
+                JOptionPane.showMessageDialog(this, "Employee Profile Deletion Not Successful!");
             }
-        } else if (result == JOptionPane.NO_OPTION) {
-            JOptionPane.showMessageDialog(this, "Employee Profile Deletion Not Successful!");
-        }
- 
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -612,18 +610,18 @@ public class LeaveManagement extends javax.swing.JFrame {
 
     private void id_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_id_fieldKeyReleased
         // serach by employee id
-        String employeeId = id_field.getText();         
-            conn = dbConnect.connect();
-            Admin_Class employee = dbConnect.getEmployeeDetails(employeeId);
-            if (employee != null) {
-                firstName_field.setText(employee.getFirstName());
-                lastName_field.setText(employee.getLastName());
-            }
-            DefaultTableModel attendanceTable = (DefaultTableModel) leaveTable.getModel();
-            TableRowSorter<DefaultTableModel> table = new TableRowSorter<>(attendanceTable);
-            leaveTable.setRowSorter(table);
-            table.setRowFilter(RowFilter.regexFilter(id_field.getText()));
-      
+        String employeeId = id_field.getText();
+        conn = dbConnect.connect();
+        Admin_Class employee = dbConnect.getEmployeeDetails(employeeId);
+        if (employee != null) {
+            firstName_field.setText(employee.getFirstName());
+            lastName_field.setText(employee.getLastName());
+        }
+        DefaultTableModel attendanceTable = (DefaultTableModel) leaveTable.getModel();
+        TableRowSorter<DefaultTableModel> table = new TableRowSorter<>(attendanceTable);
+        leaveTable.setRowSorter(table);
+        table.setRowFilter(RowFilter.regexFilter(id_field.getText()));
+
     }//GEN-LAST:event_id_fieldKeyReleased
 
     /**
