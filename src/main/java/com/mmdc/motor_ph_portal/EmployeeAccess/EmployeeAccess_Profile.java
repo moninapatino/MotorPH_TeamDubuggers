@@ -58,13 +58,11 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         cn_title = new javax.swing.JLabel();
         en_title = new javax.swing.JLabel();
         jt_title = new javax.swing.JLabel();
-        s_title = new javax.swing.JLabel();
         firstname_field = new javax.swing.JTextField();
         bday_field = new javax.swing.JTextField();
         contact_field = new javax.swing.JTextField();
         employeeNumber_field = new javax.swing.JTextField();
         jobTitle_field = new javax.swing.JTextField();
-        status_field = new javax.swing.JTextField();
         backButton = new javax.swing.JButton();
         clearButton = new javax.swing.JButton();
         noe_title1 = new javax.swing.JLabel();
@@ -139,10 +137,6 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         jt_title.setForeground(new java.awt.Color(250, 250, 255));
         jt_title.setText("Job Title :");
 
-        s_title.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        s_title.setForeground(new java.awt.Color(250, 250, 255));
-        s_title.setText("Status :");
-
         firstname_field.setEditable(false);
         firstname_field.setBackground(new java.awt.Color(250, 250, 255));
         firstname_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
@@ -171,11 +165,6 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         jobTitle_field.setBackground(new java.awt.Color(250, 250, 255));
         jobTitle_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
         jobTitle_field.setForeground(new java.awt.Color(92, 101, 138));
-
-        status_field.setEditable(false);
-        status_field.setBackground(new java.awt.Color(250, 250, 255));
-        status_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
-        status_field.setForeground(new java.awt.Color(92, 101, 138));
 
         backButton.setBackground(new java.awt.Color(253, 56, 29));
         backButton.setForeground(new java.awt.Color(250, 250, 255));
@@ -268,13 +257,9 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(contact_field, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jt_title)
-                                    .addComponent(s_title))
+                                .addComponent(jt_title)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jobTitle_field, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
-                                    .addComponent(status_field)))))
+                                .addComponent(jobTitle_field, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addGap(55, 55, 55)
                         .addComponent(address_title)
@@ -314,9 +299,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lastname_field)
-                            .addComponent(noe_title1)
-                            .addComponent(s_title)
-                            .addComponent(status_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(noe_title1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(b_title)
@@ -354,7 +337,6 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         bday_field.setText(employee.getBirthday());
         address_field.setText(employee.getAddress());
         contact_field.setText(employee.getPhoneNumber());
-        status_field.setText(employee.getStatus());
         jobTitle_field.setText(employee.getPosition());
         }
 
@@ -377,7 +359,6 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         bday_field.setText("");
         address_field.setText("");
         contact_field.setText("");
-        status_field.setText("");
         jobTitle_field.setText("");
 
     }//GEN-LAST:event_clearButtonActionPerformed
@@ -445,8 +426,6 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     private javax.swing.JPanel mainPanel;
     private javax.swing.JLabel noe_title;
     private javax.swing.JLabel noe_title1;
-    private javax.swing.JLabel s_title;
-    private javax.swing.JTextField status_field;
     private javax.swing.JLabel time;
     // End of variables declaration//GEN-END:variables
 }
