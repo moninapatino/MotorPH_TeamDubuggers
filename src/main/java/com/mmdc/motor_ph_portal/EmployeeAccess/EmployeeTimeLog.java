@@ -2,14 +2,15 @@
 package com.mmdc.motor_ph_portal.EmployeeAccess;
 
 import com.mmdc.motor_ph_portal.AdminAccess.Admin_Class;
+import com.mmdc.motor_ph_portal.AdminAccess.TimeLogEntry;
 import com.mmdc.motor_ph_util.DatabaseConnect;
-import com.mmdc.motor_ph_util.DatabaseConnector;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -26,7 +27,6 @@ public class EmployeeTimeLog extends javax.swing.JFrame {
     ResultSet rs = null;
     PreparedStatement pst = null;
     DatabaseConnect dbConnect = new DatabaseConnect() {};
-    DatabaseConnector dbConnector = new DatabaseConnector();
           
     public EmployeeTimeLog() {
         initComponents();
@@ -46,20 +46,8 @@ public class EmployeeTimeLog extends javax.swing.JFrame {
         //DB connect
         conn = dbConnect.connect();
     }
-
-    public final void time(){
-    DateTimeFormatter times = DateTimeFormatter.ofPattern("hh:mm:ss a");
-    LocalDateTime now =LocalDateTime.now();
-    time.setText(times.format(now));          
-    }
-     public final void date(){
-    DateTimeFormatter dates = DateTimeFormatter.ofPattern("MMM d, y");
-    LocalDateTime now =LocalDateTime.now();
-    date.setText(dates.format(now));
-     }
-
-   
-     public ArrayList loadTimeLog() {
+    
+ public ArrayList loadTimeLog() {
         ArrayList timeLog = new ArrayList();
         try {
             String sql = "SELECT * FROM public.employeetime_log where employee_id=?";
@@ -91,6 +79,20 @@ public class EmployeeTimeLog extends javax.swing.JFrame {
         }  
         return timeLog;
      }
+ 
+    public final void time(){
+    DateTimeFormatter times = DateTimeFormatter.ofPattern("hh:mm:ss a");
+    LocalDateTime now =LocalDateTime.now();
+    time.setText(times.format(now));          
+    }
+     public final void date(){
+    DateTimeFormatter dates = DateTimeFormatter.ofPattern("MMM d, y");
+    LocalDateTime now =LocalDateTime.now();
+    date.setText(dates.format(now));
+     }
+
+   
+   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -364,7 +366,7 @@ public class EmployeeTimeLog extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) attendance_table.getModel();
         model.addRow(new Object[]{firstName_field.getText(), lastName_field.getText(), date.getText(), time.getText(),""});
 
-        boolean success = dbConnector.logTimeIn(id_field.getText(), firstName_field.getText(), lastName_field.getText(), date.getText(), time.getText());
+        boolean success = dbConnect.logTimeIn(id_field.getText(), firstName_field.getText(), lastName_field.getText(), date.getText(), time.getText());
 
         if (success) {
             JOptionPane.showMessageDialog(this, "Time In Successfully Added");
@@ -379,7 +381,7 @@ public class EmployeeTimeLog extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) attendance_table.getModel();
         model.addRow(new Object[]{firstName_field.getText(), lastName_field.getText(), date.getText(),"", time.getText()});
 
-        boolean success = dbConnector.logTimeOut(id_field.getText(), firstName_field.getText(), lastName_field.getText(), date.getText(), time.getText());
+        boolean success = dbConnect.logTimeOut(id_field.getText(), firstName_field.getText(), lastName_field.getText(), date.getText(), time.getText());
 
         if (success) {
             JOptionPane.showMessageDialog(this, "Time Out Successfully Added");

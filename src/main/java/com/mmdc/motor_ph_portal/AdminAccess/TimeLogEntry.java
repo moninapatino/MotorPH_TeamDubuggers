@@ -3,12 +3,12 @@ package com.mmdc.motor_ph_portal.AdminAccess;
 
  
 public class TimeLogEntry {
-     String firstName;
-     String lastName;
-     String startDate;
-     String endDate;
-     String timeIn;
-     String timeOut;
+     private String firstName;
+     private String lastName;
+     private String startDate;
+     private String endDate;
+     private String timeIn;
+     private String timeOut;
 
     public TimeLogEntry(String firstName, String lastName, String startDate, String endDate, String timeIn, String timeOut) {
         this.firstName = firstName;

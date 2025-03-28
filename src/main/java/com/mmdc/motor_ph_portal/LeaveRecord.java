@@ -3,14 +3,14 @@ package com.mmdc.motor_ph_portal;
 
 
 public class LeaveRecord {
-     String leaveNum;
-     String employeeId;
-     String firstName;
-     String lastName;
-     String startDate;
-     String endDate;
-     String leaveType;
-     String status;
+     private String leaveNum;
+     private String employeeId;
+     private String firstName;
+     private String lastName;
+     private String startDate;
+     private String endDate;
+     private String leaveType;
+     private String status;
 
     public LeaveRecord(String leaveNum, String employeeId, String firstName, String lastName, 
                        String startDate, String endDate, String leaveType, String status) {

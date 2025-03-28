@@ -2,12 +2,8 @@
 package com.mmdc.motor_ph_portal.AdminAccess;
 
 import com.mmdc.motor_ph_util.DatabaseConnect;
-import com.mmdc.motor_ph_util.DatabaseConnector;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import javax.swing.WindowConstants;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -19,7 +15,6 @@ import javax.swing.table.TableRowSorter;
 public class EmployeeAttendance extends javax.swing.JFrame {
     
     DatabaseConnect dbConnect = new DatabaseConnect() {};
-    DatabaseConnector dbConnector = new DatabaseConnector();
        
     public EmployeeAttendance() {
         initComponents();
@@ -49,7 +44,7 @@ public class EmployeeAttendance extends javax.swing.JFrame {
     
     public void show_table() {
         DefaultTableModel attendanceTable = (DefaultTableModel) attendance_table.getModel();
-        dbConnector.show_table(attendanceTable);
+        dbConnect.show_table(attendanceTable);
     }
  
 

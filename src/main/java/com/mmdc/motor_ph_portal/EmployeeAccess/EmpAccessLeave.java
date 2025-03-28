@@ -3,7 +3,6 @@ package com.mmdc.motor_ph_portal.EmployeeAccess;
 import com.mmdc.motor_ph_portal.AdminAccess.Admin_Class;
 import com.mmdc.motor_ph_portal.LeaveRecord;
 import com.mmdc.motor_ph_util.DatabaseConnect;
-import com.mmdc.motor_ph_util.DatabaseConnector;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.Connection;
@@ -26,8 +25,7 @@ public class EmpAccessLeave extends javax.swing.JFrame {
     PreparedStatement pst = null;
           
     DatabaseConnect dbConnect = new DatabaseConnect() {};
-    DatabaseConnector dbConnector = new DatabaseConnector();
-            
+
     public EmpAccessLeave() {
         initComponents();
         setTitle ("Motor PH Employee Leave Management");

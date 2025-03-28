@@ -2,7 +2,6 @@ package com.mmdc.motor_ph_portal.AdminAccess;
 
 import com.mmdc.motor_ph_portal.LeaveRecord;
 import com.mmdc.motor_ph_util.DatabaseConnect;
-import com.mmdc.motor_ph_util.DatabaseConnector;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.Connection;
@@ -22,9 +21,7 @@ public class LeaveManagement extends javax.swing.JFrame {
     Connection conn = null;
     private ButtonGroup buttonGroup;
 
-    DatabaseConnect dbConnect = new DatabaseConnect() {
-    };
-    DatabaseConnector dbConnector = new DatabaseConnector();
+    DatabaseConnect dbConnect = new DatabaseConnect() {};
 
     public LeaveManagement() {
         initComponents();
@@ -513,7 +510,7 @@ public class LeaveManagement extends javax.swing.JFrame {
                     status
             );
             // Update the leave record
-            if (dbConnector.updateLeaveRecord(leaveRecord)) {
+            if (dbConnect.updateLeaveRecord(leaveRecord)) {
                 enddate_field.setText(leaveRecord.getEndDate());
                 JOptionPane.showMessageDialog(this, "Leave Record Updated!");
                 refreshList();
@@ -591,7 +588,7 @@ public class LeaveManagement extends javax.swing.JFrame {
                         null, null, null, null);
 
                 // Attempt to delete the leave record
-                if (dbConnector.deleteLeaveRecord(leaveRecord)) {
+                if (dbConnect.deleteLeaveRecord(leaveRecord)) {
                     JOptionPane.showMessageDialog(null, "Selected Record Deleted");
                     clear(); // Clear the fields after deletion
                 } else {
