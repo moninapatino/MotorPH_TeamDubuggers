@@ -2,12 +2,12 @@ package com.mmdc.motor_ph_portal.EmployeeAccess;
 
 import com.toedter.calendar.JDateChooser;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
-import java.util.ArrayList;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,123 +40,108 @@ public class EmployeeAccess_ProfileTest {
 
     @Test
     public void testTimeInButtonFunctionality() {
+        // 1. Create employee profile
         profile = new EmployeeAccess_Profile("10002", "Antonio", "Lim");
 
+        // 2. Click the Time-In button
         JButton timeInBtn = profile.getTimeInButton();
-        assertNotNull(timeInBtn);
-
-        // Simulate click on Time-In
+        assertNotNull(timeInBtn, "Time-In button should not be null");
         timeInBtn.doClick();
 
-        JTable attendanceTable = profile.getAttendanceTable();
-        assertNotNull(attendanceTable);
-        assertTrue(attendanceTable.getRowCount() > 0);
+        // 3. Refresh attendance table after clicking
+        profile.loadTimeLog();
 
-        // Check today's record was added
-        String dateToday = LocalDate.now().toString();
+        // 4. Access the attendance table
+        JTable attendanceTable = profile.getAttendanceTable();
+        assertNotNull(attendanceTable, "Attendance table should not be null");
+        assertTrue(attendanceTable.getRowCount() > 0, "Attendance table should have at least one row");
+
+        // 5. Check if today's date exists in the table
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String dateToday = LocalDate.now().format(formatter);
         boolean foundToday = false;
 
         for (int i = 0; i < attendanceTable.getRowCount(); i++) {
-            Object dateCell = attendanceTable.getValueAt(i, 2); // 3rd column is 'date'
-            Object timeOutCell = attendanceTable.getValueAt(i, 4); // 5th column is 'time_out'
+            Object dateCell = attendanceTable.getValueAt(i, 2); // 3rd column = 'date'
+            Object timeOutCell = attendanceTable.getValueAt(i, 4); // 5th column = 'time_out'
 
-            if (dateCell != null && dateCell.toString().equals(dateToday)) {
+            if (dateCell != null && dateCell.toString().contains(dateToday)) {
                 foundToday = true;
-                // ✅ Check that Time-Out is still null or empty
-                assertTrue(timeOutCell == null || timeOutCell.toString().trim().isEmpty(), "Time-Out should be empty after Time-In.");
+
+                // Time-Out should be empty or null right after Time-In
+                boolean isTimeOutEmpty = timeOutCell == null || timeOutCell.toString().trim().isEmpty();
+                assertTrue(isTimeOutEmpty, "Time-Out should be empty after Time-In.");
                 break;
             }
         }
 
-        assertTrue(foundToday, "Time-In record for today should exist.");
-    }
-    
-    @Test
-    public void testTimeOutButtonFunctionality() {
-        profile = new EmployeeAccess_Profile("10002", "Antonio", "Lim");
-
-        // First, ensure there is a Time-In
-        JButton timeInBtn = profile.getTimeInButton();
-        timeInBtn.doClick();
-
-        // Then perform Time-Out
-        JButton timeOutBtn = profile.getTimeOutButton();
-        assertNotNull(timeOutBtn);
-        timeOutBtn.doClick();
-
-        JTable attendanceTable = profile.getAttendanceTable();
-        assertNotNull(attendanceTable);
-        assertTrue(attendanceTable.getRowCount() > 0);
-
-        // Check if latest row now has a time_out value
-        String dateToday = LocalDate.now().toString();
-        boolean timeOutRecorded = false;
-
-        for (int i = attendanceTable.getRowCount() - 1; i >= 0; i--) {
-            Object dateCell = attendanceTable.getValueAt(i, 2); // date column
-            Object timeOutCell = attendanceTable.getValueAt(i, 4); // time_out column
-
-            if (dateCell != null && dateCell.toString().equals(dateToday)) {
-                // ✅ After Time-Out, the time_out field should be filled
-                timeOutRecorded = timeOutCell != null && !timeOutCell.toString().trim().isEmpty();
-                break;
+        // 6. Final assertion
+        if (!foundToday) {
+            // Print rows for debugging
+            System.out.println("❌ Today's date not found. Dumping table:");
+            for (int i = 0; i < attendanceTable.getRowCount(); i++) {
+                System.out.println("Row " + i + " Date: " + attendanceTable.getValueAt(i, 2));
             }
         }
 
-        assertTrue(timeOutRecorded, "Time-Out should be recorded after Time-Out button click.");
+        assertTrue(foundToday, "Time-In record for today's date (" + dateToday + ") should exist.");
     }
+ 
     @Test
     public void testSubmitLeaveRequestSuccessfully() {
-        // 1. Prepare the environment with logged-in employee profile
-        profile = new EmployeeAccess_Profile("10002", "Antonio", "Lim");
+      
+      profile = new EmployeeAccess_Profile("10002", "Antonio", "Lim");
+      profile.autoFillLeaveId(); // Make sure this populates the leaveNumField
 
-        // 2. Set valid start and end dates
-        JDateChooser startDateChooser = profile.getStartDateChooser();
-        JDateChooser endDateChooser = profile.getEndDateChooser();
-        assertNotNull(startDateChooser);
-        assertNotNull(endDateChooser);
+      
+      JDateChooser startDateChooser = profile.getStartDateChooser();
+      JDateChooser endDateChooser = profile.getEndDateChooser();
+      assertNotNull(startDateChooser);
+      assertNotNull(endDateChooser);
 
-        Date today = new Date();
-        startDateChooser.setDate(today);
-        endDateChooser.setDate(today);
+      Date today = new Date();
+      startDateChooser.setDate(today);
+      endDateChooser.setDate(today);
 
-        // 3. Select leave type
-        JComboBox<String> leaveTypeComboBox = profile.getLeaveTypeComboBox();
-        assertNotNull(leaveTypeComboBox);
-        leaveTypeComboBox.setSelectedItem("Sick Leave");
+     
+      JComboBox<String> leaveTypeComboBox = profile.getLeaveTypeComboBox();
+      assertNotNull(leaveTypeComboBox);
+      leaveTypeComboBox.setSelectedItem("Sick Leave");
 
-        // 4. Enter a valid leave number (assuming autofill already happened)
-        JTextField leaveNumField = profile.getLeaveNumField();
-        assertNotNull(leaveNumField);
-        leaveNumField.setText("99999"); // Use a dummy/test leave number
+      
+      JTextField leaveNumField = profile.getLeaveNumField();
+      assertNotNull(leaveNumField);
+      String autoLeaveNum = leaveNumField.getText();
+      assertNotNull(autoLeaveNum);
+      assertFalse(autoLeaveNum.isEmpty(), "Leave number should be autofilled and not empty");
 
-        // 5. Click the "Add" button
-        JButton addLeaveBtn = profile.getAddLeaveRequestButton();
-        assertNotNull(addLeaveBtn);
-        addLeaveBtn.doClick();
+      
+      JButton addLeaveBtn = profile.getAddLeaveRequestButton();
+      assertNotNull(addLeaveBtn);
+      addLeaveBtn.doClick();
 
-        // 6. Wait a moment for DB/UI update
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+      
+      try {
+          Thread.sleep(1000);
+      } catch (InterruptedException e) {
+          e.printStackTrace();
+      }
 
-        // 7. Validate that new record was added to the table
-        JTable leaveTable = profile.getLeaveTable();
-        assertNotNull(leaveTable);
-        int lastRow = leaveTable.getRowCount() - 1;
-        assertTrue(lastRow >= 0, "Leave table should have at least one row");
+     
+      JTable leaveTable = profile.getLeaveTable();
+      assertNotNull(leaveTable);
+      int lastRow = leaveTable.getRowCount() - 1;
+      assertTrue(lastRow >= 0, "Leave table should have at least one row");
 
-        // 8. Check last row data
-        String employeeID = leaveTable.getValueAt(lastRow, 1).toString();  // Column 2: Employee ID
-        String leaveType = leaveTable.getValueAt(lastRow, 6).toString();   // Column 7: Leave Type
-        String status = leaveTable.getValueAt(lastRow, 7).toString();      // Column 8: Status
+   
+      String employeeID = leaveTable.getValueAt(lastRow, 1).toString();  // Column 2: Employee ID
+      String leaveType = leaveTable.getValueAt(lastRow, 6).toString();   // Column 7: Leave Type
+      String status = leaveTable.getValueAt(lastRow, 7).toString();      // Column 8: Status
 
-        assertEquals("10002", employeeID);
-        assertEquals("Sick Leave", leaveType);
-        assertEquals("Pending", status);
-    }
+      assertEquals("10002", employeeID);
+      assertEquals("Sick Leave", leaveType);
+      assertEquals("Pending", status);
+  }
 
     @Test
     public void testViewPayslipByMonthForEmployee() {
@@ -199,7 +184,41 @@ public class EmployeeAccess_ProfileTest {
         // Step 6: We assume Jasper report opened if no error is thrown
         assertTrue(true, "Payslip for June should be generated and displayed.");
     }
+    
+    @Test
+    public void testTimeOutButtonFunctionality() {
+        profile = new EmployeeAccess_Profile("10002", "Antonio", "Lim");
 
+        // First, ensure there is a Time-In
+        JButton timeInBtn = profile.getTimeInButton();
+        timeInBtn.doClick();
+
+        // Then perform Time-Out
+        JButton timeOutBtn = profile.getTimeOutButton();
+        assertNotNull(timeOutBtn);
+        timeOutBtn.doClick();
+
+        JTable attendanceTable = profile.getAttendanceTable();
+        assertNotNull(attendanceTable);
+        assertTrue(attendanceTable.getRowCount() > 0);
+
+        // Check if latest row now has a time_out value
+        String dateToday = LocalDate.now().toString();
+        boolean timeOutRecorded = false;
+
+        for (int i = attendanceTable.getRowCount() - 1; i >= 0; i--) {
+            Object dateCell = attendanceTable.getValueAt(i, 2); // date column
+            Object timeOutCell = attendanceTable.getValueAt(i, 4); // time_out column
+
+            if (dateCell != null && dateCell.toString().equals(dateToday)) {
+                // ✅ After Time-Out, the time_out field should be filled
+                timeOutRecorded = timeOutCell != null && !timeOutCell.toString().trim().isEmpty();
+                break;
+            }
+        }
+
+        assertTrue(timeOutRecorded, "Time-Out should be recorded after Time-Out button click.");
+    }
     
 
 }
