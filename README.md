@@ -2,8 +2,11 @@ Payroll System Description
 Our Payroll System is a secure and user-friendly platform designed to manage employee salary records efficiently. It features two types of access:
 
 Admin Access:
+
 Username: Admin
+
 Password: admin
+
 Admins can manage employee information, process payroll, and generate reports.
 
 Employee Access:
