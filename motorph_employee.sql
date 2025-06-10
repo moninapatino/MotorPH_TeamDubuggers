@@ -1,0 +1,69 @@
+-- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
+--
+-- Host: localhost    Database: motorph
+-- ------------------------------------------------------
+-- Server version	8.0.42
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `employee`
+--
+
+DROP TABLE IF EXISTS `employee`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `employee` (
+  `employee_id` int NOT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `birthday` date NOT NULL,
+  `address_id` int NOT NULL,
+  `phone` varchar(15) NOT NULL,
+  `sss_num` varchar(15) DEFAULT NULL,
+  `philhealth_num` varchar(15) DEFAULT NULL,
+  `tin` varchar(15) DEFAULT NULL,
+  `pagibig_num` varchar(15) DEFAULT NULL,
+  PRIMARY KEY (`employee_id`),
+  UNIQUE KEY `uniqueEmployeeID` (`employee_id`),
+  UNIQUE KEY `uniquePhone` (`phone`),
+  UNIQUE KEY `uniqueEmail` (`email`),
+  UNIQUE KEY `uniqueSss` (`sss_num`),
+  UNIQUE KEY `uniquePhic` (`philhealth_num`),
+  UNIQUE KEY `uniqueTin` (`tin`),
+  UNIQUE KEY `uniqueHdmf` (`pagibig_num`),
+  KEY `Address_idx` (`address_id`),
+  CONSTRAINT `Address` FOREIGN KEY (`address_id`) REFERENCES `address` (`address_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `employee`
+--
+
+LOCK TABLES `employee` WRITE;
+/*!40000 ALTER TABLE `employee` DISABLE KEYS */;
+INSERT INTO `employee` VALUES (10001,'Manuel','Garcia','GarciaManuel@email.com','1983-10-11',12001,'966860270','4445060573','820126853951','442605657000','691295330870'),(10002,'Antonio','Lim','LimAntonio@email.com','1988-06-19',12002,'171867411','5220612749','331735646338','683102776000','663904995411'),(10003,'Bianca Sofia','Aquino','AquinoBianca Sofia@email.com','1989-08-04',12003,'966889370','3088704062','177451189665','971711280000','171519773969'),(10004,'Isabella','Reyes','ReyesIsabella@email.com','1994-06-16',12004,'786868477','4025118150','341911411254','876809437000','416946776041'),(10005,'Eduard','Hernandez','HernandezEduard@email.com','1989-09-23',12005,'88861012','5055776381','957436191812','31702374000','952347222457'),(10006,'Andrea Mae','Villanueva','VillanuevaAndrea Mae@email.com','1988-02-14',12006,'918621603','4916320208','382189453145','317674022000','441093369646'),(10007,'Brad','San Jose','San JoseBrad@email.com','1996-03-15',12007,'797009261','4024007141','239192926939','672474690000','210850209964'),(10008,'Alice','Romualdez','RomualdezAlice@email.com','1992-05-14',12008,'983606799','5544765272','545652640232','888572294000','211385556888'),(10009,'Rosie','Atienza','AtienzaRosie@email.com','1948-09-24',12009,'266036427','4106446923','708988234853','604997793000','260107732354'),(10010,'Roderick','Alvaro','AlvaroRoderick@email.com','1988-03-30',12010,'53381386','6476050544','578114853194','525420419000','799254095212'),(10011,'Anthony','Salcedo','SalcedoAnthony@email.com','1993-09-14',12011,'70766300','2696476083','126445315651','210805911000','218002473454'),(10012,'Josie','Lopez','LopezJosie@email.com','1987-01-14',12012,'478355427','4485634483','431709011012','218489737000','113071293354'),(10013,'Martha','Farala','FaralaMartha@email.com','1942-01-11',12013,'329034366','4556563750','233693897247','210835851000','631130283546'),(10014,'Leila','Martinez','MartinezLeila@email.com','1970-07-11',12014,'877110749','2720909964','515741057496','275792513000','101205445886'),(10015,'Fredrick','Romualdez','RomualdezFredrick@email.com','1985-03-10',12015,'23079009','2687683741','308366860059','598065761000','223057707853'),(10016,'Christian','Mata','MataChristian@email.com','1987-10-21',12016,'783776744','4929593126','824187961962','103100522000','631052853464'),(10017,'Selena','De Leon','De LeonSelena@email.com','1975-02-20',12017,'975432139','2720902088','587272469938','482259498000','719007608464'),(10018,'Allison','San Jose','San JoseAllison@email.com','1986-06-24',12018,'179075129','4532513830','745148459521','121203336000','114901859343'),(10019,'Cydney','Rosario','RosarioCydney@email.com','1996-10-06',12019,'868819912','4916299002','579253435499','122244511000','265104358643'),(10020,'Mark','Bautista','BautistaMark@email.com','1991-02-12',12020,'683725348','4916473425','399665157135','273970941000','260054585575'),(10021,'Darlene','Lazaro','LazaroDarlene@email.com','1985-11-25',12021,'740721558','4556171682','606386917510','354650951000','104907708845'),(10022,'Kolby','Delos Santos','Delos SantosKolby@email.com','1980-02-26',12022,'739443033','5201095706','357451271274','187500345000','113017988667'),(10023,'Vella','Santos','SantosVella@email.com','1983-12-31',12023,'955879269','5298835243','548670482885','101558994000','360028104576'),(10024,'Tomas','Del Rosario','Del RosarioTomas@email.com','1978-12-18',12024,'882550989','4558663316','953901539995','560735732000','913108649964'),(10025,'Jacklyn','Tolentino','TolentinoJacklyn@email.com','1984-05-19',12025,'675757366','4716927930','753800654114','841177857000','210546661243'),(10026,'Percival','Gutierrez','GutierrezPercival@email.com','1970-12-18',12026,'512899876','4095046578','797639382265','502995671000','210897095686'),(10027,'Garfield','Manalaysay','ManalaysayGarfield@email.com','1986-08-28',12027,'948628136','4532981664','810909286264','336676445000','211274476563'),(10028,'Lizeth','Villegas','VillegasLizeth@email.com','1981-12-12',12028,'332372215','4024007194','934389652994','210395397000','122238077997'),(10029,'Carol','Ramos','RamosCarol@email.com','1978-08-20',12029,'250700389','6011522064','351830469744','395032717000','212141893454'),(10030,'Emelia','Maceda','MacedaEmelia@email.com','1973-04-14',12030,'973358041','5413310050','465087894112','215973013000','515012579765'),(10031,'Delia','Aguilar','AguilarDelia@email.com','1989-01-27',12031,'529705439','5218592531','136451303068','599312588000','110018813465'),(10032,'John Rafael','Castro','CastroJohn Rafael@email.com','1992-02-09',12032,'332424955','2671451334','601644902402','404768309000','697764069311'),(10033,'Carlos Ian','Martinez','MartinezCarlos Ian@email.com','1990-11-16',12033,'78854208','1150629727','380685387212','256436296000','993372963726'),(10034,'Beatriz','Santos','SantosBeatriz@email.com','1990-08-07',12034,'526639511','2029875015','918460050077','911529713000','874042259378'),(10035,'Admin','MotorPH','amotorph@gmail.com','2000-08-14',12035,'88880888888','88808880888','88880888088','88808880888','88088088088');
+/*!40000 ALTER TABLE `employee` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-06-09  0:03:41
