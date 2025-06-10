@@ -1,11 +1,11 @@
-Payroll System Description
+<b>MotorPH Payroll System</b>
 Our Payroll System is a secure and user-friendly platform designed to manage employee salary records efficiently. It features two types of access:
 
 Admin Access:
 
-Username: Admin
+Username: <b>Admin</b>
 
-Password: admin
+Password: <b>admin</b>
 
 Admins can manage employee information, process payroll, and generate reports.
 
