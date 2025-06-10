@@ -1,9 +1,0 @@
-leave_num,employee_id,first_name,last_name,start_date,end_date,leave_type,status
-1001,0002,Antonio,Lim,"Jan 11, 2024","Jan 13, 2024",Sick Leave,Approved
-1002,0003,Bianca Sofia,Aquino,"Jan 22, 2024","Jan 25, 2024",Vacation Leave,Rejected
-1003,0008,Alice,Romualdez,"Jan 29, 2024","Jan 31, 2024",Emergency Leave,Approved
-1004,0019,Cydney,Rosario,"Jan 10, 2024","Jan 12, 2024",Emergency Leave,Approved
-1005,0028,Lizeth,Villegas,"Jan 17, 2024","Jan 19, 2024",Vacation Leave,Rejected
-1006,0030,Emelia,Maceda,"Jan 12, 2024","Jan 15, 2024",Sick Leave,Approved
-1007,0031,Delia,Aguilar,"Jan 26, 2024","Jan 26, 2024",Birthday Leave,Approved
-1008,0035,Sophie,Munar,"Apr 5, 2024","Jul 5, 2024",Maternity Leave,Pending
