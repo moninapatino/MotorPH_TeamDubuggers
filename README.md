@@ -1,0 +1,1 @@
+The SQL script for the MotorPH Payroll System is designed to create a normalized and relational database structure using MySQL. It includes the creation of essential tables such as Employee, Payroll, Attendance, Benefits, Deductions, and more.
