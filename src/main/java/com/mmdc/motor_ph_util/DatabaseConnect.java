@@ -27,10 +27,9 @@ public abstract class DatabaseConnect {
     ResultSet rs = null;
 
     public DatabaseConnect() {
-        this.url = "jdbc:postgresql://localhost:5432/postgres";
-        this.user = "postgres";
-        this.password = "@dm1n";
-
+        this.url = "jdbc:mysql://localhost:3306/motorph?useSSL=false";
+        this.user = "root";
+        this.password = "@dm1nistr4tor";
     }
 
     public String getUrl() {
@@ -48,7 +47,7 @@ public abstract class DatabaseConnect {
     public Connection connect() {
         Connection conn = null;
         try {
-            Class.forName("org.postgresql.Driver");
+            Class.forName("com.mysql.jdbc.Driver");
             System.out.println("Trying to connect");
 
             conn = DriverManager.getConnection(url, user, password);
@@ -56,7 +55,7 @@ public abstract class DatabaseConnect {
 
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DatabaseConnect.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "PostgreSQL JDBC Driver not found.");
+            JOptionPane.showMessageDialog(null, "MySQL Driver not found." + ex.getMessage());
         } catch (SQLException ex) {
             Logger lgr = Logger.getLogger(DatabaseConnect.class.getName());
             lgr.log(Level.SEVERE, ex.getMessage(), ex);
@@ -71,7 +70,12 @@ public abstract class DatabaseConnect {
 
         try {
             conn = connect();
-            String sql = "SELECT * FROM public.employee_data WHERE employee_id = ?";
+            String sql = "SELECT e.employee_id, e.first_name, e.last_name, e.email, e.birthday, " +
+                     "e.phone, e.sss_num, e.philhealth_num, e.tin, e.pagibig_num, " +
+                     "a.street, a.barangay, a.city, a.province, a.postalcode " + // Add address fields as needed
+                     "FROM employee e " +
+                     "JOIN address a ON e.address_id = a.address_id " +
+                     "WHERE e.employee_id = ?";
             pst = conn.prepareStatement(sql);
             pst.setString(1, employeeId);
             rs = pst.executeQuery();
@@ -81,20 +85,19 @@ public abstract class DatabaseConnect {
                         rs.getString("employee_id"),
                         rs.getString("first_name"),
                         rs.getString("last_name"),
+                        rs.getString("email"),
                         rs.getString("birthday"),
-                        rs.getString("address"),
-                        rs.getString("phone_number"),
+                        rs.getString("street"),
+                        rs.getString("barangay"),
+                        rs.getString("city"),
+                        rs.getString("province"),
+                        rs.getString("postalcode"),
+                        rs.getString("phone"),
                         rs.getString("sss_num"),
                         rs.getString("philhealth_num"),
-                        rs.getString("tin_num"),
+                        rs.getString("tin"),
                         rs.getString("pagibig_num"),
-                        rs.getString("status"),
-                        rs.getString("position"),
-                        rs.getString("supervisor"),
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getString("role")
-                );
+                        null,null,null);
 
             }
         } catch (Exception ex) {
@@ -119,7 +122,7 @@ public abstract class DatabaseConnect {
     // ADD BUTTON FOR EMPLOYEE PROFILE
     public void addEmployee(Admin_Class employeeId) {
         Admin_Class employee = employeeId;
-        String sql = "INSERT INTO public.employee_data (employee_id, first_name, last_name, birthday, address, "
+        String sql = "INSERT INTO employee_data (employee_id, first_name, last_name, birthday, address, "
                 + "phone_number, sss_num, philhealth_num, tin_num, pagibig_num, status, position) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -136,8 +139,7 @@ public abstract class DatabaseConnect {
             pst.setString(8, employee.getPhilHealthNum());
             pst.setString(9, employee.getTinNum());
             pst.setString(10, employee.getPagibigNum());
-            pst.setString(11, employee.getStatus());
-            pst.setString(12, employee.getPosition());
+            
 
             // Execute the insert operation
             pst.executeUpdate();
@@ -150,15 +152,14 @@ public abstract class DatabaseConnect {
     // UPDATE BTN FOR EMPLOYEE PROFILE
     public void updateEmployee(Admin_Class employeeId) {
         Admin_Class employee = employeeId;
-        String sql = "UPDATE public.employee_data SET last_name = ?, phone_number = ?, position = ?, status = ? WHERE employee_id = ?";
+        String sql = "UPDATE employee SET last_name = ?, phone_number = ?, position = ?, status = ? WHERE employee_id = ?";
 
         try (Connection conn = connect(); PreparedStatement pst = conn.prepareStatement(sql)) {
 
             // Set parameters from the Employee object
             pst.setString(1, employee.getLastName());
             pst.setString(2, employee.getPhoneNumber());
-            pst.setString(3, employee.getPosition());
-            pst.setString(4, employee.getStatus());
+           
             pst.setString(5, employee.getEmployeeID());
 
             // Execute the update operation
@@ -177,7 +178,7 @@ public abstract class DatabaseConnect {
     //DELETE BTN FOR EMPLOYEE PROFILE
     public void deleteEmployee(String employeeId) {
 
-        String sql = "DELETE FROM public.employee_data WHERE employee_id = ?";
+        String sql = "DELETE FROM employee WHERE employee_id = ?";
 
         try (Connection conn = connect(); PreparedStatement pst = conn.prepareStatement(sql)) {
 
@@ -198,7 +199,7 @@ public abstract class DatabaseConnect {
     //HOURSWORKED FOR EMPLOYEE ATTENDANCE
     public String getHoursWorked(String employeeId, String payPeriod) {
         String hoursWorked = "";
-        String sql = "SELECT * FROM public.attendance_record WHERE employee_id = ?";
+        String sql = "SELECT * FROM attendance_records WHERE employee_id = ?";
 
         try (Connection conn = connect(); PreparedStatement pst = conn.prepareStatement(sql)) {
 
@@ -220,7 +221,7 @@ public abstract class DatabaseConnect {
 
     public ArrayList<LeaveRecord> userList() {
         ArrayList<LeaveRecord> leaveRecords = new ArrayList<>();
-        String sql = "SELECT * FROM public.leave_record";
+        String sql = "SELECT * FROM leave_records";
 
         try (Connection conn = connect(); PreparedStatement pst = conn.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
 
@@ -246,7 +247,7 @@ public abstract class DatabaseConnect {
     // 
     public ArrayList<LeaveRecord> refreshList() {
         ArrayList<LeaveRecord> leaveRecords = new ArrayList<>();
-        String sql = "SELECT * FROM public.leave_record";
+        String sql = "SELECT * FROM leave_records";
 
         try (Connection conn = connect(); PreparedStatement pst = conn.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
 
@@ -275,9 +276,9 @@ public abstract class DatabaseConnect {
 
         try {
             conn = connect();
-            pst = conn.prepareStatement("INSERT INTO public.leave_record(leave_num, employee_id, first_name, last_name, start_date, end_date, leave_type, status) VALUES(?,?,?,?,?,?,?,?)");
+            pst = conn.prepareStatement("INSERT INTO leave_records(leave_num, employee_id, first_name, last_name, start_date, end_date, leave_type, status) VALUES(?,?,?,?,?,?,?,?)");
 
-            pst.setString(1, leaveRequest.getLeaveNum());
+            pst.setString(1, leaveRequest.getLeaveId());
             pst.setString(2, leaveRequest.getEmployeeId());
             pst.setString(3, leaveRequest.getFirstName());
             pst.setString(4, leaveRequest.getLastName());
@@ -300,7 +301,7 @@ public abstract class DatabaseConnect {
 
         try {
             conn = connect();
-            String sql = "SELECT * FROM public.employee_data WHERE employee_id = ?";
+            String sql = "SELECT * FROM employee WHERE employee_id = ?";
             pst = conn.prepareStatement(sql);
             pst.setString(1, employeeId);
             rs = pst.executeQuery();
@@ -342,10 +343,10 @@ public abstract class DatabaseConnect {
         return employee; // Return null if no employee is found
     }
     public boolean deleteLeaveRecord(LeaveRecord leaveRecord) {
-        String leaveNum = leaveRecord.getLeaveNum();
+        String leaveNum = leaveRecord.getLeaveId();
         try {
             conn = connect();
-             PreparedStatement pst = conn.prepareStatement("DELETE FROM public.leave_record WHERE leave_num = ?"); 
+             PreparedStatement pst = conn.prepareStatement("DELETE FROM leave_records WHERE leave_num = ?"); 
              
             pst.setString(1, leaveNum);
             int rowsAffected = pst.executeUpdate(); // Use executeUpdate for DELETE operations
@@ -358,10 +359,10 @@ public abstract class DatabaseConnect {
   
     public boolean updateLeaveRecord(LeaveRecord leaveRecord) {
         String status = leaveRecord.getStatus();
-        String leaveNum = leaveRecord.getLeaveNum();
+        String leaveNum = leaveRecord.getLeaveId();
 
         try { conn = connect();
-             PreparedStatement pst = conn.prepareStatement("UPDATE public.leave_record SET status = ? WHERE leave_num = ?");
+             PreparedStatement pst = conn.prepareStatement("UPDATE leave_records SET status = ? WHERE leave_num = ?");
              
             pst.setString(1, status);
             pst.setString(2, leaveNum);
@@ -378,7 +379,7 @@ public abstract class DatabaseConnect {
         conn = connect();
         
         // Prepare the SQL statement
-        pst = conn.prepareStatement("INSERT INTO public.employeetime_log(employee_id, first_name, last_name, date, time_in, time_out) VALUES(?, ?, ?, ?, ?, ?)");
+        pst = conn.prepareStatement("INSERT INTO attendance_records (employee_id, first_name, last_name, date, time_in, time_out) VALUES(?, ?, ?, ?, ?, ?)");
         
         // Set the parameters
         pst.setString(1, employeeId);
@@ -411,7 +412,7 @@ public abstract class DatabaseConnect {
         conn = connect();
         
         // Prepare the SQL statement
-        pst = conn.prepareStatement("INSERT INTO public.employeetime_log(employee_id, first_name, last_name, date, time_in, time_out) VALUES(?, ?, ?, ?, ?, ?)");
+        pst = conn.prepareStatement("INSERT INTO attendance_records (employee_id, first_name, last_name, date, time_in, time_out) VALUES(?, ?, ?, ?, ?, ?)");
         
         // Set the parameters
         pst.setString(1, employeeId);
@@ -444,7 +445,9 @@ public abstract class DatabaseConnect {
             conn = connect();
 
             // SQL query to fetch attendance records
-            String sql = "SELECT * FROM public.attendance_record";
+            String sql = "SELECT ar.attendance_id, ar.employee_id, ar.date, e.first_name, e.last_name, ar.time_in, ar.time_out, ar.status " +
+                        "FROM attendance_records ar " +
+                        "JOIN employee e ON ar.employee_id = e.employee_id";
             pst = conn.prepareStatement(sql);
             rs = pst.executeQuery();
 
@@ -454,15 +457,15 @@ public abstract class DatabaseConnect {
             // Process the result set and populate the table
             while (rs.next()) {
                 Vector<String> row = new Vector<>();
-                row.add(rs.getString("date"));
+                row.add(rs.getString("attendance_id"));
                 row.add(rs.getString("employee_id"));
+                row.add(rs.getString("date"));
                 row.add(rs.getString("first_name"));
                 row.add(rs.getString("last_name"));
-                row.add(rs.getString("clock_in"));
-                row.add(rs.getString("clock_out"));
-                row.add(rs.getString("late"));
-                row.add(rs.getString("overtime"));
-                row.add(rs.getString("hours_worked"));
+                row.add(rs.getString("time_in"));
+                row.add(rs.getString("time_out"));
+                row.add(rs.getString("status"));
+                
                 attendanceTable.addRow(row);
             }
         } catch (SQLException ex) {
@@ -481,5 +484,8 @@ public abstract class DatabaseConnect {
         }
     }
    
-
+        
+        
+        
+        
 }

@@ -1,8 +1,6 @@
 
 package com.mmdc.motor_ph_portal;
 
-import javax.swing.JOptionPane;
-
 public abstract class User {
     protected String employeeID;
     protected String firstName;
@@ -11,29 +9,25 @@ public abstract class User {
     protected String password;
     protected String birthday;
     protected String address;
+    protected String street;
+    protected String barangay;
+    protected String city;
+    protected String province;
+    protected String postalcode;
+    protected String email;
     protected String phoneNumber;
     protected String sssNum;
     protected String philHealthNum;
     protected String tinNum;
     protected String pagibigNum;
-    protected String status;
-    protected String position;
-    protected String supervisor;
-    protected double basicSalary;
-    protected double sssC;
-    protected double riceA;
-    protected double phoneA;
-    protected double clothingA;
-    protected double hourlyRate;
-    protected double hoursWorked;
+    
     
 
-    public User(String employeeID, String firstName, String lastName, String birthday, String address, 
-              String phoneNumber, String sssNum, String philHealthNum, String tinNum, 
-              String pagibigNum, String status, String position, String supervisor, 
-              double basicSalary, double sssC, double riceA, double phoneA, 
-              double clothingA, double hourlyRate, 
-              String username, String password) {
+    public User(String employeeID, String firstName, String lastName, String birthday, 
+                String address, String street, String barangay, String city, String province,
+                String postalcode, String email, String phoneNumber, String sssNum, 
+                String philHealthNum, String tinNum, String pagibigNum, 
+                String username, String password) {
         
         this.employeeID = employeeID;
         this.firstName = firstName;
@@ -42,20 +36,18 @@ public abstract class User {
         this.password = password;
         this.birthday = birthday;
         this.address = address;
+        this.street = street;
+        this.barangay = barangay;
+        this.city = city;
+        this.province = province;
+        this.postalcode = postalcode;
+        this.email = email;
         this.phoneNumber = phoneNumber;
         this.sssNum = sssNum;
         this.philHealthNum = philHealthNum;
         this.tinNum = tinNum;
         this.pagibigNum = pagibigNum;
-        this.status = status;
-        this.position = position;
-        this.supervisor = supervisor;
-        this.basicSalary = basicSalary;
-        this.sssC = sssC;
-        this.riceA = riceA;
-        this.phoneA = phoneA;
-        this.clothingA = clothingA;
-        this.hourlyRate = hourlyRate;
+      
     }
     public abstract void login(String username, String password);
     
@@ -90,6 +82,30 @@ public abstract class User {
     public String getAddress() {
         return address;
     }
+    public String getStreet() {
+        return street;
+    }
+
+    public String getBarangay() {
+        return barangay;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public String getPostalcode() {
+        return postalcode;
+    }
+
+    
+    public String getEmail() {
+        return email;
+    }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -111,41 +127,7 @@ public abstract class User {
         return pagibigNum;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public String getSupervisor() {
-        return supervisor;
-    }
-
-    public double getBasicSalary() {
-        return basicSalary;
-    }
-
-    public double getSssC() {
-        return sssC;
-    }
-
-    public double getRiceA() {
-        return riceA;
-    }
-
-    public double getPhoneA() {
-        return phoneA;
-    }
-
-    public double getClothingA() {
-        return clothingA;
-    }
-
-    public double getHourlyRate() {
-        return hourlyRate;
-    }
+    
 
     public abstract String getRole(); // This can be overridden in subclasses
     

@@ -7,10 +7,11 @@ public class PayrollCalculation extends PayrollDetails {
                     double riceA, double phoneA, double clothingA, double hourlyRate, double hoursWorked,
                     double totalAllowances, double totalDeductions, double philhealthC, 
                     double pagibigC, double grossPay, double netPay) {
-        super(employeeID, firstName, lastName, hourlyRate, hoursWorked, riceA,
-                    phoneA, clothingA, sssC, basicSalary, totalAllowances,
-                    totalDeductions, philhealthC, pagibigC, grossPay,
-                    netPay);
+        super(employeeID, firstName, lastName, hourlyRate, hoursWorked, 
+                          riceA, phoneA, clothingA, sssC, basicSalary, 
+                          totalAllowances, totalDeductions, philhealthC, pagibigC, 
+                          0.0, null, null, null, null, 
+                          null, null , null);
     }
     
     @Override
@@ -43,7 +44,7 @@ public class PayrollCalculation extends PayrollDetails {
     }
     
     public double calculateTax() {
-        return calculateBasicSalary() * 0.30;
+        return calculateBasicSalary() * 0.12;
     }
     
     public double calculateNetPay() {

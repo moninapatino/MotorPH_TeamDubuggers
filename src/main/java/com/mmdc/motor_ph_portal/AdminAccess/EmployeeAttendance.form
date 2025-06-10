@@ -56,39 +56,22 @@
                   <EmptySpace pref="44" max="32767" attributes="0"/>
               </Group>
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="96" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="-2" pref="288" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="hoursWorked_lbl" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="payperiod_lbl" alignment="1" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="noe_title1" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="id_field" min="-2" pref="184" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="224" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="hoursworked_field" min="-2" pref="153" max="-2" attributes="0"/>
-                      <Component id="payPeriodComboBox" min="-2" pref="157" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="32767" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="jScrollPane1" min="-2" pref="816" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="dateNow" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="timeNow" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="96" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jScrollPane1" min="-2" pref="675" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Component id="noe_title1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="id_field" min="-2" pref="184" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -99,17 +82,10 @@
                   <Component id="darkbluePanel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="greetings" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="payPeriodComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="payperiod_lbl" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="noe_title1" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="id_field" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="hoursWorked_lbl" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="hoursworked_field" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jScrollPane1" min="-2" pref="249" max="-2" attributes="0"/>
@@ -218,30 +194,18 @@
                   <Color blue="8a" green="65" red="5c" type="rgb"/>
                 </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="9" rowCount="0">
-                    <Column editable="true" title="Date" type="java.lang.String"/>
-                    <Column editable="true" title="Employee ID" type="java.lang.Object"/>
-                    <Column editable="true" title="First Name" type="java.lang.Object"/>
+                  <Table columnCount="7" rowCount="0">
+                    <Column editable="true" title="Attendance ID" type="java.lang.String"/>
+                    <Column editable="true" title="Employee ID" type="java.lang.Integer"/>
+                    <Column editable="true" title="First Name" type="java.lang.String"/>
                     <Column editable="true" title="Last Name" type="java.lang.String"/>
-                    <Column editable="true" title="Clock In" type="java.lang.String"/>
-                    <Column editable="true" title="Clock Out" type="java.lang.String"/>
-                    <Column editable="true" title="Late" type="java.lang.String"/>
-                    <Column editable="true" title="Overtime" type="java.lang.String"/>
-                    <Column editable="true" title="Hours Worked" type="java.lang.String"/>
+                    <Column editable="true" title="Date" type="java.lang.String"/>
+                    <Column editable="true" title="Time In" type="java.lang.String"/>
+                    <Column editable="true" title="Time Out" type="java.lang.String"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
@@ -339,67 +303,6 @@
               <Color blue="ff" green="fa" red="fa" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Time"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JComboBox" name="payPeriodComboBox">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="fa" red="fa" type="rgb"/>
-            </Property>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Arial" size="12" style="0"/>
-            </Property>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="8a" green="65" red="5c" type="rgb"/>
-            </Property>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="2">
-                <StringItem index="0" value="January 1-15, 2024"/>
-                <StringItem index="1" value="January 16-31, 2024"/>
-              </StringArray>
-            </Property>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="payPeriodComboBoxActionPerformed"/>
-          </Events>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-          </AuxValues>
-        </Component>
-        <Component class="javax.swing.JLabel" name="payperiod_lbl">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Arial" size="13" style="1"/>
-            </Property>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="fa" red="fa" type="rgb"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Pay Period :"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="hoursWorked_lbl">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Arial" size="13" style="1"/>
-            </Property>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="fa" red="fa" type="rgb"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Total numbers of Hours Worked :"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="hoursworked_field">
-          <Properties>
-            <Property name="editable" type="boolean" value="false"/>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="fa" red="fa" type="rgb"/>
-            </Property>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Arial" size="12" style="0"/>
-            </Property>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="8a" green="65" red="5c" type="rgb"/>
-            </Property>
           </Properties>
         </Component>
       </SubComponents>

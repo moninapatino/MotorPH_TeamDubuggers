@@ -1,6 +1,9 @@
 
 package com.mmdc.motor_ph_portal.AdminAccess;
 
+import com.mmdc.motor_ph_portal.EmployeeAccess.EmployeeAccess_Portal;
+import com.mmdc.motor_ph_portal.EmployeeAccess.EmployeeAccess_Profile;
+import com.mmdc.motor_ph_portal.EmployeeAccess.Employee_Class;
 import com.mmdc.motor_ph_portal.Login;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -50,6 +53,7 @@ public class EmployeePortal extends javax.swing.JFrame {
         time = new javax.swing.JLabel();
         logo = new javax.swing.JLabel();
         empPortal_title = new javax.swing.JLabel();
+        employeeAccessBtn = new javax.swing.JButton();
         bluePanel = new javax.swing.JPanel();
         attendanceButton = new javax.swing.JButton();
         employeeProfileButton = new javax.swing.JButton();
@@ -83,39 +87,54 @@ public class EmployeePortal extends javax.swing.JFrame {
         empPortal_title.setForeground(new java.awt.Color(92, 101, 138));
         empPortal_title.setText("EMPLOYEE PORTAL");
 
+        employeeAccessBtn.setBackground(new java.awt.Color(253, 56, 29));
+        employeeAccessBtn.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        employeeAccessBtn.setForeground(new java.awt.Color(217, 217, 217));
+        employeeAccessBtn.setText("Log In as Employee");
+        employeeAccessBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                employeeAccessBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addComponent(empPortal_title))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(91, 91, 91)
-                        .addComponent(logo))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(149, 149, 149)
-                        .addComponent(logOutButton)))
-                .addContainerGap(30, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(date)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(time)
                 .addGap(147, 147, 147))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(91, 91, 91)
+                        .addComponent(logo))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(102, 102, 102)
+                        .addComponent(employeeAccessBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(130, 130, 130)
+                        .addComponent(logOutButton))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(empPortal_title)))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(143, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(empPortal_title, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(employeeAccessBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(logo)
-                .addGap(18, 18, 18)
+                .addGap(13, 13, 13)
                 .addComponent(logOutButton)
-                .addGap(154, 154, 154)
+                .addGap(168, 168, 168)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(date)
                     .addComponent(time))
@@ -267,6 +286,12 @@ public class EmployeePortal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_attendanceButtonActionPerformed
 
+    private void employeeAccessBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employeeAccessBtnActionPerformed
+        // go to Employee Portal
+        EmployeeAccess_Profile empPortal = new EmployeeAccess_Profile(); 
+        empPortal.setVisible(true);
+    }//GEN-LAST:event_employeeAccessBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -308,6 +333,7 @@ public class EmployeePortal extends javax.swing.JFrame {
     private javax.swing.JPanel bluePanel;
     private javax.swing.JLabel date;
     private javax.swing.JLabel empPortal_title;
+    private javax.swing.JButton employeeAccessBtn;
     private javax.swing.JButton employeeProfileButton;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton leaveButton;

@@ -77,7 +77,7 @@ public class LeaveManagement extends javax.swing.JFrame {
 
         for (LeaveRecord record : leaveRecords) {
             Vector<String> row = new Vector<>();
-            row.add(record.getLeaveNum());
+            row.add(record.getLeaveId());
             row.add(record.getEmployeeId());
             row.add(record.getFirstName());
             row.add(record.getLastName());
@@ -97,7 +97,7 @@ public class LeaveManagement extends javax.swing.JFrame {
 
         for (LeaveRecord record : leaveRecords) {
             Vector<String> row = new Vector<>();
-            row.add(record.getLeaveNum());
+            row.add(record.getLeaveId());
             row.add(record.getEmployeeId());
             row.add(record.getFirstName());
             row.add(record.getLastName());
