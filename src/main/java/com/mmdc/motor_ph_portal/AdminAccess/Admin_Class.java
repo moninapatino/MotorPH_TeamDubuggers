@@ -7,9 +7,9 @@ import javax.swing.JOptionPane;
 
 public class Admin_Class extends User {
  
-    public Admin_Class(String employeeID, String firstName, String lastName, String birthday, 
+    public Admin_Class(String employeeID, String firstName, String lastName, String email, String birthday, 
                 String address, String street, String barangay, String city, String province,
-                String postalcode, String email, String phoneNumber, String sssNum, 
+                String postalcode,  String phoneNumber, String sssNum, 
                 String philHealthNum, String tinNum, String pagibigNum, 
                 String username, String password) {
         super(employeeID, firstName, lastName, birthday, 
@@ -20,6 +20,7 @@ public class Admin_Class extends User {
         
     }
    
+    
     @Override
     public void login(String username, String password) {
     JOptionPane.showMessageDialog(null, "Employee login successful for: " + firstName + lastName, 

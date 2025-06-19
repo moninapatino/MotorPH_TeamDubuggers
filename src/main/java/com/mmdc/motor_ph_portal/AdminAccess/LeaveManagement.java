@@ -5,7 +5,7 @@ import com.mmdc.motor_ph_util.DatabaseConnect;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.Connection;
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
@@ -253,6 +253,7 @@ public class LeaveManagement extends javax.swing.JFrame {
         lbl_firstName.setForeground(new java.awt.Color(250, 250, 255));
         lbl_firstName.setText("First Name :");
 
+        firstName_field.setEditable(false);
         firstName_field.setBackground(new java.awt.Color(250, 250, 255));
         firstName_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
         firstName_field.setForeground(new java.awt.Color(92, 101, 138));
@@ -261,6 +262,7 @@ public class LeaveManagement extends javax.swing.JFrame {
         lbl_lastName.setForeground(new java.awt.Color(250, 250, 255));
         lbl_lastName.setText("Last Name :");
 
+        lastName_field.setEditable(false);
         lastName_field.setBackground(new java.awt.Color(250, 250, 255));
         lastName_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
         lastName_field.setForeground(new java.awt.Color(92, 101, 138));
@@ -269,6 +271,7 @@ public class LeaveManagement extends javax.swing.JFrame {
         lbl_leaveType.setForeground(new java.awt.Color(250, 250, 255));
         lbl_leaveType.setText("Leave Type :");
 
+        leaveType_field.setEditable(false);
         leaveType_field.setBackground(new java.awt.Color(250, 250, 255));
         leaveType_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
         leaveType_field.setForeground(new java.awt.Color(92, 101, 138));
@@ -281,6 +284,7 @@ public class LeaveManagement extends javax.swing.JFrame {
         lbl_enddate.setForeground(new java.awt.Color(250, 250, 255));
         lbl_enddate.setText("End Date :");
 
+        enddate_field.setEditable(false);
         enddate_field.setBackground(new java.awt.Color(250, 250, 255));
         enddate_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
         enddate_field.setForeground(new java.awt.Color(92, 101, 138));
@@ -327,6 +331,7 @@ public class LeaveManagement extends javax.swing.JFrame {
         leaveNum.setForeground(new java.awt.Color(250, 250, 255));
         leaveNum.setText("Leave No. :");
 
+        leaveNum_field.setEditable(false);
         leaveNum_field.setBackground(new java.awt.Color(250, 250, 255));
         leaveNum_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
         leaveNum_field.setForeground(new java.awt.Color(92, 101, 138));
@@ -335,6 +340,7 @@ public class LeaveManagement extends javax.swing.JFrame {
         lbl_startdate.setForeground(new java.awt.Color(250, 250, 255));
         lbl_startdate.setText("Start Date :");
 
+        startdate_field.setEditable(false);
         startdate_field.setBackground(new java.awt.Color(250, 250, 255));
         startdate_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
         startdate_field.setForeground(new java.awt.Color(92, 101, 138));

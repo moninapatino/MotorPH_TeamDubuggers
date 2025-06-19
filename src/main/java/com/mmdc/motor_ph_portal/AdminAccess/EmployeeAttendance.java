@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 
@@ -25,10 +26,10 @@ public class EmployeeAttendance extends javax.swing.JFrame {
         Toolkit toolkit=getToolkit();
         Dimension size=toolkit.getScreenSize();
         setLocation(size.width/2-getWidth()/2,size.height/2-getHeight()/2);
-        
-        show_table();
         setTime();
         setDate();
+        show_table();
+        
     }
     
     public final void setTime(){
@@ -43,9 +44,17 @@ public class EmployeeAttendance extends javax.swing.JFrame {
     }
     
     public void show_table() {
-        DefaultTableModel attendanceTable = (DefaultTableModel) attendance_table.getModel();
-        dbConnect.show_table(attendanceTable);
+    DefaultTableModel attendanceTable = (DefaultTableModel) attendance_table.getModel();
+    dbConnect.show_table(attendanceTable);  // This fills the table with data
+
+    // ✅ Center text in all columns after populating the table
+    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+    centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+    for (int i = 0; i < attendance_table.getColumnCount(); i++) {
+        attendance_table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
     }
+}
  
 
     @SuppressWarnings("unchecked")
@@ -124,6 +133,7 @@ public class EmployeeAttendance extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
+        attendance_table.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jScrollPane1.setViewportView(attendance_table);
 
         backButton.setBackground(new java.awt.Color(253, 56, 29));

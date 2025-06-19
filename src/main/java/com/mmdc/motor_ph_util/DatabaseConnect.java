@@ -2,13 +2,13 @@ package com.mmdc.motor_ph_util;
 
 import com.mmdc.motor_ph_portal.AdminAccess.Admin_Class;
 import com.mmdc.motor_ph_portal.AdminAccess.PayrollCalculation;
-import com.mmdc.motor_ph_portal.AdminAccess.TimeLogEntry;
 import com.mmdc.motor_ph_portal.LeaveRecord;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -45,7 +45,7 @@ public abstract class DatabaseConnect {
     }
     // CONNECTION TO SQL
     public Connection connect() {
-        Connection conn = null;
+        
         try {
             Class.forName("com.mysql.jdbc.Driver");
             System.out.println("Trying to connect");
@@ -72,10 +72,11 @@ public abstract class DatabaseConnect {
             conn = connect();
             String sql = "SELECT e.employee_id, e.first_name, e.last_name, e.email, e.birthday, " +
                      "e.phone, e.sss_num, e.philhealth_num, e.tin, e.pagibig_num, " +
-                     "a.street, a.barangay, a.city, a.province, a.postalcode " + // Add address fields as needed
+                     "a.street, a.barangay, a.city, a.province, a.postalcode " + 
                      "FROM employee e " +
                      "JOIN address a ON e.address_id = a.address_id " +
                      "WHERE e.employee_id = ?";
+            
             pst = conn.prepareStatement(sql);
             pst.setString(1, employeeId);
             rs = pst.executeQuery();
@@ -87,6 +88,7 @@ public abstract class DatabaseConnect {
                         rs.getString("last_name"),
                         rs.getString("email"),
                         rs.getString("birthday"),
+                        null,
                         rs.getString("street"),
                         rs.getString("barangay"),
                         rs.getString("city"),
@@ -97,7 +99,7 @@ public abstract class DatabaseConnect {
                         rs.getString("philhealth_num"),
                         rs.getString("tin"),
                         rs.getString("pagibig_num"),
-                        null,null,null);
+                        null,null) {};
 
             }
         } catch (Exception ex) {
@@ -122,84 +124,207 @@ public abstract class DatabaseConnect {
     // ADD BUTTON FOR EMPLOYEE PROFILE
     public void addEmployee(Admin_Class employeeId) {
         Admin_Class employee = employeeId;
-        String sql = "INSERT INTO employee_data (employee_id, first_name, last_name, birthday, address, "
-                + "phone_number, sss_num, philhealth_num, tin_num, pagibig_num, status, position) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-        try (Connection conn = connect(); PreparedStatement pst = conn.prepareStatement(sql)) {
-
-            // Set parameters from the Employee object
-            pst.setString(1, employee.getEmployeeID());
-            pst.setString(2, employee.getFirstName());
-            pst.setString(3, employee.getLastName());
-            pst.setString(4, employee.getBirthday());
-            pst.setString(5, employee.getAddress());
-            pst.setString(6, employee.getPhoneNumber());
-            pst.setString(7, employee.getSssNum());
-            pst.setString(8, employee.getPhilHealthNum());
-            pst.setString(9, employee.getTinNum());
-            pst.setString(10, employee.getPagibigNum());
+        String aSql = "INSERT INTO address (street, barangay, city, province, postalcode) VALUES (?, ?, ?, ?, ?)";
+        String employeeSql = "INSERT INTO employee (employee_id, first_name, last_name, email, birthday, "
+                + "address_id, phone, sss_num, philhealth_num, tin, pagibig_num) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        try { 
+        conn = connect();
+        conn.setAutoCommit(false); // Start transaction
+        
+        int address_id = 0;
+        
+        // Insert address first and get generated address_id
+        try (PreparedStatement aPst = conn.prepareStatement(aSql, Statement.RETURN_GENERATED_KEYS)) {
+            aPst.setString(1, employee.getStreet());
+            aPst.setString(2, employee.getBarangay());
+            aPst.setString(3, employee.getCity());
+            aPst.setString(4, employee.getProvince());
+            aPst.setString(5, employee.getPostalcode());
+            aPst.executeUpdate();
             
-
+            rs = aPst.getGeneratedKeys();
+            if (rs.next()) {
+                address_id = rs.getInt(1);
+            }
+        }   
+        
+        // Insert employee with the address_id foreign key
+        try (PreparedStatement employeePst = conn.prepareStatement(employeeSql)) {
+            // Set parameters from the Employee object
+            employeePst.setString(1, employee.getEmployeeID());
+            employeePst.setString(2, employee.getFirstName());
+            employeePst.setString(3, employee.getLastName());
+            employeePst.setString(4, employee.getEmail()); // Added missing email
+            employeePst.setString(5, employee.getBirthday());
+            employeePst.setInt(6, address_id); // Use address_id instead of getAddress()
+            employeePst.setString(7, employee.getPhoneNumber());
+            employeePst.setString(8, employee.getSssNum());
+            employeePst.setString(9, employee.getPhilHealthNum());
+            employeePst.setString(10, employee.getTinNum());
+            employeePst.setString(11, employee.getPagibigNum());
+            
             // Execute the insert operation
-            pst.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Employee Profile Added!");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error adding employee: " + e.getMessage());
+            employeePst.executeUpdate();
         }
-
+        
+        conn.commit(); // Commit the transaction
+        JOptionPane.showMessageDialog(null, "Employee Profile Added!");
+        
+    } catch (Exception e) {
+        try {
+            if (conn != null) {
+                conn.rollback(); // Rollback on error
+            }
+        } catch (SQLException rollbackEx) {
+            rollbackEx.printStackTrace();
+        }
+        JOptionPane.showMessageDialog(null, "Error adding employee: " + e.getMessage());
+        e.printStackTrace(); // For debugging
+        
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (conn != null) {
+                conn.setAutoCommit(true); // Reset auto-commit
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+   }
+    
+    // ADDRESS
+    
+   
     // UPDATE BTN FOR EMPLOYEE PROFILE
     public void updateEmployee(Admin_Class employeeId) {
         Admin_Class employee = employeeId;
-        String sql = "UPDATE employee SET last_name = ?, phone_number = ?, position = ?, status = ? WHERE employee_id = ?";
-
-        try (Connection conn = connect(); PreparedStatement pst = conn.prepareStatement(sql)) {
-
-            // Set parameters from the Employee object
-            pst.setString(1, employee.getLastName());
-            pst.setString(2, employee.getPhoneNumber());
-           
-            pst.setString(5, employee.getEmployeeID());
-
-            // Execute the update operation
-            int rowsAffected = pst.executeUpdate();
-            if (rowsAffected > 0) {
-                JOptionPane.showMessageDialog(null, "Data successfully updated!");
-            } else {
-                JOptionPane.showMessageDialog(null, "No data was updated. Please check the employee ID.");
+        String employeeSql = "UPDATE employee SET last_name = ?, phone = ? WHERE employee_id = ?";
+        String addressSql = "UPDATE address SET street = ?, barangay = ?, city = ?, province = ?, "
+                + "postalcode = ? WHERE address_id = (SELECT address_id FROM employee WHERE employee_id = ?)";
+    
+    try {
+        conn = connect();
+        
+        // Update employee table
+         try (PreparedStatement employeePst = conn.prepareStatement(employeeSql)) {
+                employeePst.setString(1, employee.getLastName()); // Set last name
+                employeePst.setString(2, employee.getPhoneNumber()); // Set phone number
+                employeePst.setString(3, employee.getEmployeeID()); // Set employee ID
+                employeePst.executeUpdate();
             }
+              
+            // Update address table
+            try (PreparedStatement aPst = conn.prepareStatement(addressSql)) {
+                aPst.setString(1, employee.getStreet());
+                aPst.setString(2, employee.getBarangay());
+                aPst.setString(3, employee.getCity());
+                aPst.setString(4, employee.getProvince());
+                aPst.setString(5, employee.getPostalcode());
+                aPst.setString(6, employee.getEmployeeID()); // Set employee ID for address update
+                
+                aPst.executeUpdate();
+            }
+            
+            conn.commit(); // Commit the transaction
+            JOptionPane.showMessageDialog(null, "Employee data successfully updated!");
+            
         } catch (Exception e) {
+            try {
+                if (conn != null) {
+                    conn.rollback(); // Rollback on error
+                }
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
             JOptionPane.showMessageDialog(null, "Error updating employee: " + e.getMessage());
+            e.printStackTrace(); // For debugging
+            
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.setAutoCommit(true); // Reset auto-commit
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-        // return employee;
     }
 
     //DELETE BTN FOR EMPLOYEE PROFILE
     public void deleteEmployee(String employeeId) {
 
-        String sql = "DELETE FROM employee WHERE employee_id = ?";
-
-        try (Connection conn = connect(); PreparedStatement pst = conn.prepareStatement(sql)) {
-
-            pst.setString(1, employeeId);
-            int rowsAffected = pst.executeUpdate();
-
-            if (rowsAffected > 0) {
-                JOptionPane.showMessageDialog(null, "Employee Profile Deleted!");
-            } else {
-                JOptionPane.showMessageDialog(null, "No employee found with the given ID.");
+         try {
+        conn = connect();
+        conn.setAutoCommit(false); // Start transaction
+        
+        // First, get the address_id before deleting the employee
+        int addressId = 0;
+        String getAddressIdSql = "SELECT address_id FROM employee WHERE employee_id = ?";
+        try (PreparedStatement getAddressPst = conn.prepareStatement(getAddressIdSql)) {
+            getAddressPst.setString(1, employeeId);
+            ResultSet rs = getAddressPst.executeQuery();
+            if (rs.next()) {
+                addressId = rs.getInt("address_id");
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error deleting employee: " + e.getMessage());
         }
-        //   return employee;
+        
+        // Delete from employee table first (due to foreign key constraint)
+        String deleteEmployeeSql = "DELETE FROM employee WHERE employee_id = ?";
+        int employeeRowsAffected = 0;
+        try (PreparedStatement employeePst = conn.prepareStatement(deleteEmployeeSql)) {
+            employeePst.setString(1, employeeId);
+            employeeRowsAffected = employeePst.executeUpdate();
+        }
+        
+        // If employee was deleted and we have an address_id, delete the address
+        if (employeeRowsAffected > 0 && addressId > 0) {
+            String deleteAddressSql = "DELETE FROM address WHERE AddressID = ?";
+            try (PreparedStatement addressPst = conn.prepareStatement(deleteAddressSql)) {
+                addressPst.setInt(1, addressId);
+                addressPst.executeUpdate();
+            }
+        }
+        
+        if (employeeRowsAffected > 0) {
+            conn.commit(); // Commit the transaction
+            JOptionPane.showMessageDialog(null, "Employee Profile Deleted!");
+        } else {
+            conn.rollback();
+            JOptionPane.showMessageDialog(null, "No employee found with the given ID.");
+        }
+        
+    } catch (Exception e) {
+        try {
+            if (conn != null) {
+                conn.rollback(); // Rollback on error
+            }
+        } catch (SQLException rollbackEx) {
+            rollbackEx.printStackTrace();
+        }
+        JOptionPane.showMessageDialog(null, "Error deleting employee: " + e.getMessage());
+        e.printStackTrace(); // For debugging
+        
+    } finally {
+        try {
+            if (conn != null) {
+                conn.setAutoCommit(true); // Reset auto-commit
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     }
 
     //HOURSWORKED FOR EMPLOYEE ATTENDANCE
     public String getHoursWorked(String employeeId, String payPeriod) {
         String hoursWorked = "";
-        String sql = "SELECT * FROM attendance_records WHERE employee_id = ?";
+        String sql = "SELECT FROM attendance_records WHERE employee_id = ?";
 
         try (Connection conn = connect(); PreparedStatement pst = conn.prepareStatement(sql)) {
 
@@ -221,13 +346,16 @@ public abstract class DatabaseConnect {
 
     public ArrayList<LeaveRecord> userList() {
         ArrayList<LeaveRecord> leaveRecords = new ArrayList<>();
-        String sql = "SELECT * FROM leave_records";
+        String sql = "SELECT l.leave_id, l.employee_id, l.start_date, l.end_date, l.leave_type, "
+                + "l.status, e.first_name, e.last_name "
+                + "FROM leave_records l "
+                + "JOIN employee e ON l.employee_id = e.employee_id";
 
         try (Connection conn = connect(); PreparedStatement pst = conn.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
 
             while (rs.next()) {
                 LeaveRecord record = new LeaveRecord(
-                        rs.getString("leave_num"),
+                        rs.getString("leave_id"),
                         rs.getString("employee_id"),
                         rs.getString("first_name"),
                         rs.getString("last_name"),
@@ -247,13 +375,16 @@ public abstract class DatabaseConnect {
     // 
     public ArrayList<LeaveRecord> refreshList() {
         ArrayList<LeaveRecord> leaveRecords = new ArrayList<>();
-        String sql = "SELECT * FROM leave_records";
-
+        String sql = "SELECT l.leave_id, l.employee_id, l.start_date, l.end_date, l.leave_type, "
+                + "l.status, e.first_name, e.last_name "
+                + "FROM leave_records l "
+                + "JOIN employee e ON l.employee_id = e.employee_id";
+                
         try (Connection conn = connect(); PreparedStatement pst = conn.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
 
             while (rs.next()) {
                 LeaveRecord record = new LeaveRecord(
-                        rs.getString("leave_num"),
+                        rs.getString("leave_id"),
                         rs.getString("employee_id"),
                         rs.getString("first_name"),
                         rs.getString("last_name"),
@@ -276,7 +407,9 @@ public abstract class DatabaseConnect {
 
         try {
             conn = connect();
-            pst = conn.prepareStatement("INSERT INTO leave_records(leave_num, employee_id, first_name, last_name, start_date, end_date, leave_type, status) VALUES(?,?,?,?,?,?,?,?)");
+            pst = conn.prepareStatement("INSERT INTO leave_records (leave_id, employee_id, start_date, "
+                    + "end_date, leave_type, status)"
+                    +" VALUES (?, ?, ?, ?, ?, ?)");
 
             pst.setString(1, leaveRequest.getLeaveId());
             pst.setString(2, leaveRequest.getEmployeeId());
@@ -346,7 +479,7 @@ public abstract class DatabaseConnect {
         String leaveNum = leaveRecord.getLeaveId();
         try {
             conn = connect();
-             PreparedStatement pst = conn.prepareStatement("DELETE FROM leave_records WHERE leave_num = ?"); 
+             PreparedStatement pst = conn.prepareStatement("DELETE FROM leave_records WHERE leave_id = ?"); 
              
             pst.setString(1, leaveNum);
             int rowsAffected = pst.executeUpdate(); // Use executeUpdate for DELETE operations
@@ -362,7 +495,7 @@ public abstract class DatabaseConnect {
         String leaveNum = leaveRecord.getLeaveId();
 
         try { conn = connect();
-             PreparedStatement pst = conn.prepareStatement("UPDATE leave_records SET status = ? WHERE leave_num = ?");
+         PreparedStatement pst = conn.prepareStatement("UPDATE leave_records SET status = ? WHERE leave_id = ?");
              
             pst.setString(1, status);
             pst.setString(2, leaveNum);
@@ -484,8 +617,36 @@ public abstract class DatabaseConnect {
         }
     }
    
+    public String getEmployeeIdByEmail(String email) {
+        String employeeID = null;
+        try (Connection conn = connect()) {
+            String sql = "SELECT employee_id FROM employee WHERE email = ?";
+            try (PreparedStatement pst = conn.prepareStatement(sql)) {
+                pst.setString(1, email);
+                ResultSet rs = pst.executeQuery();
+                if (rs.next()) {
+                    employeeID = rs.getString("employee_id");
+                }
+            }
+        } catch (Exception e) {
+            // Handle exceptions
+        }
+        return employeeID;
+    }    
         
-        
-        
+     public boolean updatePassword(String employeeID, String newPassword) {
+        boolean isUpdated = false;
+        String updateQuery = "UPDATE position SET password = ? WHERE employee_id = ?";
+        try (Connection conn = connect();
+             PreparedStatement pst = conn.prepareStatement(updateQuery)) {
+            pst.setString(1, newPassword);
+            pst.setString(2, employeeID);
+            int rowsAffected = pst.executeUpdate();
+            isUpdated = rowsAffected > 0;
+        } catch (Exception e) {
+            // Handle exceptions
+        }
+        return isUpdated;
+    }    
         
 }

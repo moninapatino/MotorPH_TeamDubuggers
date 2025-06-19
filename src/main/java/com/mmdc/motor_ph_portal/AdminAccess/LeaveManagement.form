@@ -431,6 +431,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="firstName_field">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="fa" red="fa" type="rgb"/>
             </Property>
@@ -455,6 +456,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="lastName_field">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="fa" red="fa" type="rgb"/>
             </Property>
@@ -479,6 +481,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="leaveType_field">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="fa" red="fa" type="rgb"/>
             </Property>
@@ -514,6 +517,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="enddate_field">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="fa" red="fa" type="rgb"/>
             </Property>
@@ -611,6 +615,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="leaveNum_field">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="fa" red="fa" type="rgb"/>
             </Property>
@@ -635,6 +640,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="startdate_field">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="fa" red="fa" type="rgb"/>
             </Property>

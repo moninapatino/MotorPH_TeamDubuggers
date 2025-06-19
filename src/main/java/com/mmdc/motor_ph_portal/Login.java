@@ -1,7 +1,6 @@
 package com.mmdc.motor_ph_portal;
 
 import com.mmdc.motor_ph_portal.AdminAccess.Admin_Class;
-import com.mmdc.motor_ph_portal.AdminAccess.LeaveManagement;
 import com.mmdc.motor_ph_portal.EmployeeAccess.Employee_Class;
 import com.mmdc.motor_ph_util.DatabaseConnect;
 import java.awt.Dimension;

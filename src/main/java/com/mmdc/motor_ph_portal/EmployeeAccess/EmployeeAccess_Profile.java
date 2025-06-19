@@ -41,13 +41,8 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         loadLeaveRecords();
         
        
-        
-                
-        //Displaying current Date & Time
         time();
         date();
-        
-        // Load the icon and set it to jLabel2
         
     }
         
