@@ -5,7 +5,7 @@ Our Payroll System is a secure and user-friendly platform designed to manage emp
 Admin Access: Admins can manage employee information, process payroll, and generate reports.
 
 Username: <b>Admin</b> Password: <b>admin</b>
-
+BRANCH: <b><u>master</b></u>
 
 Employee Access: Employees can log in to view their pay slips, personal information, and payroll history.
 
