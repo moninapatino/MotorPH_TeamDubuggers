@@ -8,7 +8,7 @@ public abstract class User {
     protected String username;
     protected String password;
     protected String birthday;
-    protected String address;
+    protected String addressID;
     protected String street;
     protected String barangay;
     protected String city;
@@ -24,7 +24,7 @@ public abstract class User {
     
 
     public User(String employeeID, String firstName, String lastName, String birthday, 
-                String address, String street, String barangay, String city, String province,
+                String addressID, String street, String barangay, String city, String province,
                 String postalcode, String email, String phoneNumber, String sssNum, 
                 String philHealthNum, String tinNum, String pagibigNum, 
                 String username, String password) {
@@ -35,7 +35,7 @@ public abstract class User {
         this.username = username;
         this.password = password;
         this.birthday = birthday;
-        this.address = address;
+        this.addressID = addressID;
         this.street = street;
         this.barangay = barangay;
         this.city = city;
@@ -79,8 +79,8 @@ public abstract class User {
         return birthday;
     }
 
-    public String getAddress() {
-        return address;
+    public String getAddressID() {
+        return addressID;
     }
     public String getStreet() {
         return street;

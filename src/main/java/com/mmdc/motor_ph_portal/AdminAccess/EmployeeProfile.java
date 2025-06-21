@@ -1,6 +1,5 @@
 package com.mmdc.motor_ph_portal.AdminAccess;
 
-import com.mmdc.motor_ph_portal.AdminAccess.Admin_Class;
 import com.mmdc.motor_ph_util.DatabaseConnect;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -51,8 +50,12 @@ public class EmployeeProfile extends javax.swing.JFrame {
         id_field.setText("");
         firstname_field.setText("");
         lastname_field.setText("");
-        bday_field.setText("yyyy-mm-dd");
-        address_field.setText("");
+        bday_field.setText("");
+        street_field.setText("");
+        brgy_field.setText("");
+        city_field.setText("");
+        province_field.setText("");
+        postalcode_field.setText("");
         contact_field.setText("");
         email_field.setText("");
         sss_field.setText("");
@@ -60,26 +63,7 @@ public class EmployeeProfile extends javax.swing.JFrame {
         pagibig_field.setText("");
         tin_field.setText("");
     }
-    
-    private String[] parseAddress(String fullAddress) {
-    // Initialize with empty strings to avoid null values
-    String[] addressParts = {"", "", "", "", ""};
-    
-    if (fullAddress != null && !fullAddress.trim().isEmpty()) {
-        // Split by comma and newline
-        String[] parts = fullAddress.split("[,]\\s*");
-        
-        // Trim each part and assign to respective positions
-        for (int i = 0; i < parts.length && i < 5; i++) {
-            addressParts[i] = parts[i].trim();
-        }
-    }
-    
-    return addressParts;
-}
-
-    private static final int MAX_POSTAL_CODE_LENGTH = 4;
-    
+ 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -118,8 +102,17 @@ public class EmployeeProfile extends javax.swing.JFrame {
         updateBtn = new javax.swing.JButton();
         addBtn = new javax.swing.JButton();
         address_title = new javax.swing.JLabel();
-        address_field = new javax.swing.JTextField();
+        street_field = new javax.swing.JTextField();
         deleteBtn = new javax.swing.JButton();
+        city_field = new javax.swing.JTextField();
+        brgy_field = new javax.swing.JTextField();
+        address_title1 = new javax.swing.JLabel();
+        address_title2 = new javax.swing.JLabel();
+        address_title3 = new javax.swing.JLabel();
+        province_field = new javax.swing.JTextField();
+        address_title4 = new javax.swing.JLabel();
+        postalcode_field = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -194,7 +187,6 @@ public class EmployeeProfile extends javax.swing.JFrame {
         bday_field.setBackground(new java.awt.Color(250, 250, 255));
         bday_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         bday_field.setForeground(new java.awt.Color(92, 101, 138));
-        bday_field.setText("yyyy-mm-dd");
 
         contact_field.setBackground(new java.awt.Color(250, 250, 255));
         contact_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
@@ -306,11 +298,11 @@ public class EmployeeProfile extends javax.swing.JFrame {
 
         address_title.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         address_title.setForeground(new java.awt.Color(250, 250, 255));
-        address_title.setText("Address :");
+        address_title.setText("Street Address:");
 
-        address_field.setBackground(new java.awt.Color(250, 250, 255));
-        address_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        address_field.setForeground(new java.awt.Color(92, 101, 138));
+        street_field.setBackground(new java.awt.Color(250, 250, 255));
+        street_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        street_field.setForeground(new java.awt.Color(92, 101, 138));
 
         deleteBtn.setBackground(new java.awt.Color(253, 56, 29));
         deleteBtn.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
@@ -322,66 +314,127 @@ public class EmployeeProfile extends javax.swing.JFrame {
             }
         });
 
+        city_field.setBackground(new java.awt.Color(250, 250, 255));
+        city_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        city_field.setForeground(new java.awt.Color(92, 101, 138));
+
+        brgy_field.setBackground(new java.awt.Color(250, 250, 255));
+        brgy_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        brgy_field.setForeground(new java.awt.Color(92, 101, 138));
+
+        address_title1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        address_title1.setForeground(new java.awt.Color(250, 250, 255));
+        address_title1.setText("Barangay:");
+
+        address_title2.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        address_title2.setForeground(new java.awt.Color(250, 250, 255));
+        address_title2.setText("City:");
+
+        address_title3.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        address_title3.setForeground(new java.awt.Color(250, 250, 255));
+        address_title3.setText("Province:");
+
+        province_field.setBackground(new java.awt.Color(250, 250, 255));
+        province_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        province_field.setForeground(new java.awt.Color(92, 101, 138));
+
+        address_title4.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        address_title4.setForeground(new java.awt.Color(250, 250, 255));
+        address_title4.setText("Postal Code:");
+
+        postalcode_field.setBackground(new java.awt.Color(250, 250, 255));
+        postalcode_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        postalcode_field.setForeground(new java.awt.Color(92, 101, 138));
+
+        jLabel3.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(92, 101, 138));
+        jLabel3.setText("*yyyy-mm-dd");
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 745, Short.MAX_VALUE)
-            .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(pagibig_title, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(sss_title, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(33, 33, 33))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                                .addComponent(tin_title, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(44, 44, 44))
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addComponent(phhealth_title, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(33, 33, 33)))
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pagibig_field)
-                            .addComponent(phhealth_field)
-                            .addComponent(tin_field)
-                            .addComponent(sss_field, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE))
-                        .addGap(113, 113, 113)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(contact_field, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(backButton)
-                                        .addComponent(updateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(deleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(9, 9, 9))
-                                .addComponent(bday_field))
-                            .addComponent(email_field, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(46, 46, 46))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 859, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                                 .addComponent(en_title)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(id_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addGap(155, 155, 155)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(noe_title)
+                                    .addComponent(noe_title1)
+                                    .addComponent(address_title))
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(firstname_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lastname_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(email_title, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(b_title, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(cn_title, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(236, 236, 236))
+                                    .addGroup(mainPanelLayout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(firstname_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(lastname_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                                        .addGap(12, 12, 12)
+                                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(city_field, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(street_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                        .addGap(32, 32, 32)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(b_title, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(cn_title, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(email_title, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(contact_field, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                                    .addComponent(bday_field)
+                                    .addComponent(email_field, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addComponent(address_title1)
+                                .addGap(18, 18, 18)
+                                .addComponent(brgy_field, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(130, 130, 130)))
+                        .addComponent(jLabel3)
+                        .addGap(91, 91, 91))
                     .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(backButton)
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(mainPanelLayout.createSequentialGroup()
+                                        .addGap(15, 15, 15)
+                                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addComponent(pagibig_title, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(sss_title, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(33, 33, 33))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                                                .addComponent(tin_title, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(44, 44, 44))
+                                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                                .addComponent(phhealth_title, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(33, 33, 33)))
+                                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(pagibig_field)
+                                            .addComponent(phhealth_field)
+                                            .addComponent(tin_field)
+                                            .addComponent(sss_field, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)))
+                                    .addComponent(govIdNum_title))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(updateBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(addBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(clearButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(deleteBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(90, 90, 90))))
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGap(15, 15, 15)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(mainPanelLayout.createSequentialGroup()
                                 .addComponent(date)
@@ -389,18 +442,23 @@ public class EmployeeProfile extends javax.swing.JFrame {
                                 .addComponent(time))
                             .addGroup(mainPanelLayout.createSequentialGroup()
                                 .addGap(11, 11, 11)
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(govIdNum_title)
-                                    .addComponent(greetings)))
+                                .addComponent(greetings))))
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGap(132, 132, 132)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addGap(34, 34, 34)
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(noe_title)
-                                    .addComponent(noe_title1)
-                                    .addComponent(address_title))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(address_field, javax.swing.GroupLayout.PREFERRED_SIZE, 528, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(47, Short.MAX_VALUE))))
+                                .addGap(369, 369, 369)
+                                .addComponent(address_title4)
+                                .addGap(18, 18, 18)
+                                .addComponent(postalcode_field, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, mainPanelLayout.createSequentialGroup()
+                                .addComponent(address_title2)
+                                .addGap(169, 169, 169)
+                                .addComponent(address_title3)
+                                .addGap(18, 18, 18)
+                                .addComponent(province_field, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 182, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(179, Short.MAX_VALUE))
         );
 
         mainPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {pagibig_field, phhealth_field, sss_field, tin_field});
@@ -409,35 +467,17 @@ public class EmployeeProfile extends javax.swing.JFrame {
 
         mainPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {bday_field, contact_field, email_field, firstname_field, id_field, lastname_field});
 
+        mainPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {brgy_field, city_field, province_field});
+
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(greetings)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(address_title)
-                            .addComponent(address_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(39, 39, 39))
-                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
+                        .addComponent(greetings)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(mainPanelLayout.createSequentialGroup()
-                                        .addGap(38, 38, 38)
-                                        .addComponent(contact_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(cn_title, javax.swing.GroupLayout.Alignment.TRAILING))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(email_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(email_title))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(bday_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(b_title)))
                             .addGroup(mainPanelLayout.createSequentialGroup()
                                 .addGap(36, 36, 36)
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -450,9 +490,49 @@ public class EmployeeProfile extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(noe_title1)
-                                    .addComponent(lastname_field, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(69, 69, 69)))
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lastname_field, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(mainPanelLayout.createSequentialGroup()
+                                        .addGap(14, 14, 14)
+                                        .addComponent(street_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(mainPanelLayout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(address_title))))
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addGap(38, 38, 38)
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(contact_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cn_title))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(email_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(email_title))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(bday_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(b_title)
+                                    .addComponent(jLabel3))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(brgy_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(address_title1))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(city_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(province_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(address_title4)
+                                .addComponent(postalcode_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(address_title2)
+                                .addComponent(address_title3)))
+                        .addGap(77, 77, 77)
+                        .addComponent(addBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(updateBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(deleteBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(clearButton))
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addComponent(govIdNum_title)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -470,17 +550,8 @@ public class EmployeeProfile extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(tin_title)
-                            .addComponent(tin_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addComponent(addBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(updateBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(deleteBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(clearButton)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                            .addComponent(tin_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addComponent(backButton)
                 .addGap(11, 11, 11)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -499,7 +570,7 @@ public class EmployeeProfile extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -529,15 +600,11 @@ public class EmployeeProfile extends javax.swing.JFrame {
                 lastname_field.setText(employee.getLastName());
                 bday_field.setText(employee.getBirthday());
                 email_field.setText(employee.getEmail());
-                
-            String fullAddress = String.format("%s, %s, %s, %s, %s",
-                employee.getStreet(),
-                employee.getBarangay(),
-                employee.getCity(),
-                employee.getProvince(),
-                employee.getPostalcode());
-                address_field.setText(fullAddress);
-                
+                street_field.setText(employee.getStreet());
+                brgy_field.setText(employee.getBarangay());
+                city_field.setText(employee.getCity());
+                province_field.setText(employee.getProvince());
+                postalcode_field.setText(employee.getPostalcode());
                 contact_field.setText(employee.getPhoneNumber());
                 sss_field.setText(employee.getSssNum());
                 pagibig_field.setText(employee.getPagibigNum());
@@ -559,30 +626,21 @@ public class EmployeeProfile extends javax.swing.JFrame {
         
         String lastName = lastname_field.getText();
         String phoneNumber = contact_field.getText();
-        String fullAddress = address_field.getText().trim();
-            
-            String[] addressParts = parseAddress(fullAddress);
-            if (addressParts.length < 5) {
-            JOptionPane.showMessageDialog(this, "Address format is incorrect.", "Input Error", JOptionPane.ERROR_MESSAGE);
-            return; 
-            }
-            
-            String street = addressParts[0];
-            String barangay = addressParts[1];
-            String city = addressParts[2];
-            String province = addressParts[3];
-            String postalcode = addressParts[4].trim();
-            String employeeID = id_field.getText();
+        String street = street_field.getText().trim();
+        String barangay = brgy_field.getText().trim();
+        String city = city_field.getText().trim();
+        String province = province_field.getText().trim();
+        String postalcode = postalcode_field.getText().trim();
+        String employeeID = id_field.getText();
             
             if (employeeID.equals("")) {
         JOptionPane.showMessageDialog(this, "Enter Employee ID!");
         return; // Exit if Employee ID is empty
     }
-            
-        // Create an Employee object
-        Admin_Class employee = new Admin_Class(employeeID, null, lastName, null, null,
+        
+        Admin_Class employee = new Admin_Class(employeeID, null, lastName, null, null, null,
                     street, barangay, city, province, postalcode, phoneNumber, 
-                    null, null, null, null, null, null, null);
+                    null, null, null, null, null, null);
         
         if(employeeID.equals("")){
             JOptionPane.showMessageDialog(this, "Enter Employee ID!");
@@ -604,55 +662,67 @@ public class EmployeeProfile extends javax.swing.JFrame {
         // ADD EMPLOYEE RECORD
 
         try {
-            // Retrieve input values from fields
-            String employeeID = id_field.getText();
-            String firstName = firstname_field.getText();
-            String lastName = lastname_field.getText();
-            String birthday = bday_field.getText();
-            String fullAddress = address_field.getText().trim();
-            
-            String[] addressParts = parseAddress(fullAddress);
-            if (addressParts.length < 5) {
-            JOptionPane.showMessageDialog(this, "Address format is incorrect.", "Input Error", JOptionPane.ERROR_MESSAGE);
-            return; 
-            }
-            
-            String street = addressParts[0];
-            String barangay = addressParts[1];
-            String city = addressParts[2];
-            String province = addressParts[3];
-            String postalcode = addressParts[4].trim();
-            
-            String phoneNumber = contact_field.getText();
-            String email = email_field.getText();
-            String sssNum = sss_field.getText();
-            String philHealthNum = phhealth_field.getText();
-            String pagibigNum = pagibig_field.getText();
-            String tinNum = tin_field.getText();
-            
-            
-            if (employeeID.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || birthday.isEmpty()
-                    || street.isEmpty() || barangay.isEmpty() || city.isEmpty() || province.isEmpty()
-                    || postalcode.isEmpty() || phoneNumber.isEmpty() || email.isEmpty()
-                    || sssNum.isEmpty() || philHealthNum.isEmpty() || pagibigNum.isEmpty() || tinNum.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Input Error", JOptionPane.ERROR_MESSAGE);
-                return; // Exit the method if validation fails
-            }
-            
-            if (postalcode.length() > MAX_POSTAL_CODE_LENGTH) {
-            JOptionPane.showMessageDialog(this, "Postal code is too long.", "Input Error", JOptionPane.ERROR_MESSAGE);
-            return; // Exit the method if validation fails
+            // Retrieve and trim ALL input values from fields (consistency)
+        String employeeID = id_field.getText().trim();
+        String firstName = firstname_field.getText().trim();
+        String lastName = lastname_field.getText().trim();
+        String birthday = bday_field.getText().trim();
+        String street = street_field.getText().trim();
+        String barangay = brgy_field.getText().trim();
+        String city = city_field.getText().trim();
+        String province = province_field.getText().trim();
+        String postalcode = postalcode_field.getText().trim();
+        String phoneNumber = contact_field.getText().trim();
+        String email = email_field.getText().trim();
+        String sssNum = sss_field.getText().trim();
+        String philHealthNum = phhealth_field.getText().trim();
+        String pagibigNum = pagibig_field.getText().trim();
+        String tinNum = tin_field.getText().trim();
+        
+        // Debug output to help track the issue
+        System.out.println("=== ADD EMPLOYEE DEBUG ===");
+        System.out.println("Employee ID: " + employeeID);
+        System.out.println("Postal Code: '" + postalcode + "' (length: " + postalcode.length() + ")");
+        System.out.println("Street: " + street);
+        System.out.println("City: " + city);
+        
+        // Validate postal code length
+        if (postalcode.length() > 4) {
+            JOptionPane.showMessageDialog(this, "Postal code cannot exceed 4 characters.", 
+                    "Input Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
-            if (!postalcode.matches("\\d{1,4}")) {
-            JOptionPane.showMessageDialog(this, "Postal code must be numeric and up to 4 digits.", "Input Error", JOptionPane.ERROR_MESSAGE);
-            return; // Exit the method if validation fails
+        
+        // Additional postal code validation - only digits
+        if (!postalcode.matches("\\d{1,4}")) {
+            JOptionPane.showMessageDialog(this, "Postal code must contain only digits (1-4 characters).", 
+                    "Input Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
-            
-            Admin_Class newEmployee = new Admin_Class(employeeID, firstName, lastName, birthday, 
-                 null, street, barangay, city, province,
-                 postalcode, email, phoneNumber, sssNum, 
-                 philHealthNum, tinNum, pagibigNum, 
-                 null, null);
+        
+        // Check for empty fields
+        if (employeeID.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || birthday.isEmpty()
+                || street.isEmpty() || barangay.isEmpty() || city.isEmpty() || province.isEmpty()
+                || postalcode.isEmpty() || phoneNumber.isEmpty() || email.isEmpty()
+                || sssNum.isEmpty() || philHealthNum.isEmpty() || pagibigNum.isEmpty() || tinNum.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill in all required fields.", 
+                    "Input Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        // Create new employee object
+        Admin_Class newEmployee = new Admin_Class(employeeID, firstName, lastName, birthday, 
+                null, street, barangay, city, province,
+                postalcode, email, phoneNumber, sssNum, 
+                philHealthNum, tinNum, pagibigNum, 
+                null, null);
+        
+        // Debug: Check if dbConnect is initialized
+        if (dbConnect == null) {
+            JOptionPane.showMessageDialog(this, "Database connection not initialized!", 
+                    "Database Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
             // call the method from DatabaseConnect
             dbConnect.addEmployee(newEmployee);
@@ -724,11 +794,16 @@ public class EmployeeProfile extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LOGO;
     private javax.swing.JButton addBtn;
-    private javax.swing.JTextField address_field;
     private javax.swing.JLabel address_title;
+    private javax.swing.JLabel address_title1;
+    private javax.swing.JLabel address_title2;
+    private javax.swing.JLabel address_title3;
+    private javax.swing.JLabel address_title4;
     private javax.swing.JLabel b_title;
     private javax.swing.JButton backButton;
     private javax.swing.JTextField bday_field;
+    private javax.swing.JTextField brgy_field;
+    private javax.swing.JTextField city_field;
     private javax.swing.JButton clearButton;
     private javax.swing.JLabel cn_title;
     private javax.swing.JTextField contact_field;
@@ -743,6 +818,7 @@ public class EmployeeProfile extends javax.swing.JFrame {
     private javax.swing.JTextField id_field;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField lastname_field;
     private javax.swing.JPanel mainPanel;
@@ -752,8 +828,11 @@ public class EmployeeProfile extends javax.swing.JFrame {
     private javax.swing.JLabel pagibig_title;
     private javax.swing.JTextField phhealth_field;
     private javax.swing.JLabel phhealth_title;
+    private javax.swing.JTextField postalcode_field;
+    private javax.swing.JTextField province_field;
     private javax.swing.JTextField sss_field;
     private javax.swing.JLabel sss_title;
+    private javax.swing.JTextField street_field;
     private javax.swing.JLabel time;
     private javax.swing.JTextField tin_field;
     private javax.swing.JLabel tin_title;

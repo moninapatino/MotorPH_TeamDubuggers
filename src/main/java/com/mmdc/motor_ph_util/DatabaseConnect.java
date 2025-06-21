@@ -123,71 +123,65 @@ public abstract class DatabaseConnect {
     }
     // ADD BUTTON FOR EMPLOYEE PROFILE
     public void addEmployee(Admin_Class employeeId) {
+        
+        PreparedStatement addressPst = null;
+        PreparedStatement employeePst = null;
+        PreparedStatement maxPst = null;
+    
         Admin_Class employee = employeeId;
-        String aSql = "INSERT INTO address (street, barangay, city, province, postalcode) VALUES (?, ?, ?, ?, ?)";
+        String addressSql = "INSERT INTO address (address_id, street, barangay, city, province, postalcode) VALUES (?, ?, ?, ?, ?, ?)";
         String employeeSql = "INSERT INTO employee (employee_id, first_name, last_name, email, birthday, "
                 + "address_id, phone, sss_num, philhealth_num, tin, pagibig_num) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         try { 
         conn = connect();
-        conn.setAutoCommit(false); // Start transaction
         
         int address_id = 0;
+        String maxAddressIdSql = "SELECT MAX(address_id) FROM address";
         
-        // Insert address first and get generated address_id
-        try (PreparedStatement aPst = conn.prepareStatement(aSql, Statement.RETURN_GENERATED_KEYS)) {
-            aPst.setString(1, employee.getStreet());
-            aPst.setString(2, employee.getBarangay());
-            aPst.setString(3, employee.getCity());
-            aPst.setString(4, employee.getProvince());
-            aPst.setString(5, employee.getPostalcode());
-            aPst.executeUpdate();
-            
-            rs = aPst.getGeneratedKeys();
-            if (rs.next()) {
-                address_id = rs.getInt(1);
-            }
-        }   
+        maxPst = conn.prepareStatement(maxAddressIdSql);
+        rs = maxPst.executeQuery();
+           if (rs.next()) {
+            address_id = rs.getInt(1) + 1; // Increment the maximum address_id
+        } else {
+            address_id = 1; // If no addresses exist, start from 1
+        }
+           
+        addressPst = conn.prepareStatement(addressSql);
+        addressPst.setString(1, employee.getAddressID());
+        addressPst.setString(2, employee.getStreet());
+        addressPst.setString(3, employee.getBarangay());
+        addressPst.setString(4, employee.getCity());
+        addressPst.setString(5, employee.getProvince());
+        addressPst.setString(6, employee.getPostalcode().trim());
+        
+        int addressRowsAffected = addressPst.executeUpdate();
+        System.out.println("Address rows inserted: " + addressRowsAffected); // Debug output
         
         // Insert employee with the address_id foreign key
-        try (PreparedStatement employeePst = conn.prepareStatement(employeeSql)) {
-            // Set parameters from the Employee object
-            employeePst.setString(1, employee.getEmployeeID());
-            employeePst.setString(2, employee.getFirstName());
-            employeePst.setString(3, employee.getLastName());
-            employeePst.setString(4, employee.getEmail()); // Added missing email
-            employeePst.setString(5, employee.getBirthday());
-            employeePst.setInt(6, address_id); // Use address_id instead of getAddress()
-            employeePst.setString(7, employee.getPhoneNumber());
-            employeePst.setString(8, employee.getSssNum());
-            employeePst.setString(9, employee.getPhilHealthNum());
-            employeePst.setString(10, employee.getTinNum());
-            employeePst.setString(11, employee.getPagibigNum());
-            
-            // Execute the insert operation
-            employeePst.executeUpdate();
-        }
+        employeePst = conn.prepareStatement(employeeSql);
+        employeePst.setString(1, employee.getEmployeeID());
+        employeePst.setString(2, employee.getFirstName());
+        employeePst.setString(3, employee.getLastName());
+        employeePst.setString(4, employee.getEmail());
+        employeePst.setString(5, employee.getBirthday());
+        employeePst.setInt(6, address_id); // This links to the address table
+        employeePst.setString(7, employee.getPhoneNumber());
+        employeePst.setString(8, employee.getSssNum());
+        employeePst.setString(9, employee.getPhilHealthNum());
+        employeePst.setString(10, employee.getTinNum());
+        employeePst.setString(11, employee.getPagibigNum());
         
         conn.commit(); // Commit the transaction
         JOptionPane.showMessageDialog(null, "Employee Profile Added!");
         
     } catch (Exception e) {
-        try {
-            if (conn != null) {
-                conn.rollback(); // Rollback on error
-            }
-        } catch (SQLException rollbackEx) {
-            rollbackEx.printStackTrace();
-        }
-        JOptionPane.showMessageDialog(null, "Error adding employee: " + e.getMessage());
-        e.printStackTrace(); // For debugging
         
     } finally {
         try {
             if (rs != null) rs.close();
             if (conn != null) {
-                conn.setAutoCommit(true); // Reset auto-commit
                 conn.close();
             }
         } catch (SQLException e) {
@@ -195,10 +189,7 @@ public abstract class DatabaseConnect {
         }
     }
    }
-    
-    // ADDRESS
-    
-   
+
     // UPDATE BTN FOR EMPLOYEE PROFILE
     public void updateEmployee(Admin_Class employeeId) {
         Admin_Class employee = employeeId;
@@ -228,8 +219,7 @@ public abstract class DatabaseConnect {
                 
                 aPst.executeUpdate();
             }
-            
-            conn.commit(); // Commit the transaction
+
             JOptionPane.showMessageDialog(null, "Employee data successfully updated!");
             
         } catch (Exception e) {
@@ -246,7 +236,6 @@ public abstract class DatabaseConnect {
         } finally {
             try {
                 if (conn != null) {
-                    conn.setAutoCommit(true); // Reset auto-commit
                     conn.close();
                 }
             } catch (SQLException e) {
@@ -322,7 +311,7 @@ public abstract class DatabaseConnect {
     }
 
     //HOURSWORKED FOR EMPLOYEE ATTENDANCE
-    public String getHoursWorked(String employeeId, String payPeriod) {
+   /* public String getHoursWorked(String employeeId, String payPeriod) {
         String hoursWorked = "";
         String sql = "SELECT FROM attendance_records WHERE employee_id = ?";
 
@@ -342,8 +331,56 @@ public abstract class DatabaseConnect {
             JOptionPane.showMessageDialog(null, ex);
         }
         return hoursWorked;
-    }
+    }*/
+    
+    // PAYROLL DETAILS KEY RELEASE
+    public PayrollCalculation getPayrollDetails(String employeeId) {
+        PayrollCalculation employee = null;
 
+        try {
+            conn = connect();
+            String sql = "SELECT * FROM employee WHERE employee_id = ?";
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, employeeId);
+            rs = pst.executeQuery();
+            
+            if (rs.next()) {
+                employee = new PayrollCalculation(
+                        rs.getString("employee_id"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getDouble("basic_salary"),
+                        rs.getDouble("sss_c"),
+                        rs.getDouble("rice_s"),
+                        rs.getDouble("phone_a"),
+                        rs.getDouble("clothing_a"),                 
+                        rs.getDouble("hourly_rate"),
+                        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+                        
+                                
+                    
+                );
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace(); // Log the exception
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pst != null) {
+                    pst.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace(); // Handle closing exceptions
+            }
+        }
+        return employee; // Return null if no employee is found
+    }
+    
     public ArrayList<LeaveRecord> userList() {
         ArrayList<LeaveRecord> leaveRecords = new ArrayList<>();
         String sql = "SELECT l.leave_id, l.employee_id, l.start_date, l.end_date, l.leave_type, "
@@ -428,53 +465,7 @@ public abstract class DatabaseConnect {
         }
 
     }
-    // PAYROLL DETAILS KEY RELEASE
-    public PayrollCalculation getPayrollDetails(String employeeId) {
-        PayrollCalculation employee = null;
-
-        try {
-            conn = connect();
-            String sql = "SELECT * FROM employee WHERE employee_id = ?";
-            pst = conn.prepareStatement(sql);
-            pst.setString(1, employeeId);
-            rs = pst.executeQuery();
-            
-            if (rs.next()) {
-                employee = new PayrollCalculation(
-                        rs.getString("employee_id"),
-                        rs.getString("first_name"),
-                        rs.getString("last_name"),
-                        rs.getDouble("basic_salary"),
-                        rs.getDouble("sss_c"),
-                        rs.getDouble("rice_s"),
-                        rs.getDouble("phone_a"),
-                        rs.getDouble("clothing_a"),                 
-                        rs.getDouble("hourly_rate"),
-                        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
-                        
-                                
-                    
-                );
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace(); // Log the exception
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (pst != null) {
-                    pst.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace(); // Handle closing exceptions
-            }
-        }
-        return employee; // Return null if no employee is found
-    }
+    
     public boolean deleteLeaveRecord(LeaveRecord leaveRecord) {
         String leaveNum = leaveRecord.getLeaveId();
         try {
@@ -633,7 +624,56 @@ public abstract class DatabaseConnect {
         }
         return employeeID;
     }    
-        
+    
+   public Admin_Class getEmployeeByUsername(String username) {
+    Admin_Class employee = null;
+
+    String sql = "SELECT " +
+                 "e.employee_id, e.first_name, e.last_name, e.email, e.birthday, " +
+                 "a.address_id, a.street, a.barangay, a.city, a.province, a.postal_code, " +
+                 "e.phone_number, e.sss_num, e.philhealth_num, e.tin_num, e.pagibig_num, " +
+                 "p.username, p.password " +
+                 "FROM employee e " +
+                 "JOIN address a ON e.address_id = a.address_id " +
+                 "JOIN position p ON e.employee_id = p.employee_id " +
+                 "WHERE p.username = ?";
+
+    try (Connection conn = connect();
+         PreparedStatement pst = conn.prepareStatement(sql)) {
+
+        pst.setString(1, username);
+        ResultSet rs = pst.executeQuery();
+
+        if (rs.next()) {
+            employee = new Admin_Class(
+                rs.getString("employee_id"),
+                rs.getString("first_name"),
+                rs.getString("last_name"),
+                rs.getString("email"),
+                rs.getString("birthday"),
+                rs.getString("address_id"),
+                rs.getString("street"),
+                rs.getString("barangay"),
+                rs.getString("city"),
+                rs.getString("province"),
+                rs.getString("postal_code"),
+                rs.getString("phone_number"),
+                rs.getString("sss_num"),
+                rs.getString("philhealth_num"),
+                rs.getString("tin_num"),
+                rs.getString("pagibig_num"),
+                rs.getString("username"),
+                rs.getString("password")
+            );
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    return employee;
+}
+    
      public boolean updatePassword(String employeeID, String newPassword) {
         boolean isUpdated = false;
         String updateQuery = "UPDATE position SET password = ? WHERE employee_id = ?";
@@ -648,5 +688,6 @@ public abstract class DatabaseConnect {
         }
         return isUpdated;
     }    
-        
+       
+
 }

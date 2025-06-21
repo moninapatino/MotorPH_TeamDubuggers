@@ -47,7 +47,6 @@ public class NewPassword extends javax.swing.JFrame {
         confirmPassField = new javax.swing.JPasswordField();
         newPassField = new javax.swing.JPasswordField();
         backButton = new javax.swing.JButton();
-        empIDTitle = new javax.swing.JLabel();
         empIdLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -115,12 +114,8 @@ public class NewPassword extends javax.swing.JFrame {
             }
         });
 
-        empIDTitle.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        empIDTitle.setForeground(new java.awt.Color(250, 250, 255));
-        empIDTitle.setText("EmployeeID");
-
         empIdLabel.setFont(new java.awt.Font("Gadugi", 1, 14)); // NOI18N
-        empIdLabel.setForeground(new java.awt.Color(250, 250, 255));
+        empIdLabel.setForeground(new java.awt.Color(30, 43, 93));
         empIdLabel.setText("######");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -140,11 +135,9 @@ public class NewPassword extends javax.swing.JFrame {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(2, 2, 2)
                                 .addComponent(newPassTitle))
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(empIDTitle)
-                                .addGroup(jPanel3Layout.createSequentialGroup()
-                                    .addGap(17, 17, 17)
-                                    .addComponent(empIdLabel)))))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addComponent(empIdLabel))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addComponent(backButton)))
@@ -156,9 +149,7 @@ public class NewPassword extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(passwordRecoveryTitle)
-                .addGap(13, 13, 13)
-                .addComponent(empIDTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(36, 36, 36)
                 .addComponent(empIdLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(newPassTitle)
@@ -275,7 +266,6 @@ public class NewPassword extends javax.swing.JFrame {
     private javax.swing.JButton backButton;
     private javax.swing.JPasswordField confirmPassField;
     private javax.swing.JLabel confirmPassTitle;
-    private javax.swing.JLabel empIDTitle;
     private javax.swing.JLabel empIdLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

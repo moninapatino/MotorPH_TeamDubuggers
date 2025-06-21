@@ -28,24 +28,56 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     ResultSet rs = null;
     PreparedStatement pst = null;
     DatabaseConnect dbConnect = new DatabaseConnect() {};
+    private String username;
+
      
     public EmployeeAccess_Profile() {
         initComponents();
         
+        
         setTitle ("Motor PH Employee Profile");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
-        Toolkit toolkit=getToolkit();
+            Toolkit toolkit=getToolkit();
         Dimension size=toolkit.getScreenSize();
         setLocation(size.width/2-getWidth()/2,size.height/2-getHeight()/2);
         loadLeaveRecords();
         
-       
         time();
         date();
         
     }
-        
+    
+    public EmployeeAccess_Profile(String employeeID, String firstName, String lastName) {
+    id_field.setText(employeeID);
+    // Trigger the autofill for other fields
+    loadAndFillEmployeeDataByUsername(username);
+    }
+    
+   public void loadAndFillEmployeeDataByUsername(String username) {
+    if (username == null || username.trim().isEmpty()) {
+        return; // skip empty input
+    }
+
+    try {
+        Admin_Class employee = dbConnect.getEmployeeByUsername(username);
+
+        if (employee != null) {
+            id_field.setText(employee.getEmployeeID());
+            firstName_field.setText(employee.getFirstName());
+            lastname_field.setText(employee.getLastName());
+
+            String fullName = employee.getFirstName() + " " + employee.getLastName();
+            empName.setText(fullName);
+        } else {
+            JOptionPane.showMessageDialog(null, "No employee found with username: " + username);
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Error loading employee: " + e.getMessage());
+    }
+}
+
+    
     public final void time(){
     DateTimeFormatter times = DateTimeFormatter.ofPattern("hh:mm:ss a");
     LocalDateTime now =LocalDateTime.now();
@@ -101,7 +133,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     public ArrayList loadTimeLog() {
         ArrayList timeLog = new ArrayList();
         try {
-            String sql = "SELECT * FROM attendance_records where employeeID=?";
+            String sql = "SELECT * FROM attendance_records where employee_id = ?";
             pst= conn.prepareStatement(sql);
             pst.setString(1, id_field.getText());
             rs = pst.executeQuery();
@@ -131,7 +163,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         return timeLog;
      }
     
-
+   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -143,7 +175,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         b_title = new javax.swing.JLabel();
         cn_title = new javax.swing.JLabel();
         email_title = new javax.swing.JLabel();
-        firstname_field = new javax.swing.JTextField();
+        firstName_field = new javax.swing.JTextField();
         bday_field = new javax.swing.JTextField();
         contact_field = new javax.swing.JTextField();
         email_field = new javax.swing.JTextField();
@@ -162,10 +194,10 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         address_field = new javax.swing.JTextField();
         empProfileTitle = new javax.swing.JLabel();
         timeLogTab = new javax.swing.JPanel();
-        firstName_field = new javax.swing.JTextField();
+        timeLogFirstNameField = new javax.swing.JTextField();
         first_name = new javax.swing.JLabel();
-        lastName_field = new javax.swing.JTextField();
-        last_name = new javax.swing.JLabel();
+        timeLogLastNameField = new javax.swing.JTextField();
+        timeLogLastNameLbl = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         attendance_table = new javax.swing.JTable();
         timeInBtn = new javax.swing.JButton();
@@ -175,10 +207,10 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         leaveTable = new javax.swing.JTable();
         noe_title6 = new javax.swing.JLabel();
-        firstName_field2 = new javax.swing.JTextField();
+        leaveFirstName_field = new javax.swing.JTextField();
         noe_title7 = new javax.swing.JLabel();
-        lastName_field2 = new javax.swing.JTextField();
-        leave_type1 = new javax.swing.JLabel();
+        leaveLastName_field = new javax.swing.JTextField();
+        leave_type = new javax.swing.JLabel();
         leaveTypeComboBox = new javax.swing.JComboBox<>();
         addButton = new javax.swing.JButton();
         enddate_lbl1 = new javax.swing.JLabel();
@@ -226,9 +258,9 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         email_title.setForeground(new java.awt.Color(250, 250, 255));
         email_title.setText("Email:");
 
-        firstname_field.setBackground(new java.awt.Color(250, 250, 255));
-        firstname_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        firstname_field.setForeground(new java.awt.Color(92, 101, 138));
+        firstName_field.setBackground(new java.awt.Color(250, 250, 255));
+        firstName_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        firstName_field.setForeground(new java.awt.Color(92, 101, 138));
 
         bday_field.setBackground(new java.awt.Color(250, 250, 255));
         bday_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
@@ -285,11 +317,6 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         lastname_field.setBackground(new java.awt.Color(250, 250, 255));
         lastname_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         lastname_field.setForeground(new java.awt.Color(92, 101, 138));
-        lastname_field.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lastname_fieldActionPerformed(evt);
-            }
-        });
 
         address_title.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         address_title.setForeground(new java.awt.Color(250, 250, 255));
@@ -338,7 +365,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                                     .addGroup(empProfileTabLayout.createSequentialGroup()
                                         .addComponent(noe_title)
                                         .addGap(18, 18, 18)
-                                        .addComponent(firstname_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(firstName_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(54, 54, 54)
                                 .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(email_title, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -370,7 +397,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                     .addGroup(empProfileTabLayout.createSequentialGroup()
                         .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(noe_title)
-                            .addComponent(firstname_field))
+                            .addComponent(firstName_field))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(noe_title8)
@@ -417,21 +444,21 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         timeLogTab.setBackground(new java.awt.Color(30, 43, 93));
         timeLogTab.setForeground(new java.awt.Color(69, 123, 157));
 
-        firstName_field.setBackground(new java.awt.Color(250, 250, 255));
-        firstName_field.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        firstName_field.setForeground(new java.awt.Color(92, 101, 138));
+        timeLogFirstNameField.setBackground(new java.awt.Color(250, 250, 255));
+        timeLogFirstNameField.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        timeLogFirstNameField.setForeground(new java.awt.Color(92, 101, 138));
 
         first_name.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         first_name.setForeground(new java.awt.Color(250, 250, 255));
         first_name.setText("First Name :");
 
-        lastName_field.setBackground(new java.awt.Color(250, 250, 255));
-        lastName_field.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        lastName_field.setForeground(new java.awt.Color(92, 101, 138));
+        timeLogLastNameField.setBackground(new java.awt.Color(250, 250, 255));
+        timeLogLastNameField.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        timeLogLastNameField.setForeground(new java.awt.Color(92, 101, 138));
 
-        last_name.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        last_name.setForeground(new java.awt.Color(250, 250, 255));
-        last_name.setText("Last Name :");
+        timeLogLastNameLbl.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        timeLogLastNameLbl.setForeground(new java.awt.Color(250, 250, 255));
+        timeLogLastNameLbl.setText("Last Name :");
 
         attendance_table.setBackground(new java.awt.Color(250, 250, 255));
         attendance_table.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -496,23 +523,23 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                             .addGroup(timeLogTabLayout.createSequentialGroup()
                                 .addGap(42, 42, 42)
                                 .addGroup(timeLogTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(last_name)
+                                    .addComponent(timeLogLastNameLbl)
                                     .addComponent(first_name))
                                 .addGap(31, 31, 31)
                                 .addGroup(timeLogTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(firstName_field, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lastName_field, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(timeLogFirstNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(timeLogLastNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(timeLogTabLayout.createSequentialGroup()
                                 .addGap(94, 94, 94)
                                 .addComponent(timeInBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(28, 28, 28)
                                 .addComponent(timeOutBtn)))
-                        .addGap(43, 43, 43)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(timeLogTabLayout.createSequentialGroup()
                         .addGap(216, 216, 216)
                         .addComponent(attendance_title)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
         timeLogTabLayout.setVerticalGroup(
             timeLogTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -524,11 +551,11 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                         .addGap(78, 78, 78)
                         .addGroup(timeLogTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(first_name)
-                            .addComponent(firstName_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(timeLogFirstNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(timeLogTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(last_name, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lastName_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(timeLogLastNameLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(timeLogLastNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(29, 29, 29)
                         .addGroup(timeLogTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(timeOutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -577,21 +604,21 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         noe_title6.setForeground(new java.awt.Color(250, 250, 255));
         noe_title6.setText("First Name :");
 
-        firstName_field2.setBackground(new java.awt.Color(250, 250, 255));
-        firstName_field2.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
-        firstName_field2.setForeground(new java.awt.Color(92, 101, 138));
+        leaveFirstName_field.setBackground(new java.awt.Color(250, 250, 255));
+        leaveFirstName_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
+        leaveFirstName_field.setForeground(new java.awt.Color(92, 101, 138));
 
         noe_title7.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         noe_title7.setForeground(new java.awt.Color(250, 250, 255));
         noe_title7.setText("Last Name :");
 
-        lastName_field2.setBackground(new java.awt.Color(250, 250, 255));
-        lastName_field2.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
-        lastName_field2.setForeground(new java.awt.Color(92, 101, 138));
+        leaveLastName_field.setBackground(new java.awt.Color(250, 250, 255));
+        leaveLastName_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
+        leaveLastName_field.setForeground(new java.awt.Color(92, 101, 138));
 
-        leave_type1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        leave_type1.setForeground(new java.awt.Color(250, 250, 255));
-        leave_type1.setText("Leave Type :");
+        leave_type.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        leave_type.setForeground(new java.awt.Color(250, 250, 255));
+        leave_type.setText("Leave Type :");
 
         leaveTypeComboBox.setBackground(new java.awt.Color(250, 250, 255));
         leaveTypeComboBox.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
@@ -663,14 +690,14 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                             .addGroup(leaveTabLayout.createSequentialGroup()
                                 .addComponent(noe_title7)
                                 .addGap(18, 18, 18)
-                                .addComponent(lastName_field2, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(leaveLastName_field, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(leaveTabLayout.createSequentialGroup()
                                 .addComponent(noe_title6)
                                 .addGap(18, 18, 18)
-                                .addComponent(firstName_field2, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(leaveFirstName_field, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(139, 139, 139)
                         .addGroup(leaveTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(leave_type1)
+                            .addComponent(leave_type)
                             .addComponent(enddate_lbl1)
                             .addComponent(startdate_lbl2))
                         .addGap(18, 18, 18)
@@ -701,7 +728,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                             .addComponent(enddate_lbl1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(leaveTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(leave_type1)
+                            .addComponent(leave_type)
                             .addComponent(leaveTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(leaveTabLayout.createSequentialGroup()
                         .addGroup(leaveTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -710,11 +737,11 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(leaveTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(noe_title6)
-                            .addComponent(firstName_field2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(leaveFirstName_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(leaveTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(noe_title7)
-                            .addComponent(lastName_field2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(leaveLastName_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(21, 21, 21)
                 .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -740,7 +767,6 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         en_title.setForeground(new java.awt.Color(92, 101, 138));
         en_title.setText("Employee Number :");
 
-        id_field.setEditable(false);
         id_field.setBackground(new java.awt.Color(250, 250, 255));
         id_field.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         id_field.setForeground(new java.awt.Color(253, 56, 29));
@@ -764,8 +790,8 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(en_title)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(id_field, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 237, Short.MAX_VALUE)
+                        .addComponent(id_field, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 264, Short.MAX_VALUE)
                         .addComponent(date)
                         .addGap(18, 18, 18)
                         .addComponent(time)
@@ -816,18 +842,22 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void id_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_id_fieldKeyReleased
-        // type employee number
+       // type employee number
         String employeeId = id_field.getText();
         try {
             conn = dbConnect.connect();
             Admin_Class employee = dbConnect.getEmployeeDetails(employeeId);
             if (employee != null) {
-                firstname_field.setText(employee.getFirstName());
+                firstName_field.setText(employee.getFirstName());
                 lastname_field.setText(employee.getLastName());
+                timeLogFirstNameField.setText(employee.getFirstName());
+                timeLogLastNameField.setText(employee.getLastName());
+                leaveFirstName_field.setText(employee.getFirstName());
+                leaveLastName_field.setText(employee.getLastName());
+                
                 bday_field.setText(employee.getBirthday());
-                address_field.setText(employee.getAddress());
+                address_field.setText(employee.getAddressID());
                 contact_field.setText(employee.getPhoneNumber());
-                //status_field.setText(employee.getStatus());
                 email_field.setText(employee.getEmail());
                 sss_field.setText(employee.getSssNum());
                 philhealth_field.setText(employee.getPhilHealthNum());
@@ -849,8 +879,8 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         // add data to sql
         String leaveNum = leaveNum_field.getText();
         String employeeId = id_field.getText();
-        String firstName = firstName_field.getText();
-        String lastName = lastName_field.getText();
+        String firstName = timeLogFirstNameField.getText();
+        String lastName = timeLogLastNameField.getText();
         String startDate = startdate_chooser.getDate() != null ?
         new SimpleDateFormat("MMMM d, y").format(enddate_chooser.getDate()) : "";
         String endDate = enddate_chooser.getDate() != null ?
@@ -870,9 +900,9 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     private void timeOutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeOutBtnActionPerformed
         // Time Out Function + insert to SQL
         DefaultTableModel model = (DefaultTableModel) attendance_table.getModel();
-        model.addRow(new Object[]{firstName_field.getText(), lastName_field.getText(), date.getText(),"", time.getText()});
+        model.addRow(new Object[]{timeLogFirstNameField.getText(), timeLogLastNameField.getText(), date.getText(),"", time.getText()});
 
-        boolean success = dbConnect.logTimeOut(id_field.getText(), firstName_field.getText(), lastName_field.getText(), date.getText(), time.getText());
+        boolean success = dbConnect.logTimeOut(id_field.getText(), timeLogFirstNameField.getText(), timeLogLastNameField.getText(), date.getText(), time.getText());
 
         if (success) {
             JOptionPane.showMessageDialog(this, "Time Out Successfully Added");
@@ -884,9 +914,9 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     private void timeInBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeInBtnActionPerformed
         // Time In Function + insert to SQL
         DefaultTableModel model = (DefaultTableModel) attendance_table.getModel();
-        model.addRow(new Object[]{firstName_field.getText(), lastName_field.getText(), date.getText(), time.getText(),""});
+        model.addRow(new Object[]{timeLogFirstNameField.getText(), timeLogLastNameField.getText(), date.getText(), time.getText(),""});
 
-        boolean success = dbConnect.logTimeIn(id_field.getText(), firstName_field.getText(), lastName_field.getText(), date.getText(), time.getText());
+        boolean success = dbConnect.logTimeIn(id_field.getText(), timeLogFirstNameField.getText(), timeLogLastNameField.getText(), date.getText(), time.getText());
 
         if (success) {
             JOptionPane.showMessageDialog(this, "Time In Successfully Added");
@@ -894,10 +924,6 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Failed to add Time In");
         }
     }//GEN-LAST:event_timeInBtnActionPerformed
-
-    private void lastname_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastname_fieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_lastname_fieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -955,26 +981,23 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser enddate_chooser;
     private javax.swing.JLabel enddate_lbl1;
     private javax.swing.JTextField firstName_field;
-    private javax.swing.JTextField firstName_field2;
     private javax.swing.JLabel first_name;
-    private javax.swing.JTextField firstname_field;
     private javax.swing.JLabel govIdNum_title;
     private javax.swing.JTextField id_field;
     private javax.swing.JLabel img;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextField lastName_field;
-    private javax.swing.JTextField lastName_field2;
-    private javax.swing.JLabel last_name;
     private javax.swing.JTextField lastname_field;
+    private javax.swing.JTextField leaveFirstName_field;
+    private javax.swing.JTextField leaveLastName_field;
     private javax.swing.JLabel leaveNum1;
     private javax.swing.JTextField leaveNum_field;
     private javax.swing.JPanel leaveTab;
     private javax.swing.JTable leaveTable;
     private javax.swing.JComboBox<String> leaveTypeComboBox;
     private javax.swing.JLabel leave_title;
-    private javax.swing.JLabel leave_type1;
+    private javax.swing.JLabel leave_type;
     private javax.swing.JLabel noe_title;
     private javax.swing.JLabel noe_title6;
     private javax.swing.JLabel noe_title7;
@@ -990,6 +1013,9 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     private javax.swing.JTabbedPane tab;
     private javax.swing.JLabel time;
     private javax.swing.JButton timeInBtn;
+    private javax.swing.JTextField timeLogFirstNameField;
+    private javax.swing.JTextField timeLogLastNameField;
+    private javax.swing.JLabel timeLogLastNameLbl;
     private javax.swing.JPanel timeLogTab;
     private javax.swing.JButton timeOutBtn;
     private javax.swing.JTextField tin_field;

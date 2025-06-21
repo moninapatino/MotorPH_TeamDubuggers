@@ -29,7 +29,6 @@ public class EmployeeAttendance extends javax.swing.JFrame {
         setTime();
         setDate();
         show_table();
-        
     }
     
     public final void setTime(){

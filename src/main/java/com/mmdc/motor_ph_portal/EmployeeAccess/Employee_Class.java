@@ -11,12 +11,12 @@ public class Employee_Class extends User {
   
 
     public Employee_Class(String employeeID, String firstName, String lastName, String birthday, 
-                String address, String street, String barangay, String city, String province,
+                String addressID, String street, String barangay, String city, String province,
                 String postalcode, String email, String phoneNumber, String sssNum, 
                 String philHealthNum, String tinNum, String pagibigNum, 
                 String username, String password) {
         super(employeeID, firstName, lastName, birthday, 
-                 address, street, barangay, city, province,
+                 addressID, street, barangay, city, province,
                  postalcode, email, phoneNumber, sssNum, 
                  philHealthNum, tinNum, pagibigNum, 
                  username, password);
