@@ -1,8 +1,8 @@
-
 package com.mmdc.motor_ph_portal.EmployeeAccess;
 
 import com.mmdc.motor_ph_portal.AdminAccess.Admin_Class;
 import com.mmdc.motor_ph_portal.LeaveRecord;
+import com.mmdc.motor_ph_portal.Login;
 import com.mmdc.motor_ph_util.DatabaseConnect;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -29,16 +29,16 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     PreparedStatement pst = null;
     DatabaseConnect dbConnect = new DatabaseConnect() {};
     private String username;
+    private String employeeID;
 
      
     public EmployeeAccess_Profile() {
         initComponents();
         
-        
         setTitle ("Motor PH Employee Profile");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
-            Toolkit toolkit=getToolkit();
+        Toolkit toolkit=getToolkit();
         Dimension size=toolkit.getScreenSize();
         setLocation(size.width/2-getWidth()/2,size.height/2-getHeight()/2);
         loadLeaveRecords();
@@ -46,12 +46,134 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         time();
         date();
         
+        // Make all profile fields read-only
+        makeFieldsReadOnly();
+        
+        // Setup tab change listener
+        setupTabChangeListener();
     }
     
     public EmployeeAccess_Profile(String employeeID, String firstName, String lastName) {
-    id_field.setText(employeeID);
-    // Trigger the autofill for other fields
-    loadAndFillEmployeeDataByUsername(username);
+        initComponents();
+        
+        setTitle ("Motor PH Employee Profile");
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setVisible(true);
+        Toolkit toolkit=getToolkit();
+        Dimension size=toolkit.getScreenSize();
+        setLocation(size.width/2-getWidth()/2,size.height/2-getHeight()/2);
+        
+        this.employeeID = employeeID;
+        
+        // Load employee data and populate fields
+        loadEmployeeData(employeeID);
+        
+        loadLeaveRecords();
+        time();
+        date();
+        
+        // Make all profile fields read-only
+        makeFieldsReadOnly();
+        
+        // Setup tab change listener
+        setupTabChangeListener();
+    }
+    
+    public EmployeeAccess_Profile(String username) {
+        initComponents();
+        
+        setTitle ("Motor PH Employee Profile");
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setVisible(true);
+        Toolkit toolkit=getToolkit();
+        Dimension size=toolkit.getScreenSize();
+        setLocation(size.width/2-getWidth()/2,size.height/2-getHeight()/2);
+        
+        this.username = username;
+        
+        // Load employee data by username and populate fields
+        loadAndFillEmployeeDataByUsername(username);
+        
+        loadLeaveRecords();
+        time();
+        date();
+        
+        // Make all profile fields read-only
+        makeFieldsReadOnly();
+        
+        // Setup tab change listener
+        setupTabChangeListener();
+    }
+    
+    private void makeFieldsReadOnly() {
+        // Make all profile fields read-only
+        id_field.setEditable(false);
+        firstName_field.setEditable(false);
+        lastname_field.setEditable(false);
+        bday_field.setEditable(false);
+        address_field.setEditable(false);
+        contact_field.setEditable(false);
+        email_field.setEditable(false);
+        sss_field.setEditable(false);
+        philhealth_field.setEditable(false);
+        pagibig_field.setEditable(false);
+        tin_field.setEditable(false);
+        
+        // Make time log fields read-only
+        timeLogFirstNameField.setEditable(false);
+        timeLogLastNameField.setEditable(false);
+        
+        // Make leave fields read-only
+        leaveFirstName_field.setEditable(false);
+        leaveLastName_field.setEditable(false);
+    }
+    
+    private void loadEmployeeData(String employeeID) {
+        try {
+            conn = dbConnect.connect();
+            Admin_Class employee = dbConnect.getEmployeeDetails(employeeID);
+            if (employee != null) {
+                // Set employee ID
+                id_field.setText(employee.getEmployeeID());
+                
+                // Set name fields
+                firstName_field.setText(employee.getFirstName());
+                lastname_field.setText(employee.getLastName());
+                timeLogFirstNameField.setText(employee.getFirstName());
+                timeLogLastNameField.setText(employee.getLastName());
+                leaveFirstName_field.setText(employee.getFirstName());
+                leaveLastName_field.setText(employee.getLastName());
+                
+                // Set employee name display
+                String fullName = employee.getFirstName() + " " + employee.getLastName();
+                empName.setText(fullName);
+                
+                // Set other profile fields
+                bday_field.setText(employee.getBirthday() != null ? employee.getBirthday() : "");
+                
+                ArrayList<String> addressParts = new ArrayList<>();
+                if (employee.getStreet() != null && !employee.getStreet().isEmpty()) addressParts.add(employee.getStreet());
+                if (employee.getBarangay() != null && !employee.getBarangay().isEmpty()) addressParts.add(employee.getBarangay());
+                if (employee.getCity() != null && !employee.getCity().isEmpty()) addressParts.add(employee.getCity());
+                if (employee.getProvince() != null && !employee.getProvince().isEmpty()) addressParts.add(employee.getProvince());
+                String fullAddress = String.join(", ", addressParts);
+                if (employee.getPostalcode() != null && !employee.getPostalcode().isEmpty()) {
+                    fullAddress += " " + employee.getPostalcode();
+                }
+                address_field.setText(fullAddress);
+                
+                contact_field.setText(employee.getPhoneNumber() != null ? employee.getPhoneNumber() : "");
+                email_field.setText(employee.getEmail() != null ? employee.getEmail() : "");
+                sss_field.setText(employee.getSssNum() != null ? employee.getSssNum() : "");
+                philhealth_field.setText(employee.getPhilHealthNum() != null ? employee.getPhilHealthNum() : "");
+                pagibig_field.setText(employee.getPagibigNum() != null ? employee.getPagibigNum() : "");
+                tin_field.setText(employee.getTinNum() != null ? employee.getTinNum() : "");
+            } else {
+                JOptionPane.showMessageDialog(null, "No employee found with ID: " + employeeID, "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error loading employee data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
    public void loadAndFillEmployeeDataByUsername(String username) {
@@ -63,12 +185,43 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         Admin_Class employee = dbConnect.getEmployeeByUsername(username);
 
         if (employee != null) {
+            this.employeeID = employee.getEmployeeID();
+            
+            // Set employee ID
             id_field.setText(employee.getEmployeeID());
+            
+            // Set name fields
             firstName_field.setText(employee.getFirstName());
             lastname_field.setText(employee.getLastName());
+            timeLogFirstNameField.setText(employee.getFirstName());
+            timeLogLastNameField.setText(employee.getLastName());
+            leaveFirstName_field.setText(employee.getFirstName());
+            leaveLastName_field.setText(employee.getLastName());
 
+            // Set employee name display
             String fullName = employee.getFirstName() + " " + employee.getLastName();
             empName.setText(fullName);
+            
+            // Set other profile fields
+            bday_field.setText(employee.getBirthday() != null ? employee.getBirthday() : "");
+            
+            ArrayList<String> addressParts = new ArrayList<>();
+            if (employee.getStreet() != null && !employee.getStreet().isEmpty()) addressParts.add(employee.getStreet());
+            if (employee.getBarangay() != null && !employee.getBarangay().isEmpty()) addressParts.add(employee.getBarangay());
+            if (employee.getCity() != null && !employee.getCity().isEmpty()) addressParts.add(employee.getCity());
+            if (employee.getProvince() != null && !employee.getProvince().isEmpty()) addressParts.add(employee.getProvince());
+            String fullAddress = String.join(", ", addressParts);
+            if (employee.getPostalcode() != null && !employee.getPostalcode().isEmpty()) {
+                fullAddress += " " + employee.getPostalcode();
+            }
+            address_field.setText(fullAddress);
+            
+            contact_field.setText(employee.getPhoneNumber() != null ? employee.getPhoneNumber() : "");
+            email_field.setText(employee.getEmail() != null ? employee.getEmail() : "");
+            sss_field.setText(employee.getSssNum() != null ? employee.getSssNum() : "");
+            philhealth_field.setText(employee.getPhilHealthNum() != null ? employee.getPhilHealthNum() : "");
+            pagibig_field.setText(employee.getPagibigNum() != null ? employee.getPagibigNum() : "");
+            tin_field.setText(employee.getTinNum() != null ? employee.getTinNum() : "");
         } else {
             JOptionPane.showMessageDialog(null, "No employee found with username: " + username);
         }
@@ -90,79 +243,149 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     }
     
     public void loadLeaveRecords() {
-        ArrayList<LeaveRecord> leaveRecords = dbConnect.userList();
+        // Only load leave records for the logged-in employee
+        if (this.employeeID == null || this.employeeID.trim().isEmpty()) {
+            return; // Skip if no employee ID is set
+        }
         
-        DefaultTableModel leaveTableModel = (DefaultTableModel) leaveTable.getModel();
-        leaveTableModel.setRowCount(0); // Clear existing rows
+        try {
+            conn = dbConnect.connect();
+            String sql = "SELECT lr.leave_id, lr.employee_id, e.first_name, e.last_name, lr.start_date, lr.end_date, lr.leave_type, lr.status " +
+                         "FROM leave_records lr JOIN employee e ON lr.employee_id = e.employee_id " +
+                         "WHERE lr.employee_id = ?";
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, this.employeeID);
+            rs = pst.executeQuery();
+            
+            DefaultTableModel leaveTableModel = (DefaultTableModel) leaveTable.getModel();
+            leaveTableModel.setRowCount(0); // Clear existing rows
 
-        for (LeaveRecord record : leaveRecords) {
-            Vector<String> row = new Vector<>();
-            row.add(record.getLeaveId());
-            row.add(record.getEmployeeId());
-            row.add(record.getFirstName());
-            row.add(record.getLastName());
-            row.add(record.getStartDate());
-            row.add(record.getEndDate());
-            row.add(record.getLeaveType());
-            row.add(record.getStatus());
-            leaveTableModel.addRow(row);
-        }              
-   }
+            while (rs.next()) {
+                Vector<String> row = new Vector<>();
+                row.add(rs.getString("leave_id"));
+                row.add(rs.getString("employee_id"));
+                row.add(rs.getString("first_name"));
+                row.add(rs.getString("last_name"));
+                row.add(rs.getString("start_date"));
+                row.add(rs.getString("end_date"));
+                row.add(rs.getString("leave_type"));
+                row.add(rs.getString("status"));
+                leaveTableModel.addRow(row);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error loading leave records: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pst != null) pst.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                // ignore
+            }
+        }
+    }
    
     public ArrayList refreshList() {
-         ArrayList<LeaveRecord> leaveRecords = dbConnect.refreshList();
-        
-        DefaultTableModel leaveTableModel = (DefaultTableModel) leaveTable.getModel();
-        leaveTableModel.setRowCount(0); // Clear existing rows
-
-        for (LeaveRecord record : leaveRecords) {
-            Vector<String> row = new Vector<>();
-            row.add(record.getLeaveId());
-            row.add(record.getEmployeeId());
-            row.add(record.getFirstName());
-            row.add(record.getLastName());
-            row.add(record.getStartDate());
-            row.add(record.getEndDate());
-            row.add(record.getLeaveType());
-            row.add(record.getStatus());
-            leaveTableModel.addRow(row);
+        // Only refresh leave records for the logged-in employee
+        if (this.employeeID == null || this.employeeID.trim().isEmpty()) {
+            return new ArrayList(); // Return empty list if no employee ID is set
         }
-        return leaveRecords;
+        
+        try {
+            conn = dbConnect.connect();
+            String sql = "SELECT lr.leave_id, lr.employee_id, e.first_name, e.last_name, lr.start_date, lr.end_date, lr.leave_type, lr.status " +
+                         "FROM leave_records lr JOIN employee e ON lr.employee_id = e.employee_id " +
+                         "WHERE lr.employee_id = ?";
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, this.employeeID);
+            rs = pst.executeQuery();
+            
+            DefaultTableModel leaveTableModel = (DefaultTableModel) leaveTable.getModel();
+            leaveTableModel.setRowCount(0); // Clear existing rows
+
+            while (rs.next()) {
+                Vector<String> row = new Vector<>();
+                row.add(rs.getString("leave_id"));
+                row.add(rs.getString("employee_id"));
+                row.add(rs.getString("first_name"));
+                row.add(rs.getString("last_name"));
+                row.add(rs.getString("start_date"));
+                row.add(rs.getString("end_date"));
+                row.add(rs.getString("leave_type"));
+                row.add(rs.getString("status"));
+                leaveTableModel.addRow(row);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error refreshing leave records: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pst != null) pst.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                // ignore
+            }
+        }
+        
+        return new ArrayList(); // Return empty list for compatibility
     }
     
     public ArrayList loadTimeLog() {
         ArrayList timeLog = new ArrayList();
+        if (this.employeeID == null || this.employeeID.trim().isEmpty()) {
+            return timeLog;
+        }
         try {
-            String sql = "SELECT * FROM attendance_records where employee_id = ?";
-            pst= conn.prepareStatement(sql);
-            pst.setString(1, id_field.getText());
+            conn = dbConnect.connect();
+            String sql = "SELECT e.first_name, e.last_name, ar.date, ar.time_in, ar.time_out " +
+                         "FROM attendance_record ar " +
+                         "JOIN employee e ON ar.employee_id = e.employee_id " +
+                         "WHERE ar.employee_id = ?";
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, this.employeeID);
             rs = pst.executeQuery();
             
-            ResultSetMetaData rsmd=rs.getMetaData();
-            int n=rsmd.getColumnCount();
-            
-            DefaultTableModel leave_table = (DefaultTableModel)attendance_table.getModel();
-            leave_table.setRowCount(0);
+            DefaultTableModel timeLogTableModel = (DefaultTableModel)attendance_table.getModel();
+            timeLogTableModel.setRowCount(0);
             while(rs.next()){
-                Vector v=new Vector();
-                for (int i=0;i<n;i++){
-                    
-                    v.add(rs.getString("first_name"));
-                    v.add(rs.getString("last_name"));
-                    v.add(rs.getString("date"));
-                    v.add(rs.getString("time_in"));
-                    v.add(rs.getString("time_out"));
-                                    
-                }
-                leave_table.addRow(v);
+                Vector<String> v=new Vector<>();
+                v.add(rs.getString("first_name"));
+                v.add(rs.getString("last_name"));
+                v.add(rs.getString("date"));
+                v.add(rs.getString("time_in"));
+                v.add(rs.getString("time_out"));
+                timeLogTableModel.addRow(v);
             }    
         } 
         catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-        }  
+            JOptionPane.showMessageDialog(null, "Error loading time log: " + ex.getMessage());
+        }  finally {
+            try {
+                if (rs != null) rs.close();
+                if (pst != null) pst.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                // ignore
+            }
+        }
         return timeLog;
      }
+     
+     public void refreshTimeLog() {
+         loadTimeLog();
+     }
     
+    private void setupTabChangeListener() {
+        tab.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                if (tab.getSelectedIndex() == 1) { // Time Log tab
+                    refreshTimeLog();
+                } else if (tab.getSelectedIndex() == 2) { // Leave tab
+                    loadLeaveRecords();
+                }
+            }
+        });
+    }
    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -212,7 +435,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         leaveLastName_field = new javax.swing.JTextField();
         leave_type = new javax.swing.JLabel();
         leaveTypeComboBox = new javax.swing.JComboBox<>();
-        addButton = new javax.swing.JButton();
+        leaveButton = new javax.swing.JButton();
         enddate_lbl1 = new javax.swing.JLabel();
         enddate_chooser = new com.toedter.calendar.JDateChooser();
         leaveNum1 = new javax.swing.JLabel();
@@ -625,13 +848,13 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         leaveTypeComboBox.setForeground(new java.awt.Color(92, 101, 138));
         leaveTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Vacation Leave", "Sick Leave", "Emergency Leave", "Birthday Leave" }));
 
-        addButton.setBackground(new java.awt.Color(253, 56, 29));
-        addButton.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        addButton.setForeground(new java.awt.Color(250, 250, 255));
-        addButton.setText("File Leave");
-        addButton.addActionListener(new java.awt.event.ActionListener() {
+        leaveButton.setBackground(new java.awt.Color(253, 56, 29));
+        leaveButton.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        leaveButton.setForeground(new java.awt.Color(250, 250, 255));
+        leaveButton.setText("File Leave");
+        leaveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addButtonActionPerformed(evt);
+                leaveButtonActionPerformed(evt);
             }
         });
 
@@ -676,7 +899,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
             leaveTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, leaveTabLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(leaveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(321, 321, 321))
             .addGroup(leaveTabLayout.createSequentialGroup()
                 .addGap(70, 70, 70)
@@ -743,7 +966,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                             .addComponent(noe_title7)
                             .addComponent(leaveLastName_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(21, 21, 21)
-                .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(leaveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(72, Short.MAX_VALUE))
@@ -775,8 +998,6 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                 id_fieldKeyReleased(evt);
             }
         });
-
-        img.setIcon(new javax.swing.ImageIcon("C:\\Users\\user\\Desktop\\Monina\\MMDC\\Term 3 24-25\\icon.png")); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -842,88 +1063,92 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void id_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_id_fieldKeyReleased
-       // type employee number
-        String employeeId = id_field.getText();
-        try {
-            conn = dbConnect.connect();
-            Admin_Class employee = dbConnect.getEmployeeDetails(employeeId);
-            if (employee != null) {
-                firstName_field.setText(employee.getFirstName());
-                lastname_field.setText(employee.getLastName());
-                timeLogFirstNameField.setText(employee.getFirstName());
-                timeLogLastNameField.setText(employee.getLastName());
-                leaveFirstName_field.setText(employee.getFirstName());
-                leaveLastName_field.setText(employee.getLastName());
-                
-                bday_field.setText(employee.getBirthday());
-                address_field.setText(employee.getAddressID());
-                contact_field.setText(employee.getPhoneNumber());
-                email_field.setText(employee.getEmail());
-                sss_field.setText(employee.getSssNum());
-                philhealth_field.setText(employee.getPhilHealthNum());
-                pagibig_field.setText(employee.getPagibigNum());
-                tin_field.setText(employee.getTinNum());
-            } else {
-            }   // Handle the case where no employee was found
-        }catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "No employee found with ID: " + employeeId, "Error", JOptionPane.ERROR_MESSAGE);
-
-        }
+       // This method is no longer needed as the field is read-only
+       // Employee data is now loaded automatically based on login credentials
     }//GEN-LAST:event_id_fieldKeyReleased
 
     private void leaveNum_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_leaveNum_fieldKeyReleased
         // TODO add your handling code here:
     }//GEN-LAST:event_leaveNum_fieldKeyReleased
 
-    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+    private void leaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leaveButtonActionPerformed
         // add data to sql
         String leaveNum = leaveNum_field.getText();
-        String employeeId = id_field.getText();
-        String firstName = timeLogFirstNameField.getText();
-        String lastName = timeLogLastNameField.getText();
+        String employeeId = this.employeeID; // Use the employee ID from logged-in user
+        String firstName = firstName_field.getText(); // Use the actual employee first name
+        String lastName = lastname_field.getText(); // Use the actual employee last name
         String startDate = startdate_chooser.getDate() != null ?
-        new SimpleDateFormat("MMMM d, y").format(enddate_chooser.getDate()) : "";
+        new SimpleDateFormat("MMMM d, y").format(startdate_chooser.getDate()) : "";
         String endDate = enddate_chooser.getDate() != null ?
         new SimpleDateFormat("MMMM d, y").format(enddate_chooser.getDate()) : "";
         String leaveType = leaveTypeComboBox.getSelectedItem().toString();
         String status = "Pending";
 
+        // Validate required fields
+        if (leaveNum.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please enter a Leave Number", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        if (startDate.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please select a Start Date", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        if (endDate.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please select an End Date", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         DefaultTableModel model = (DefaultTableModel) leaveTable.getModel();
-        model.addRow(new Object[]{leaveNum, employeeId, firstName, lastName, startDate, endDate, leaveType});
+        model.addRow(new Object[]{leaveNum, employeeId, firstName, lastName, startDate, endDate, leaveType, status});
         LeaveRecord leaveRecord = new LeaveRecord(leaveNum, employeeId, firstName, lastName, startDate, endDate, leaveType, status);
 
         dbConnect.addLeaveRequest(leaveRecord);
         JOptionPane.showMessageDialog(null, "Leave request added successfully!");
-        refreshList();
-    }//GEN-LAST:event_addButtonActionPerformed
+        
+        // Clear the form fields
+        leaveNum_field.setText("");
+        startdate_chooser.setDate(null);
+        enddate_chooser.setDate(null);
+        leaveTypeComboBox.setSelectedIndex(0);
+        
+        loadLeaveRecords(); // Refresh the leave records display
+    }//GEN-LAST:event_leaveButtonActionPerformed
 
     private void timeOutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeOutBtnActionPerformed
-        // Time Out Function + insert to SQL
-        DefaultTableModel model = (DefaultTableModel) attendance_table.getModel();
-        model.addRow(new Object[]{timeLogFirstNameField.getText(), timeLogLastNameField.getText(), date.getText(),"", time.getText()});
-
-        boolean success = dbConnect.logTimeOut(id_field.getText(), timeLogFirstNameField.getText(), timeLogLastNameField.getText(), date.getText(), time.getText());
+        // Time Out Function + update SQL
+        boolean success = dbConnect.logTimeOut(this.employeeID, date.getText(), time.getText());
 
         if (success) {
             JOptionPane.showMessageDialog(this, "Time Out Successfully Added");
+            refreshTimeLog(); // Refresh the time log display
         } else {
-            JOptionPane.showMessageDialog(this, "Failed to add Time Out");
+            JOptionPane.showMessageDialog(this, "Failed to add Time Out. Have you timed in today?");
         }
     }//GEN-LAST:event_timeOutBtnActionPerformed
 
     private void timeInBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeInBtnActionPerformed
         // Time In Function + insert to SQL
-        DefaultTableModel model = (DefaultTableModel) attendance_table.getModel();
-        model.addRow(new Object[]{timeLogFirstNameField.getText(), timeLogLastNameField.getText(), date.getText(), time.getText(),""});
-
-        boolean success = dbConnect.logTimeIn(id_field.getText(), timeLogFirstNameField.getText(), timeLogLastNameField.getText(), date.getText(), time.getText());
+        boolean success = dbConnect.logTimeIn(this.employeeID, date.getText(), time.getText());
 
         if (success) {
             JOptionPane.showMessageDialog(this, "Time In Successfully Added");
+            refreshTimeLog(); // Refresh the time log display
         } else {
             JOptionPane.showMessageDialog(this, "Failed to add Time In");
         }
     }//GEN-LAST:event_timeInBtnActionPerformed
+
+    private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        int result = JOptionPane.showConfirmDialog(null,"Are you sure you want to Log Out?", "Log Out", JOptionPane.YES_NO_OPTION);
+
+        if (result == JOptionPane.YES_OPTION){
+            Login loginPage = new Login();
+            loginPage.setVisible(true);
+            this.dispose();
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -956,13 +1181,14 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                // For testing, you can pass a username here
+                // new EmployeeAccess_Profile("test_username").setVisible(true);
                 new EmployeeAccess_Profile().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addButton;
     private javax.swing.JTextField address_field;
     private javax.swing.JLabel address_title;
     private javax.swing.JTable attendance_table;
@@ -989,6 +1215,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField lastname_field;
+    private javax.swing.JButton leaveButton;
     private javax.swing.JTextField leaveFirstName_field;
     private javax.swing.JTextField leaveLastName_field;
     private javax.swing.JLabel leaveNum1;

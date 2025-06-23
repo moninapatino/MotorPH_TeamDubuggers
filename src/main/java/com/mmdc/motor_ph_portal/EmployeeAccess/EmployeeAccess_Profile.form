@@ -819,7 +819,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          <Component id="addButton" min="-2" pref="104" max="-2" attributes="0"/>
+                          <Component id="leaveButton" min="-2" pref="104" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="321" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -907,7 +907,7 @@
                               </Group>
                           </Group>
                           <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-                          <Component id="addButton" min="-2" pref="38" max="-2" attributes="0"/>
+                          <Component id="leaveButton" min="-2" pref="38" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="jScrollPane3" min="-2" pref="167" max="-2" attributes="0"/>
                           <EmptySpace pref="72" max="32767" attributes="0"/>
@@ -1036,7 +1036,7 @@
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                   </AuxValues>
                 </Component>
-                <Component class="javax.swing.JButton" name="addButton">
+                <Component class="javax.swing.JButton" name="leaveButton">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="1d" green="38" red="fd" type="rgb"/>
@@ -1050,7 +1050,7 @@
                     <Property name="text" type="java.lang.String" value="File Leave"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addButtonActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="leaveButtonActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="enddate_lbl1">
@@ -1206,11 +1206,6 @@
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="img">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\user\Desktop\Monina\MMDC\Term 3 24-25\icon.png"/>
-            </Property>
-          </Properties>
         </Component>
       </SubComponents>
     </Container>

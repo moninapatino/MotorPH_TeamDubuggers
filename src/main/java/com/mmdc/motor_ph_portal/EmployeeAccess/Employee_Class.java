@@ -1,6 +1,4 @@
-
 package com.mmdc.motor_ph_portal.EmployeeAccess;
-
 
 import com.mmdc.motor_ph_portal.AdminAccess.EmployeePortal;
 import com.mmdc.motor_ph_portal.User;
@@ -25,11 +23,11 @@ public class Employee_Class extends User {
    
     @Override
     public void login(String username, String password) {
-    JOptionPane.showMessageDialog(null, "Employee login successful for: " + firstName + lastName, 
+    JOptionPane.showMessageDialog(null, "Employee login successful for: " + firstName + " " + lastName, 
                                   "Login Successful", JOptionPane.INFORMATION_MESSAGE);
 
-    // Redirect to the Admin Access Employee Portal
-    EmployeeAccess_Profile empPortal = new EmployeeAccess_Profile(); 
+    // Redirect to the Employee Access Profile with username for automatic data loading
+    EmployeeAccess_Profile empPortal = new EmployeeAccess_Profile(username); 
     empPortal.setVisible(true);
     }
 

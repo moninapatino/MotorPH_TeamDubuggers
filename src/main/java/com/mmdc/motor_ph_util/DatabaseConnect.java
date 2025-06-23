@@ -27,9 +27,9 @@ public abstract class DatabaseConnect {
     ResultSet rs = null;
 
     public DatabaseConnect() {
-        this.url = "jdbc:mysql://localhost:3306/motorph?useSSL=false";
+        this.url = "jdbc:mysql://localhost:3306/payrollsystem_db?useSSL=false";
         this.user = "root";
-        this.password = "@dm1nistr4tor";
+        this.password = "enaxor";
     }
 
     public String getUrl() {
@@ -450,12 +450,10 @@ public abstract class DatabaseConnect {
 
             pst.setString(1, leaveRequest.getLeaveId());
             pst.setString(2, leaveRequest.getEmployeeId());
-            pst.setString(3, leaveRequest.getFirstName());
-            pst.setString(4, leaveRequest.getLastName());
-            pst.setString(5, leaveRequest.getStartDate());
-            pst.setString(6, leaveRequest.getEndDate());
-            pst.setString(7, leaveRequest.getLeaveType());
-            pst.setString(8, leaveRequest.getStatus());
+            pst.setString(3, leaveRequest.getStartDate());
+            pst.setString(4, leaveRequest.getEndDate());
+            pst.setString(5, leaveRequest.getLeaveType());
+            pst.setString(6, leaveRequest.getStatus());
 
             pst.executeUpdate();
             return true;
@@ -496,22 +494,19 @@ public abstract class DatabaseConnect {
             return false; // Indicate failure
         }
     }
-    public boolean logTimeIn(String employeeId, String firstName, String lastName, String date, String time) {
+    public boolean logTimeIn(String employeeId, String date, String time) {
 
     try {
         // Establish the database connection
         conn = connect();
         
         // Prepare the SQL statement
-        pst = conn.prepareStatement("INSERT INTO attendance_records (employee_id, first_name, last_name, date, time_in, time_out) VALUES(?, ?, ?, ?, ?, ?)");
+        pst = conn.prepareStatement("INSERT INTO attendance_record (employee_id, date, time_in) VALUES(?, ?, ?)");
         
         // Set the parameters
         pst.setString(1, employeeId);
-        pst.setString(2, firstName);
-        pst.setString(3, lastName);
-        pst.setString(4, date);
-        pst.setString(5, time);
-        pst.setString(6, null); // Set time out to null for time in
+        pst.setString(2, date);
+        pst.setString(3, time);
 
         // Execute the update
         pst.executeUpdate();
@@ -529,26 +524,24 @@ public abstract class DatabaseConnect {
         }
     }
 }
-     public boolean logTimeOut(String employeeId, String firstName, String lastName, String date, String time) {
+     public boolean logTimeOut(String employeeId, String date, String time) {
  
     try {
         // Establish the database connection
         conn = connect();
         
-        // Prepare the SQL statement
-        pst = conn.prepareStatement("INSERT INTO attendance_records (employee_id, first_name, last_name, date, time_in, time_out) VALUES(?, ?, ?, ?, ?, ?)");
+        // Prepare the SQL statement to update the existing record for the day
+        pst = conn.prepareStatement("UPDATE attendance_record SET time_out = ? WHERE employee_id = ? AND date = ? AND time_out IS NULL");
         
         // Set the parameters
-        pst.setString(1, employeeId);
-        pst.setString(2, firstName);
-        pst.setString(3, lastName);
-        pst.setString(4, date);
-        pst.setString(5, null);
-        pst.setString(6, time); // Set time out to null for time in
+        pst.setString(1, time);
+        pst.setString(2, employeeId);
+        pst.setString(3, date);
+
 
         // Execute the update
-        pst.executeUpdate();
-        return true; // Indicate success
+        int rowsAffected = pst.executeUpdate();
+        return rowsAffected > 0; // Indicate success if a row was updated
     } catch (SQLException e) {
         e.printStackTrace(); // Log the exception
         return false; // Indicate failure
@@ -570,7 +563,7 @@ public abstract class DatabaseConnect {
 
             // SQL query to fetch attendance records
             String sql = "SELECT ar.attendance_id, ar.employee_id, ar.date, e.first_name, e.last_name, ar.time_in, ar.time_out, ar.status " +
-                        "FROM attendance_records ar " +
+                        "FROM attendance_record ar " +
                         "JOIN employee e ON ar.employee_id = e.employee_id";
             pst = conn.prepareStatement(sql);
             rs = pst.executeQuery();
@@ -630,8 +623,8 @@ public abstract class DatabaseConnect {
 
     String sql = "SELECT " +
                  "e.employee_id, e.first_name, e.last_name, e.email, e.birthday, " +
-                 "a.address_id, a.street, a.barangay, a.city, a.province, a.postal_code, " +
-                 "e.phone_number, e.sss_num, e.philhealth_num, e.tin_num, e.pagibig_num, " +
+                 "e.address_id, a.street, a.barangay, a.city, a.province, a.postalcode, " +
+                 "e.phone, e.sss_num, e.philhealth_num, e.tin, e.pagibig_num, " +
                  "p.username, p.password " +
                  "FROM employee e " +
                  "JOIN address a ON e.address_id = a.address_id " +
@@ -656,15 +649,15 @@ public abstract class DatabaseConnect {
                 rs.getString("barangay"),
                 rs.getString("city"),
                 rs.getString("province"),
-                rs.getString("postal_code"),
-                rs.getString("phone_number"),
+                rs.getString("postalcode"),
+                rs.getString("phone"),
                 rs.getString("sss_num"),
                 rs.getString("philhealth_num"),
-                rs.getString("tin_num"),
+                rs.getString("tin"),
                 rs.getString("pagibig_num"),
                 rs.getString("username"),
                 rs.getString("password")
-            );
+            ) {};
         }
 
     } catch (Exception e) {
