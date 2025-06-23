@@ -2,7 +2,6 @@
 package com.mmdc.motor_ph_portal.AdminAccess;
 
 import com.mmdc.motor_ph_portal.EmployeeAccess.EmployeeAccess_Profile;
-import com.mmdc.motor_ph_portal.EmployeeAccess.Employee_Class;
 import com.mmdc.motor_ph_portal.Login;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -58,6 +57,7 @@ public class EmployeePortal extends javax.swing.JFrame {
         employeeProfileButton = new javax.swing.JButton();
         payrollButton = new javax.swing.JButton();
         leaveButton = new javax.swing.JButton();
+        reportsBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -142,7 +142,7 @@ public class EmployeePortal extends javax.swing.JFrame {
 
         bluePanel.setBackground(new java.awt.Color(30, 43, 93));
 
-        attendanceButton.setBackground(new java.awt.Color(30, 43, 93));
+        attendanceButton.setBackground(new java.awt.Color(253, 56, 29));
         attendanceButton.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         attendanceButton.setForeground(new java.awt.Color(250, 250, 255));
         attendanceButton.setText("Attendance");
@@ -153,7 +153,7 @@ public class EmployeePortal extends javax.swing.JFrame {
             }
         });
 
-        employeeProfileButton.setBackground(new java.awt.Color(30, 43, 93));
+        employeeProfileButton.setBackground(new java.awt.Color(253, 56, 29));
         employeeProfileButton.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         employeeProfileButton.setForeground(new java.awt.Color(250, 250, 255));
         employeeProfileButton.setText("Employee Profile");
@@ -164,7 +164,7 @@ public class EmployeePortal extends javax.swing.JFrame {
             }
         });
 
-        payrollButton.setBackground(new java.awt.Color(30, 43, 93));
+        payrollButton.setBackground(new java.awt.Color(253, 56, 29));
         payrollButton.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         payrollButton.setForeground(new java.awt.Color(250, 250, 255));
         payrollButton.setText("Payroll");
@@ -175,7 +175,7 @@ public class EmployeePortal extends javax.swing.JFrame {
             }
         });
 
-        leaveButton.setBackground(new java.awt.Color(30, 43, 93));
+        leaveButton.setBackground(new java.awt.Color(253, 56, 29));
         leaveButton.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         leaveButton.setForeground(new java.awt.Color(250, 250, 255));
         leaveButton.setText("Leave Management");
@@ -186,30 +186,45 @@ public class EmployeePortal extends javax.swing.JFrame {
             }
         });
 
+        reportsBtn.setBackground(new java.awt.Color(253, 56, 29));
+        reportsBtn.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        reportsBtn.setForeground(new java.awt.Color(250, 250, 255));
+        reportsBtn.setText("Reports");
+        reportsBtn.setBorder(null);
+        reportsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reportsBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout bluePanelLayout = new javax.swing.GroupLayout(bluePanel);
         bluePanel.setLayout(bluePanelLayout);
         bluePanelLayout.setHorizontalGroup(
             bluePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bluePanelLayout.createSequentialGroup()
-                .addGap(67, 67, 67)
-                .addGroup(bluePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(leaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
-                    .addComponent(attendanceButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(payrollButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(employeeProfileButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addGap(88, 88, 88)
+                .addGroup(bluePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(employeeProfileButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(payrollButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(attendanceButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(leaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(reportsBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE))
+                .addContainerGap(73, Short.MAX_VALUE))
         );
         bluePanelLayout.setVerticalGroup(
             bluePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bluePanelLayout.createSequentialGroup()
-                .addGap(62, 62, 62)
-                .addComponent(employeeProfileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
-                .addComponent(payrollButton, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
-                .addComponent(attendanceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
-                .addComponent(leaveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(38, 38, 38)
+                .addComponent(employeeProfileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(41, 41, 41)
+                .addComponent(payrollButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49)
+                .addComponent(attendanceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addComponent(leaveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(reportsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -289,7 +304,17 @@ public class EmployeePortal extends javax.swing.JFrame {
         // go to Employee Portal
         EmployeeAccess_Profile empPortal = new EmployeeAccess_Profile(); 
         empPortal.setVisible(true);
+        
+        dispose();
     }//GEN-LAST:event_employeeAccessBtnActionPerformed
+
+    private void reportsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportsBtnActionPerformed
+        Reports reports = new Reports();
+        reports.show();
+        
+        dispose();
+     
+    }//GEN-LAST:event_reportsBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -339,6 +364,7 @@ public class EmployeePortal extends javax.swing.JFrame {
     private javax.swing.JButton logOutButton;
     private javax.swing.JLabel logo;
     private javax.swing.JButton payrollButton;
+    private javax.swing.JButton reportsBtn;
     private javax.swing.JLabel time;
     // End of variables declaration//GEN-END:variables
 }

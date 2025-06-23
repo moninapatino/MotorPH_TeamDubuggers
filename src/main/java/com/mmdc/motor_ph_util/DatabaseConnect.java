@@ -27,7 +27,7 @@ public abstract class DatabaseConnect {
     ResultSet rs = null;
 
     public DatabaseConnect() {
-        this.url = "jdbc:mysql://localhost:3306/motorph?useSSL=false";
+        this.url = "jdbc:mysql://localhost:3306/payrollsystem_db?useSSL=false";
         this.user = "root";
         this.password = "@dm1nistr4tor";
     }
@@ -383,10 +383,9 @@ public abstract class DatabaseConnect {
     
     public ArrayList<LeaveRecord> userList() {
         ArrayList<LeaveRecord> leaveRecords = new ArrayList<>();
-        String sql = "SELECT l.leave_id, l.employee_id, l.start_date, l.end_date, l.leave_type, "
-                + "l.status, e.first_name, e.last_name "
-                + "FROM leave_records l "
-                + "JOIN employee e ON l.employee_id = e.employee_id";
+        String sql = "SELECT lr.leave_id, lr.employee_id, e.first_name, e.last_name, lr.start_date, lr.end_date, lr.leave_type, lr.status " +
+                         "FROM leave_records lr JOIN employee e ON lr.employee_id = e.employee_id " +
+                         "WHERE lr.employee_id = ?";
 
         try (Connection conn = connect(); PreparedStatement pst = conn.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
 
@@ -412,10 +411,9 @@ public abstract class DatabaseConnect {
     // 
     public ArrayList<LeaveRecord> refreshList() {
         ArrayList<LeaveRecord> leaveRecords = new ArrayList<>();
-        String sql = "SELECT l.leave_id, l.employee_id, l.start_date, l.end_date, l.leave_type, "
-                + "l.status, e.first_name, e.last_name "
-                + "FROM leave_records l "
-                + "JOIN employee e ON l.employee_id = e.employee_id";
+        String sql = "SELECT lr.leave_id, lr.employee_id, e.first_name, e.last_name, lr.start_date, lr.end_date, lr.leave_type, lr.status " +
+                         "FROM leave_records lr JOIN employee e ON lr.employee_id = e.employee_id " +
+                         "WHERE lr.employee_id = ?";
                 
         try (Connection conn = connect(); PreparedStatement pst = conn.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
 
@@ -645,26 +643,24 @@ public abstract class DatabaseConnect {
         ResultSet rs = pst.executeQuery();
 
         if (rs.next()) {
-            employee = new Admin_Class(
-                rs.getString("employee_id"),
-                rs.getString("first_name"),
-                rs.getString("last_name"),
-                rs.getString("email"),
-                rs.getString("birthday"),
-                rs.getString("address_id"),
-                rs.getString("street"),
-                rs.getString("barangay"),
-                rs.getString("city"),
-                rs.getString("province"),
-                rs.getString("postal_code"),
-                rs.getString("phone_number"),
-                rs.getString("sss_num"),
-                rs.getString("philhealth_num"),
-                rs.getString("tin_num"),
-                rs.getString("pagibig_num"),
-                rs.getString("username"),
-                rs.getString("password")
-            );
+                employee = new Admin_Class(
+                        rs.getString("employee_id"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("email"),
+                        rs.getString("birthday"),
+                        null,
+                        rs.getString("street"),
+                        rs.getString("barangay"),
+                        rs.getString("city"),
+                        rs.getString("province"),
+                        rs.getString("postalcode"),
+                        rs.getString("phone"),
+                        rs.getString("sss_num"),
+                        rs.getString("philhealth_num"),
+                        rs.getString("tin"),
+                        rs.getString("pagibig_num"),
+                        null,null) {};
         }
 
     } catch (Exception e) {
