@@ -435,7 +435,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         leaveLastName_field = new javax.swing.JTextField();
         leave_type = new javax.swing.JLabel();
         leaveTypeComboBox = new javax.swing.JComboBox<>();
-        leaveButton = new javax.swing.JButton();
+        addButton = new javax.swing.JButton();
         enddate_lbl1 = new javax.swing.JLabel();
         enddate_chooser = new com.toedter.calendar.JDateChooser();
         leaveNum1 = new javax.swing.JLabel();
@@ -449,6 +449,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         en_title = new javax.swing.JLabel();
         id_field = new javax.swing.JTextField();
         img = new javax.swing.JLabel();
+        logOutButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -848,13 +849,13 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         leaveTypeComboBox.setForeground(new java.awt.Color(92, 101, 138));
         leaveTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Vacation Leave", "Sick Leave", "Emergency Leave", "Birthday Leave" }));
 
-        leaveButton.setBackground(new java.awt.Color(253, 56, 29));
-        leaveButton.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        leaveButton.setForeground(new java.awt.Color(250, 250, 255));
-        leaveButton.setText("File Leave");
-        leaveButton.addActionListener(new java.awt.event.ActionListener() {
+        addButton.setBackground(new java.awt.Color(253, 56, 29));
+        addButton.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        addButton.setForeground(new java.awt.Color(250, 250, 255));
+        addButton.setText("File Leave");
+        addButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                leaveButtonActionPerformed(evt);
+                addButtonActionPerformed(evt);
             }
         });
 
@@ -899,7 +900,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
             leaveTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, leaveTabLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(leaveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(321, 321, 321))
             .addGroup(leaveTabLayout.createSequentialGroup()
                 .addGap(70, 70, 70)
@@ -966,7 +967,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                             .addComponent(noe_title7)
                             .addComponent(leaveLastName_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(21, 21, 21)
-                .addComponent(leaveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(72, Short.MAX_VALUE))
@@ -993,9 +994,16 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         id_field.setBackground(new java.awt.Color(250, 250, 255));
         id_field.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         id_field.setForeground(new java.awt.Color(253, 56, 29));
-        id_field.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                id_fieldKeyReleased(evt);
+
+        img.setIcon(new javax.swing.ImageIcon("C:\\Users\\user\\Desktop\\Monina\\MMDC\\Term 3 24-25\\icon.png")); // NOI18N
+
+        logOutButton.setBackground(new java.awt.Color(253, 56, 29));
+        logOutButton.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        logOutButton.setForeground(new java.awt.Color(217, 217, 217));
+        logOutButton.setText("LOG OUT");
+        logOutButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logOutButtonActionPerformed(evt);
             }
         });
 
@@ -1012,11 +1020,13 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                         .addComponent(en_title)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(id_field, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 264, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
+                        .addComponent(logOutButton)
+                        .addGap(18, 18, 18)
                         .addComponent(date)
                         .addGap(18, 18, 18)
                         .addComponent(time)
-                        .addGap(85, 85, 85))
+                        .addGap(20, 20, 20))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(empName)
                         .addGap(26, 26, 26))))
@@ -1041,7 +1051,8 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(time)
-                            .addComponent(date))))
+                            .addComponent(date)
+                            .addComponent(logOutButton))))
                 .addGap(10, 10, 10)
                 .addComponent(tab, javax.swing.GroupLayout.PREFERRED_SIZE, 519, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -1071,7 +1082,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_leaveNum_fieldKeyReleased
 
-    private void leaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leaveButtonActionPerformed
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // add data to sql
         String leaveNum = leaveNum_field.getText();
         String employeeId = this.employeeID; // Use the employee ID from logged-in user
@@ -1114,7 +1125,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         leaveTypeComboBox.setSelectedIndex(0);
         
         loadLeaveRecords(); // Refresh the leave records display
-    }//GEN-LAST:event_leaveButtonActionPerformed
+    }//GEN-LAST:event_addButtonActionPerformed
 
     private void timeOutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeOutBtnActionPerformed
         // Time Out Function + update SQL
@@ -1189,6 +1200,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addButton;
     private javax.swing.JTextField address_field;
     private javax.swing.JLabel address_title;
     private javax.swing.JTable attendance_table;
@@ -1215,7 +1227,6 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField lastname_field;
-    private javax.swing.JButton leaveButton;
     private javax.swing.JTextField leaveFirstName_field;
     private javax.swing.JTextField leaveLastName_field;
     private javax.swing.JLabel leaveNum1;
@@ -1247,5 +1258,6 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     private javax.swing.JButton timeOutBtn;
     private javax.swing.JTextField tin_field;
     private javax.swing.JLabel tin_title;
+    private javax.swing.JButton logOutButton;
     // End of variables declaration//GEN-END:variables
 }
