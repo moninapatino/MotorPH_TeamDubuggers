@@ -383,10 +383,9 @@ public abstract class DatabaseConnect {
     
     public ArrayList<LeaveRecord> userList() {
         ArrayList<LeaveRecord> leaveRecords = new ArrayList<>();
-        String sql = "SELECT l.leave_id, l.employee_id, l.start_date, l.end_date, l.leave_type, "
-                + "l.status, e.first_name, e.last_name "
-                + "FROM leave_records l "
-                + "JOIN employee e ON l.employee_id = e.employee_id";
+        String sql = "SELECT lr.leave_id, lr.employee_id, e.first_name, e.last_name, lr.start_date, lr.end_date, lr.leave_type, lr.status " +
+                         "FROM leave_records lr JOIN employee e ON lr.employee_id = e.employee_id " +
+                         "WHERE lr.employee_id = ?";
 
         try (Connection conn = connect(); PreparedStatement pst = conn.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
 
@@ -412,10 +411,9 @@ public abstract class DatabaseConnect {
     // 
     public ArrayList<LeaveRecord> refreshList() {
         ArrayList<LeaveRecord> leaveRecords = new ArrayList<>();
-        String sql = "SELECT l.leave_id, l.employee_id, l.start_date, l.end_date, l.leave_type, "
-                + "l.status, e.first_name, e.last_name "
-                + "FROM leave_records l "
-                + "JOIN employee e ON l.employee_id = e.employee_id";
+        String sql = "SELECT lr.leave_id, lr.employee_id, e.first_name, e.last_name, lr.start_date, lr.end_date, lr.leave_type, lr.status " +
+                         "FROM leave_records lr JOIN employee e ON lr.employee_id = e.employee_id " +
+                         "WHERE lr.employee_id = ?";
                 
         try (Connection conn = connect(); PreparedStatement pst = conn.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
 
