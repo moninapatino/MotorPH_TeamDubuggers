@@ -29,7 +29,7 @@ public abstract class DatabaseConnect {
     public DatabaseConnect() {
         this.url = "jdbc:mysql://localhost:3306/payrollsystem_db?useSSL=false";
         this.user = "root";
-        this.password = "enaxor";
+        this.password = "@dm1nistr4tor";
     }
 
     public String getUrl() {

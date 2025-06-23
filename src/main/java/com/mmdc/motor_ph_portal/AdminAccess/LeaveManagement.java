@@ -70,25 +70,28 @@ public class LeaveManagement extends javax.swing.JFrame {
     }
 
     public void loadLeaveRecords() {
-        ArrayList<LeaveRecord> leaveRecords = dbConnect.userList();
+    // Retrieve leave records for the given employee
+    ArrayList<LeaveRecord> leaveRecords = dbConnect.userList();
 
-        DefaultTableModel leaveTableModel = (DefaultTableModel) leaveTable.getModel();
-        leaveTableModel.setRowCount(0); // Clear existing rows
+    // Get the table model and clear existing rows
+    DefaultTableModel leaveTableModel = (DefaultTableModel) leaveTable.getModel();
+    leaveTableModel.setRowCount(0);
 
-        for (LeaveRecord record : leaveRecords) {
-            Vector<String> row = new Vector<>();
-            row.add(record.getLeaveId());
-            row.add(record.getEmployeeId());
-            row.add(record.getFirstName());
-            row.add(record.getLastName());
-            row.add(record.getStartDate());
-            row.add(record.getEndDate());
-            row.add(record.getLeaveType());
-            row.add(record.getStatus());
-            leaveTableModel.addRow(row);
-        }
+    // Add each leave record to the table
+    for (LeaveRecord record : leaveRecords) {
+        Object[] row = {
+            record.getLeaveId(),
+            record.getEmployeeId(),
+            record.getFirstName(),
+            record.getLastName(),
+            record.getStartDate(),
+            record.getEndDate(),
+            record.getLeaveType(),
+            record.getStatus()
+        };
+        leaveTableModel.addRow(row);
     }
-
+}
     public ArrayList refreshList() {
         ArrayList<LeaveRecord> leaveRecords = dbConnect.refreshList();
 
