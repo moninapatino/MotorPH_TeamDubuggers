@@ -335,15 +335,13 @@ public abstract class DatabaseConnect {
     }
 
     // PAYROLL DETAILS KEY RELEASE
-    public PayrollCalculation getPayrollDetails(String employeeId, String payPeriodId) {
+   public PayrollCalculation getPayrollDetails(String employeeId) {
     PayrollCalculation payroll = null;
-
     try {
         conn = connect();
-        String sql = "SELECT * FROM employee_payslip_1st_cutoff_view WHERE employee_id = ? AND payperiod_id = ?";
+        String sql = "SELECT * FROM employee_payslip_1st_cutoff_view WHERE employee_id = ?";
         pst = conn.prepareStatement(sql);
         pst.setString(1, employeeId);
-        pst.setString(2, payPeriodId);
         rs = pst.executeQuery();
 
         if (rs.next()) {
@@ -359,27 +357,25 @@ public abstract class DatabaseConnect {
                 rs.getDouble("philhealth"),
                 rs.getDouble("pagibig"),
                 rs.getDouble("total_allowance"),
-                rs.getDouble("total_deduction"),
+                rs.getDouble("total_deductions"),
                 rs.getDouble("gross_income"),
                 rs.getDouble("withholding_tax"),
                 rs.getDouble("take_home_pay"),
-                rs.getString("payperiod_id"),
                 rs.getString("pay_date"),
-                null,null,null
+                null,null,null,null
             );
         }
-    } catch (Exception ex) {
+    } catch (SQLException ex) {
         ex.printStackTrace();
     } finally {
         try {
             if (rs != null) rs.close();
             if (pst != null) pst.close();
             if (conn != null) conn.close();
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }
-
     return payroll;
 }
     public ArrayList<LeaveRecord> userList(String employeeID) {

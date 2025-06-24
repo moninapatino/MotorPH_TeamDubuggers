@@ -9,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.WindowConstants;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -54,35 +56,67 @@ public class Payroll extends javax.swing.JFrame {
     LocalDateTime now =LocalDateTime.now();
     date.setText(dates.format(now));
     }
-     
-    /*private void fillPayrollDetails(String employeeId, String payPeriodId) {
-    PayrollCalculation payroll = dbConnect.getPayrollDetails(payPeriodId);
+        private void generatePayslipReport() {
+       // Get employee ID from the text field
+       String employeeIdStr = id_field.getText().trim();
+       int employeeId;
+           employeeId = Integer.parseInt(employeeIdStr);
 
-    if (payroll != null) {
-        employeename_field.setText(payroll.getEmployeeName());
-        dailyRate_field.setText(String.valueOf(payroll.getDaysRate()));
-        daysWorked_field.setText(String.valueOf(payroll.getDaysWorked()));
+       try {
 
-        riceA_field.setText(String.valueOf(payroll.getRiceA()));
-        phoneA_field.setText(String.valueOf(payroll.getPhoneA()));
-        clothing_field.setText(String.valueOf(payroll.getClothingA()));
-        totalA_field.setText(String.valueOf(payroll.getTotalAllowances()));
+           conn = dbConnect.connect();
 
-        sss_field.setText(String.valueOf(payroll.getSssC()));
-        pHealth_field.setText(String.valueOf(payroll.getPhilhealthC()));
-        pagibig_field.setText(String.valueOf(payroll.getPagibigC()));
-        tax_field.setText(String.valueOf(payroll.getTax()));
-        totalD_field.setText(String.valueOf(payroll.getTotalDeductions()));
+           // Path to the JasperReport template
+           String reportPath = "C:\\Users\\user\\Desktop\\Monina\\MMDC\\Term 2 24-25\\MotorPHPortal\\src\\main\\java\\com\\mmdc\\motor_ph_util\\reportPayslipTemplate.jrxml";
+           JasperReport jr = JasperCompileManager.compileReport(reportPath);
 
-        grosspay_field.setText(String.valueOf(payroll.getGrossPay()));
-        netpay_field.setText(String.valueOf(payroll.getNetPay()));
+           // Create parameters map
+           Map<String, Object> parameters = new HashMap<>();
+           parameters.put("employee_id", employeeId);
 
-        paydate_field.setText(payroll.getPayDate());
-  
-    } else {
-        JOptionPane.showMessageDialog(null, "No payroll record found.");
-    }
-    }*/
+           // Fill the report with parameters and database connection
+           JasperPrint jp = JasperFillManager.fillReport(jr, parameters, conn);
+
+           // Check if report has data
+           if (jp.getPages().size() == 0) {
+               JOptionPane.showMessageDialog(this, "No Payslip Found for Employee ID: " + employeeId, "No Data", JOptionPane.INFORMATION_MESSAGE);
+               return;
+           }
+
+           // Display the report
+           JasperViewer.viewReport(jp, false);
+
+       } catch (Exception e) {
+           e.printStackTrace();
+           JOptionPane.showMessageDialog(this, "Error generating report: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+       } finally {
+           if (conn != null) {
+               try {
+                   conn.close();
+               } catch (Exception e) {
+                   e.printStackTrace();
+               }
+           }
+       }
+   }
+    private void populateFields(PayrollCalculation payroll) {
+     id_field.setText(payroll.getEmployeeID());
+     employeename_field.setText(payroll.getEmployeeName());
+     dailyRate_field.setText(String.valueOf(payroll.getDaysRate()));
+     daysWorked_field.setText(String.valueOf(payroll.getDaysWorked()));
+     riceA_field.setText(String.valueOf(payroll.getRiceA()));
+     phoneA_field.setText(String.valueOf(payroll.getPhoneA()));
+     clothing_field.setText(String.valueOf(payroll.getClothingA()));
+     totalA_field.setText(String.valueOf(payroll.getTotalAllowances()));
+     sss_field.setText(String.valueOf(payroll.getSssC()));
+     pHealth_field.setText(String.valueOf(payroll.getPhilhealthC()));
+     pagibig_field.setText(String.valueOf(payroll.getPagibigC()));
+     tax_field.setText(String.valueOf(payroll.getTax()));
+     totalD_field.setText(String.valueOf(payroll.getTotalDeductions()));
+     grosspay_field.setText(String.valueOf(payroll.getGrossPay()));
+     netpay_field.setText(String.valueOf(payroll.getNetPay()));
+     paydate_field.setText(payroll.getPayDate());
+ }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -321,6 +355,11 @@ public class Payroll extends javax.swing.JFrame {
         calculateButton.setBackground(new java.awt.Color(253, 56, 29));
         calculateButton.setForeground(new java.awt.Color(250, 250, 255));
         calculateButton.setText("Calculate Pay");
+        calculateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                calculateButtonActionPerformed(evt);
+            }
+        });
 
         date.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         date.setForeground(new java.awt.Color(250, 250, 255));
@@ -433,9 +472,7 @@ public class Payroll extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 280, Short.MAX_VALUE)))
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(backButton)
-                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(calculateButton)
-                        .addComponent(payslipBtn))
+                    .addComponent(clearButton1)
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(pHealth_label)
@@ -446,7 +483,11 @@ public class Payroll extends javax.swing.JFrame {
                             .addComponent(sss_field, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
                             .addComponent(pHealth_field)
                             .addComponent(pagibig_field)))
-                    .addComponent(clearButton1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, mainPanelLayout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addComponent(calculateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(25, 25, 25)
+                        .addComponent(payslipBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(73, 73, 73))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -471,6 +512,8 @@ public class Payroll extends javax.swing.JFrame {
         );
 
         mainPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {employeename_field, id_field});
+
+        mainPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {calculateButton, payslipBtn});
 
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -527,34 +570,34 @@ public class Payroll extends javax.swing.JFrame {
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(clothingA_label)
                             .addComponent(clothing_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 124, Short.MAX_VALUE))
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(pagibig_label)
                             .addComponent(pagibig_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(clearButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(calculateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(ta_label)
                                     .addComponent(totalA_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(td_label)
-                                    .addComponent(totalD_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(totalD_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(tax_label)
+                                    .addComponent(tax_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(12, 12, 12))
                             .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addComponent(payslipBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tax_label)
-                    .addComponent(tax_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(29, 29, 29)
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(calculateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(payslipBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(grosspay_label)
                     .addComponent(grosspay_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -562,7 +605,7 @@ public class Payroll extends javax.swing.JFrame {
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(netpay_label)
                     .addComponent(netpay_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(time)
@@ -612,62 +655,36 @@ public class Payroll extends javax.swing.JFrame {
         grosspay_field.setText("");
         netpay_field.setText("");
         daysWorked_field.setText("");
-        
-        
-                
+                 
     }//GEN-LAST:event_clearButton1ActionPerformed
 
     private void payslipBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payslipBtnActionPerformed
-        try{
-            DatabaseConnect dbConnect = new DatabaseConnect() {};
-            conn = dbConnect.connect();
-            String reportpath  = "C:\\Users\\user\\Desktop\\Monina\\MMDC\\Term 2 24-25\\MotorPHPortal\\src\\main\\java\\com\\mmdc\\motor_ph_util\\reportPayslipTemplate.jrxml";
-            JasperReport jr = JasperCompileManager.compileReport(reportpath);
-            JasperPrint jp = JasperFillManager.fillReport(jr, null, conn);
-            JasperViewer.viewReport(jp);
-            conn.close();
-
-        }catch (Exception e){
-            JOptionPane.showMessageDialog(null,e);
-        }
+       generatePayslipReport(); 
     }//GEN-LAST:event_payslipBtnActionPerformed
 
     private void payPeriodComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payPeriodComboBoxActionPerformed
-        String employeeId = id_field.getText().trim(); // Get inputted employee ID
-    String payPeriodId = (String) payPeriodComboBox.getSelectedItem(); // Get selected pay period
+       
+    }//GEN-LAST:event_payPeriodComboBoxActionPerformed
 
-    if (!employeeId.isEmpty() && payPeriodId != null) {
-        PayrollCalculation payroll = dbConnect.getPayrollDetails(employeeId, payPeriodId);
+    private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
+       
+    String employeeId = id_field.getText().trim();
 
-        if (payroll != null) {
-            id_field.setText(payroll.getEmployeeID());
-            employeename_field.setText(payroll.getEmployeeName());
-            dailyRate_field.setText(String.valueOf(payroll.getDaysRate()));
-            daysWorked_field.setText(String.valueOf(payroll.getDaysWorked()));
-
-            riceA_field.setText(String.valueOf(payroll.getRiceA()));
-            phoneA_field.setText(String.valueOf(payroll.getPhoneA()));
-            clothing_field.setText(String.valueOf(payroll.getClothingA()));
-            totalA_field.setText(String.valueOf(payroll.getTotalAllowances()));
-
-            sss_field.setText(String.valueOf(payroll.getSssC()));
-            pHealth_field.setText(String.valueOf(payroll.getPhilhealthC()));
-            pagibig_field.setText(String.valueOf(payroll.getPagibigC()));
-            tax_field.setText(String.valueOf(payroll.getTax()));
-            totalD_field.setText(String.valueOf(payroll.getTotalDeductions()));
-
-            grosspay_field.setText(String.valueOf(payroll.getGrossPay()));
-            netpay_field.setText(String.valueOf(payroll.getNetPay()));
-
-            paydate_field.setText(payroll.getPayDate());
-        } else {
-            JOptionPane.showMessageDialog(null, "No payroll record found for this employee and pay period.");
-        }
-    } else {
-        JOptionPane.showMessageDialog(null, "Please enter the Employee ID and select a Pay Period.");
+    if (employeeId.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Please enter Employee ID");
+        return;
     }
 
-    }//GEN-LAST:event_payPeriodComboBoxActionPerformed
+    PayrollCalculation payroll = dbConnect.getPayrollDetails(employeeId);
+
+    if (payroll != null) {
+        populateFields(payroll);
+        JOptionPane.showMessageDialog(this, "Payroll calculated successfully!");
+    } else {
+        JOptionPane.showMessageDialog(this, "No payroll record found!");
+    }
+
+    }//GEN-LAST:event_calculateButtonActionPerformed
 
             
             
