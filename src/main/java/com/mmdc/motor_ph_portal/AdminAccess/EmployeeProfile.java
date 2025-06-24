@@ -666,6 +666,9 @@ public class EmployeeProfile extends javax.swing.JFrame {
         // ADD EMPLOYEE RECORD
     try {
         // Retrieve and trim ALL input values
+        String empID = id_field.getText().trim();
+        int empId = 0;
+        
         String firstName = firstname_field.getText().trim();
         String lastName = lastname_field.getText().trim();
         String birthday = bday_field.getText().trim();

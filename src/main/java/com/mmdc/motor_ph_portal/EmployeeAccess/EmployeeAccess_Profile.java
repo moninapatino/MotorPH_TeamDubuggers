@@ -9,7 +9,6 @@ import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.text.SimpleDateFormat;
 import javax.swing.WindowConstants;
 import java.time.LocalDateTime;
@@ -18,11 +17,6 @@ import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.*;
-import java.awt.*;
-import java.net.URL;
-import java.text.ParseException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -200,12 +194,12 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
 
     
     public final void time(){
-    DateTimeFormatter times = DateTimeFormatter.ofPattern("hh:mm:ss a");
+    DateTimeFormatter times = DateTimeFormatter.ofPattern("HH:mm:ss");
     LocalDateTime now =LocalDateTime.now();
     time.setText(times.format(now));          
     }
      public final void date(){
-    DateTimeFormatter dates = DateTimeFormatter.ofPattern("MMM d, y");
+    DateTimeFormatter dates = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     LocalDateTime now =LocalDateTime.now();
     date.setText(dates.format(now));
     }
@@ -1393,10 +1387,10 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
 
     private void timeOutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeOutBtnActionPerformed
         // Time Out Function + update SQL
-           try {
+             try {
         String employeeId = this.employeeID;
-        String dateStr = date.getText().trim();
-        String timeStr = time.getText().trim();
+        String dateStr = date.getText().trim();   // Expected format: yyyy-MM-dd
+        String timeStr = time.getText().trim();   // Expected format: HH:mm or HH:mm:ss
 
         // Validate inputs
         if (dateStr.isEmpty() || timeStr.isEmpty()) {
@@ -1407,20 +1401,16 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
             return;
         }
 
-        // Format date for MySQL (if it's not already in YYYY-MM-DD format)
-        String formattedDate = dateStr;
-        try {
-            // If date is in a different format, convert it to YYYY-MM-DD
-            SimpleDateFormat inputFormat = new SimpleDateFormat("MM/dd/yyyy"); // Adjust based on your date field format
-            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date parsedDate = inputFormat.parse(dateStr);
-            formattedDate = outputFormat.format(parsedDate);
-        } catch (ParseException e) {
-            // If parsing fails, assume it's already in correct format
-            System.out.println("Date parsing failed, using original format: " + dateStr);
+        // Validate date format (yyyy-MM-dd)
+        if (!dateStr.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            JOptionPane.showMessageDialog(this, 
+                "Date must be in yyyy-MM-dd format (e.g., 2025-06-24)",
+                "Validation Error", 
+                JOptionPane.WARNING_MESSAGE);
+            return;
         }
 
-        // Validate time format (ensure it's in HH:mm:ss or HH:mm format)
+        // Validate and format time (HH:mm or HH:mm:ss)
         String formattedTime = timeStr;
         if (!timeStr.matches("\\d{2}:\\d{2}(:\\d{2})?")) {
             JOptionPane.showMessageDialog(this, 
@@ -1430,17 +1420,17 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
             return;
         }
 
-        // Add seconds if not present (MySQL TIME expects HH:mm:ss)
-        if (timeStr.length() == 5) { // HH:mm format
+        // Add seconds if only HH:mm is provided
+        if (timeStr.length() == 5) {
             formattedTime = timeStr + ":00";
         }
 
         System.out.println("Attempting to log time out with:");
         System.out.println("Employee ID: " + employeeId);
-        System.out.println("Date: " + formattedDate);
+        System.out.println("Date: " + dateStr);
         System.out.println("Time: " + formattedTime);
 
-        boolean success = dbConnect.logTimeOut(employeeId, formattedDate, formattedTime);
+        boolean success = dbConnect.logTimeOut(employeeId, dateStr, formattedTime);
 
         if (success) {
             JOptionPane.showMessageDialog(this, 
@@ -1448,110 +1438,51 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                 "Success", 
                 JOptionPane.INFORMATION_MESSAGE);
             refreshTimeLog();
-
-            // Optional: Clear fields or set for next entry
-            // time.setText("");
-
         } else {
             JOptionPane.showMessageDialog(this, 
-                "Failed to record Time Out. Possible reasons:\n"
-                + "1. You haven't timed in today\n"
-                + "2. You've already timed out today\n"
-                + "3. No time-in record found for today\n"
-                + "4. Database connection error",
-                "Operation Failed", 
-                JOptionPane.ERROR_MESSAGE);
+            "Failed to record Time Out.",
+            "Error", 
+            JOptionPane.ERROR_MESSAGE);
         }
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, 
             "An error occurred: " + e.getMessage(),
             "Error", 
             JOptionPane.ERROR_MESSAGE);
-        e.printStackTrace(); // For debugging
+        e.printStackTrace();
     }
     }//GEN-LAST:event_timeOutBtnActionPerformed
 
     private void timeInBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeInBtnActionPerformed
-        try {
-            String employeeId = this.employeeID;
-            String dateStr = date.getText().trim();
-            String timeStr = time.getText().trim();
+          try {
+        String employeeId = this.employeeID;
+        String dateStr = date.getText().trim(); // yyyy-MM-dd
+        String timeStr = time.getText().trim(); // HH:mm or HH:mm:ss
 
-            // Validate inputs
-            if (dateStr.isEmpty() || timeStr.isEmpty()) {
-                JOptionPane.showMessageDialog(this, 
-                    "Please ensure both date and time are entered.",
-                    "Validation Error", 
-                    JOptionPane.WARNING_MESSAGE);
-                return; // Exit if validation fails
-            }
-
-            // Format date for MySQL (if it's not already in YYYY-MM-DD format)
-            String formattedDate = dateStr;
-            try {
-                // If date is in a different format, convert it to YYYY-MM-DD
-                // Assuming your date field might be in MM/dd/yyyy or similar format
-                SimpleDateFormat inputFormat = new SimpleDateFormat("MM/dd/yyyy"); // Adjust based on your date field format
-                SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
-                Date parsedDate = inputFormat.parse(dateStr);
-                formattedDate = outputFormat.format(parsedDate);
-            } catch (ParseException e) {
-                // If parsing fails, assume it's already in correct format or handle accordingly
-                System.out.println("Date parsing failed, using original format: " + dateStr);
-            }
-
-            // Validate time format (optional - ensure it's in HH:mm:ss or HH:mm format)
-            String formattedTime = timeStr;
-            if (!timeStr.matches("\\d{2}:\\d{2}(:\\d{2})?")) {
-                JOptionPane.showMessageDialog(this, 
-                    "Time must be in HH:mm or HH:mm:ss format (e.g., 09:30 or 09:30:00)",
-                    "Validation Error", 
-                    JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            // Add seconds if not present (MySQL TIME expects HH:mm:ss)
-            if (timeStr.length() == 5) { // HH:mm format
-                formattedTime = timeStr + ":00";
-            }
-
-            System.out.println("Attempting to log time in with:");
-            System.out.println("Employee ID: " + employeeId);
-            System.out.println("Date: " + formattedDate);
-            System.out.println("Time: " + formattedTime);
-
-            // Attempt to log time in
-            boolean success = dbConnect.logTimeIn(employeeId, formattedDate, formattedTime);
-
-            if (success) {
-                JOptionPane.showMessageDialog(this, 
-                    "Time In Successfully Recorded.",
-                    "Success", 
-                    JOptionPane.INFORMATION_MESSAGE);
-                refreshTimeLog(); // Refresh the time log display
-
-                // Clear the fields after successful entry (optional)
-                // time.setText("");
-                // Or set current time for next entry
-                // time.setText(new SimpleDateFormat("HH:mm:ss").format(new Date()));
-
-            } else {
-                JOptionPane.showMessageDialog(this, 
-                    "Failed to add Time In. Possible reasons:\n"
-                    + "1. You have already timed in today.\n"
-                    + "2. Database connection error.\n"
-                    + "3. Invalid date/time format.",
-                    "Operation Failed", 
-                    JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, 
-                "An error occurred: " + e.getMessage(),
-                "Error", 
-                JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace(); // For debugging
+        // Validate input
+        if (dateStr.isEmpty() || timeStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter both date and time.");
+            return;
         }
 
+        // Add ":00" to time if only HH:mm
+        if (timeStr.matches("\\d{2}:\\d{2}")) {
+            timeStr += ":00";
+        }
+
+        // Call the logTimeIn method
+        boolean success = dbConnect.logTimeIn(employeeId, dateStr, timeStr);
+
+        if (success) {
+            JOptionPane.showMessageDialog(this, "Time In recorded successfully.");
+            refreshTimeLog();
+        } else {
+            JOptionPane.showMessageDialog(this, "You have already timed in today.");
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        e.printStackTrace();
+    }
     }//GEN-LAST:event_timeInBtnActionPerformed
 
     private void payslipBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payslipBtnActionPerformed

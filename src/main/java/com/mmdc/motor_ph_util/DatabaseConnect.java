@@ -520,55 +520,51 @@ public abstract class DatabaseConnect {
     PreparedStatement pst = null;
     PreparedStatement checkPst = null;
     ResultSet rs = null;
-    
+
     try {
-        // Establish the database connection
+        // Connect to the database
         conn = connect();
-        
-        // First, check if employee has already timed in today
+
+        // 1. Check if employee already timed in today
         String checkSql = "SELECT COUNT(*) FROM attendance_record WHERE employee_id = ? AND date = ? AND time_in IS NOT NULL";
         checkPst = conn.prepareStatement(checkSql);
         checkPst.setString(1, employeeId);
         checkPst.setString(2, date);
         rs = checkPst.executeQuery();
-        
+
         if (rs.next() && rs.getInt(1) > 0) {
-            System.out.println("Employee has already timed in today");
-            return false; // Employee has already timed in today
+            System.out.println("Employee has already timed in today.");
+            return false;
         }
-        
-        // Prepare the SQL statement for insertion
-        // Note: attendance_id should be AUTO_INCREMENT in your database
-        String insertSql = "INSERT INTO attendance_record (employee_id, date, time_in) VALUES(?, ?, ?)";
+
+        // 2. Insert new time-in record
+        String insertSql = "INSERT INTO attendance_record (employee_id, date, time_in) VALUES (?, ?, ?)";
         pst = conn.prepareStatement(insertSql);
-        
-        // Set the parameters
         pst.setString(1, employeeId);
-        pst.setString(2, date); // Should be in YYYY-MM-DD format
-        pst.setString(3, time); // Should be in HH:mm:ss format
-        
-        // Execute the update
+        pst.setString(2, date);  // Format: yyyy-MM-dd
+        pst.setString(3, time);  // Format: HH:mm:ss
+
         int rowsAffected = pst.executeUpdate();
-        
-        System.out.println("Rows affected: " + rowsAffected);
-        return rowsAffected > 0; // Return true if at least one row was inserted
-        
+        System.out.println("Time In - Rows affected: " + rowsAffected);
+
+        return rowsAffected > 0;
+
     } catch (SQLException e) {
         System.out.println("SQL Error in logTimeIn: " + e.getMessage());
-        e.printStackTrace(); // Log the exception
-        return false; // Indicate failure
+        e.printStackTrace();
+        return false;
     } finally {
-        // Close resources
         try {
             if (rs != null) rs.close();
             if (checkPst != null) checkPst.close();
             if (pst != null) pst.close();
             if (conn != null) conn.close();
         } catch (SQLException e) {
-            e.printStackTrace(); // Log any exceptions during resource closing
+            e.printStackTrace();
         }
     }
 }
+   
    public boolean logTimeOut(String employeeId, String date, String time) {
     Connection conn = null;
     PreparedStatement checkPst = null;
@@ -578,47 +574,44 @@ public abstract class DatabaseConnect {
     try {
         // Establish the database connection
         conn = connect();
-        
-        // First, check if employee has timed in today and hasn't timed out yet
-        String checkSql = "SELECT COUNT(*) FROM attendance_record WHERE employee_id = ? AND date = ? AND time_in IS NOT NULL AND time_out IS NULL";
+            String checkSql = "SELECT COUNT(*) FROM attendance_record WHERE employee_id = ? AND date = ? AND time_in IS NOT NULL AND time_out IS NULL";
         checkPst = conn.prepareStatement(checkSql);
         checkPst.setString(1, employeeId);
         checkPst.setString(2, date);
         rs = checkPst.executeQuery();
-        
+
         if (rs.next() && rs.getInt(1) == 0) {
             System.out.println("No valid time-in record found for today, or already timed out");
-            return false; // No time-in record found or already timed out
+            return false;
         }
-        
-        // Prepare the SQL statement to update the existing record for the day
-        String updateSql = "UPDATE attendance_record SET time_out = ? WHERE employee_id = ? AND date = ? AND time_out IS NULL";
+
+        // 2. Update the latest matching record (optional ORDER BY for safety)
+        String updateSql = "UPDATE attendance_record SET time_out = ? " +
+                           "WHERE employee_id = ? AND date = ? AND time_out IS NULL " +
+                           "ORDER BY time_in DESC LIMIT 1";
+
         pst = conn.prepareStatement(updateSql);
-        
-        // Set the parameters
-        pst.setString(1, time); // Should be in HH:mm:ss format
+        pst.setString(1, time);
         pst.setString(2, employeeId);
-        pst.setString(3, date); // Should be in YYYY-MM-DD format
-        
-        // Execute the update
+        pst.setString(3, date);
+
         int rowsAffected = pst.executeUpdate();
-        
         System.out.println("Time Out - Rows affected: " + rowsAffected);
-        return rowsAffected > 0; // Indicate success if a row was updated
-        
+
+        return rowsAffected > 0;
+
     } catch (SQLException e) {
         System.out.println("SQL Error in logTimeOut: " + e.getMessage());
-        e.printStackTrace(); // Log the exception
-        return false; // Indicate failure
+        e.printStackTrace();
+        return false;
     } finally {
-        // Close resources
         try {
             if (rs != null) rs.close();
             if (checkPst != null) checkPst.close();
             if (pst != null) pst.close();
             if (conn != null) conn.close();
         } catch (SQLException e) {
-            e.printStackTrace(); // Log any exceptions during resource closing
+            e.printStackTrace();
         }
     }
 }
