@@ -70,14 +70,10 @@ public class LeaveManagement extends javax.swing.JFrame {
     }
 
     public void loadLeaveRecords() {
-    // Retrieve leave records for the given employee
-    ArrayList<LeaveRecord> leaveRecords = dbConnect.userList();
-
-    // Get the table model and clear existing rows
+    ArrayList<LeaveRecord> leaveRecords = dbConnect.leaveMngUserList();
     DefaultTableModel leaveTableModel = (DefaultTableModel) leaveTable.getModel();
-    leaveTableModel.setRowCount(0);
+    leaveTableModel.setRowCount(0); // clear previous rows
 
-    // Add each leave record to the table
     for (LeaveRecord record : leaveRecords) {
         Object[] row = {
             record.getLeaveId(),
@@ -93,24 +89,24 @@ public class LeaveManagement extends javax.swing.JFrame {
     }
 }
     public ArrayList refreshList() {
-        ArrayList<LeaveRecord> leaveRecords = dbConnect.refreshList();
+       ArrayList<LeaveRecord> leaveRecords = dbConnect.leaveMngUserList();
+    DefaultTableModel leaveTableModel = (DefaultTableModel) leaveTable.getModel();
+    leaveTableModel.setRowCount(0); // clear previous rows
 
-        DefaultTableModel leaveTableModel = (DefaultTableModel) leaveTable.getModel();
-        leaveTableModel.setRowCount(0); // Clear existing rows
-
-        for (LeaveRecord record : leaveRecords) {
-            Vector<String> row = new Vector<>();
-            row.add(record.getLeaveId());
-            row.add(record.getEmployeeId());
-            row.add(record.getFirstName());
-            row.add(record.getLastName());
-            row.add(record.getStartDate());
-            row.add(record.getEndDate());
-            row.add(record.getLeaveType());
-            row.add(record.getStatus());
-            leaveTableModel.addRow(row);
-        }
-        return leaveRecords;
+    for (LeaveRecord record : leaveRecords) {
+        Object[] row = {
+            record.getLeaveId(),
+            record.getEmployeeId(),
+            record.getFirstName(),
+            record.getLastName(),
+            record.getStartDate(),
+            record.getEndDate(),
+            record.getLeaveType(),
+            record.getStatus()
+        };
+        leaveTableModel.addRow(row);
+    }
+        return null;
     }
 
     @SuppressWarnings("unchecked")
@@ -500,25 +496,47 @@ public class LeaveManagement extends javax.swing.JFrame {
             String status = "";
             if (approve_rb.isSelected()) {
                 status = "Approved";
-            }
-            if (reject_rb.isSelected()) {
+            } else if (reject_rb.isSelected()) {
                 status = "Rejected";
+            } else {
+                JOptionPane.showMessageDialog(this, "Please select a status (Approved or Rejected).", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                return; // Exit if no status is selected
             }
 
             DefaultTableModel leaveRecord1 = (DefaultTableModel) leaveTable.getModel();
             int i = leaveTable.getSelectedRow();
-            String leaveNum = leaveNum_field.getText();
+
+            // Check if a row is selected
+            if (i == -1) {
+                JOptionPane.showMessageDialog(this, "Please select a leave record to update.", "Selection Error", JOptionPane.ERROR_MESSAGE);
+                return; // Exit if no row is selected
+            }
+
+            // Retrieve and convert leave number
+            String leaveNumString = leaveNum_field.getText().trim(); // Get the leave number as a String
+            int leaveNum;
+
+            // Convert leave number to int
+            try {
+                leaveNum = Integer.parseInt(leaveNumString); // Convert the String to an int
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid Leave Number", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                return; // Exit if the conversion fails
+            }
+
+            // Create a LeaveRecord object with the updated information
             LeaveRecord leaveRecord = new LeaveRecord(
                     leaveNum,
-                    leaveRecord1.getValueAt(i, 2).toString(),
-                    leaveRecord1.getValueAt(i, 3).toString(),
-                    leaveRecord1.getValueAt(i, 4).toString(),
-                    leaveRecord1.getValueAt(i, 5).toString(),
-                    leaveRecord1.getValueAt(i, 6).toString(),
-                    leaveRecord1.getValueAt(i, 7).toString(),
-                    status
+                    leaveRecord1.getValueAt(i, 2).toString(), // Employee ID
+                    leaveRecord1.getValueAt(i, 3).toString(), // First Name
+                    leaveRecord1.getValueAt(i, 4).toString(), // Last Name
+                    leaveRecord1.getValueAt(i, 5).toString(), // Start Date
+                    leaveRecord1.getValueAt(i, 6).toString(), // End Date
+                    leaveRecord1.getValueAt(i, 7).toString(), // Leave Type
+                    status // Status
             );
-            // Update the leave record
+
+            // Update the leave record in the database
             if (dbConnect.updateLeaveRecord(leaveRecord)) {
                 enddate_field.setText(leaveRecord.getEndDate());
                 JOptionPane.showMessageDialog(this, "Leave Record Updated!");
@@ -527,20 +545,9 @@ public class LeaveManagement extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Failed to update leave record.");
             }
 
-            // Update radio buttons based on the status
-            if (status.equals("Approved")) {
-                approve_rb.setSelected(true);
-                reject_rb.setSelected(false);
-            } else if (status.equals("Rejected")) {
-                reject_rb.setSelected(true);
-                approve_rb.setSelected(false);
-            }
-
-            conn.close();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e);
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
-
 
     }//GEN-LAST:event_updateBtnActionPerformed
 
@@ -587,30 +594,39 @@ public class LeaveManagement extends javax.swing.JFrame {
     }//GEN-LAST:event_clearBtnActionPerformed
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
-        // DELETE RECORD
+      // DELETE RECORD
+    try {
+        int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this?", "Employee Profile Deleting...", JOptionPane.YES_NO_OPTION);
+        if (result == JOptionPane.YES_OPTION) {
+            String leaveNumString = leaveNum_field.getText().trim(); // Get the leave number from the field
+            int leaveNum;
 
-        try {
-            int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this?", "Employee Profile Deleting...", JOptionPane.YES_NO_OPTION);
-            if (result == JOptionPane.YES_OPTION) {
-                String leaveNum = leaveNum_field.getText(); // Get the leave number from the field
-                LeaveRecord leaveRecord = new LeaveRecord(leaveNum, null, null, null,
-                        null, null, null, null);
-
-                // Attempt to delete the leave record
-                if (dbConnect.deleteLeaveRecord(leaveRecord)) {
-                    JOptionPane.showMessageDialog(null, "Selected Record Deleted");
-                    clear(); // Clear the fields after deletion
-                } else {
-                    JOptionPane.showMessageDialog(null, "No record found with the specified leave number.");
-                }
-            } else if (result == JOptionPane.NO_OPTION) {
-                JOptionPane.showMessageDialog(this, "Employee Profile Deletion Not Successful!");
+            // Convert leave number to int
+            try {
+                leaveNum = Integer.parseInt(leaveNumString); // Convert the String to an int
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Please enter a valid Leave Number", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                return; // Exit the method if the conversion fails
             }
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
+            // Create a LeaveRecord object with the leave number
+            LeaveRecord leaveRecord = new LeaveRecord(leaveNum, null, null, null, null, null, null, null);
+
+            // Attempt to delete the leave record
+            if (dbConnect.deleteLeaveRecord(leaveRecord)) {
+                JOptionPane.showMessageDialog(null, "Selected Record Deleted");
+                clear(); // Clear the fields after deletion
+            } else {
+                JOptionPane.showMessageDialog(null, "No record found with the specified leave number.");
+            }
+        } else if (result == JOptionPane.NO_OPTION) {
+            JOptionPane.showMessageDialog(this, "Employee Profile Deletion Not Successful!");
         }
-        refreshList();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+    }
+    refreshList();
 
     }//GEN-LAST:event_deleteBtnActionPerformed
 

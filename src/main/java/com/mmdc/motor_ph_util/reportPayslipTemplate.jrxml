@@ -6,6 +6,7 @@
 	<queryString language="SQL">
 		<![CDATA[SELECT * FROM payrollsystem_db.employee_payslip_1st_cutoff_view]]>
 	</queryString>
+	<field name="payslip_number" class="java.lang.String"/>
 	<field name="employee_id" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="employee_id"/>
 		<property name="com.jaspersoft.studio.field.label" value="employee_id"/>
@@ -167,13 +168,13 @@
 				<reportElement x="145" y="144" width="100" height="18" uuid="4bb64f58-c83b-4a14-b4af-632d69faaaa2"/>
 				<textFieldExpression><![CDATA[$F{employee_name}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="MMMM d, yyyy">
 				<reportElement x="445" y="110" width="100" height="18" uuid="0f477e5c-fe7d-4a8f-9e61-7cd63c443207"/>
 				<textFieldExpression><![CDATA[$F{period_start}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="MMMM d, yyyy">
 				<reportElement x="446" y="130" width="100" height="18" uuid="2df832e8-2f9a-4c00-932a-3f14873fe98d"/>
-				<textFieldExpression><![CDATA[$F{period_start}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{period_end}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="106" y="61" width="339" height="42" forecolor="#1E2B5D" uuid="efeba1de-0e07-43e4-a518-93a318b176dd"/>
@@ -186,6 +187,10 @@
 				<reportElement x="220" y="0" width="110" height="61" uuid="3a125726-79c9-4f88-97d5-17f973a1ce5a"/>
 				<imageExpression><![CDATA["C:/Users/user/Desktop/Monina/MMDC/Term 2 24-25/MotorPH Logo.png"]]></imageExpression>
 			</image>
+			<textField>
+				<reportElement x="134" y="104" width="100" height="18" uuid="d5c0dc42-4071-4f8b-bbfd-61fb20e6366c"/>
+				<textFieldExpression><![CDATA[$F{payslip_number}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>

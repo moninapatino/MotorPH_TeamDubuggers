@@ -21,6 +21,15 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 
 public class EmployeeAccess_Profile extends javax.swing.JFrame {
@@ -45,10 +54,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         
         time();
         date();
-        
-        // Make all profile fields read-only
-        makeFieldsReadOnly();
-        
+      
         // Setup tab change listener
         setupTabChangeListener();
     }
@@ -71,10 +77,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         loadLeaveRecords();
         time();
         date();
-        
-        // Make all profile fields read-only
-        makeFieldsReadOnly();
-        
+      
         // Setup tab change listener
         setupTabChangeListener();
     }
@@ -98,35 +101,10 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         time();
         date();
         
-        // Make all profile fields read-only
-        makeFieldsReadOnly();
-        
         // Setup tab change listener
         setupTabChangeListener();
     }
     
-    private void makeFieldsReadOnly() {
-        // Make all profile fields read-only
-        id_field.setEditable(false);
-        firstName_field.setEditable(false);
-        lastname_field.setEditable(false);
-        bday_field.setEditable(false);
-        address_field.setEditable(false);
-        contact_field.setEditable(false);
-        email_field.setEditable(false);
-        sss_field.setEditable(false);
-        philhealth_field.setEditable(false);
-        pagibig_field.setEditable(false);
-        tin_field.setEditable(false);
-        
-        // Make time log fields read-only
-        timeLogFirstNameField.setEditable(false);
-        timeLogLastNameField.setEditable(false);
-        
-        // Make leave fields read-only
-        leaveFirstName_field.setEditable(false);
-        leaveLastName_field.setEditable(false);
-    }
     
     private void loadEmployeeData(String employeeID) {
         try {
@@ -143,6 +121,8 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                 timeLogLastNameField.setText(employee.getLastName());
                 leaveFirstName_field.setText(employee.getFirstName());
                 leaveLastName_field.setText(employee.getLastName());
+                payslipFirstName_field.setText(employee.getFirstName());
+                payslipLastName_field.setText(employee.getFirstName());
                 
                 // Set employee name display
                 String fullName = employee.getFirstName() + " " + employee.getLastName();
@@ -150,18 +130,11 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                 
                 // Set other profile fields
                 bday_field.setText(employee.getBirthday() != null ? employee.getBirthday() : "");
-                
-                ArrayList<String> addressParts = new ArrayList<>();
-                if (employee.getStreet() != null && !employee.getStreet().isEmpty()) addressParts.add(employee.getStreet());
-                if (employee.getBarangay() != null && !employee.getBarangay().isEmpty()) addressParts.add(employee.getBarangay());
-                if (employee.getCity() != null && !employee.getCity().isEmpty()) addressParts.add(employee.getCity());
-                if (employee.getProvince() != null && !employee.getProvince().isEmpty()) addressParts.add(employee.getProvince());
-                String fullAddress = String.join(", ", addressParts);
-                if (employee.getPostalcode() != null && !employee.getPostalcode().isEmpty()) {
-                    fullAddress += " " + employee.getPostalcode();
-                }
-                address_field.setText(fullAddress);
-                
+                street_field.setText(employee.getStreet()!= null ? employee.getStreet() : "");
+                brgy_field.setText(employee.getBarangay()!= null ? employee.getBarangay() : "");
+                city_field.setText(employee.getCity()!= null ? employee.getCity() : "");
+                province_field.setText(employee.getProvince()!= null ? employee.getProvince() : "");
+                postalcode_field.setText(employee.getPostalcode()!= null ? employee.getPostalcode() : "");
                 contact_field.setText(employee.getPhoneNumber() != null ? employee.getPhoneNumber() : "");
                 email_field.setText(employee.getEmail() != null ? employee.getEmail() : "");
                 sss_field.setText(employee.getSssNum() != null ? employee.getSssNum() : "");
@@ -197,6 +170,8 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
             timeLogLastNameField.setText(employee.getLastName());
             leaveFirstName_field.setText(employee.getFirstName());
             leaveLastName_field.setText(employee.getLastName());
+            payslipFirstName_field.setText(employee.getFirstName());
+            payslipLastName_field.setText(employee.getFirstName());
 
             // Set employee name display
             String fullName = employee.getFirstName() + " " + employee.getLastName();
@@ -204,18 +179,11 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
             
             // Set other profile fields
             bday_field.setText(employee.getBirthday() != null ? employee.getBirthday() : "");
-            
-            ArrayList<String> addressParts = new ArrayList<>();
-            if (employee.getStreet() != null && !employee.getStreet().isEmpty()) addressParts.add(employee.getStreet());
-            if (employee.getBarangay() != null && !employee.getBarangay().isEmpty()) addressParts.add(employee.getBarangay());
-            if (employee.getCity() != null && !employee.getCity().isEmpty()) addressParts.add(employee.getCity());
-            if (employee.getProvince() != null && !employee.getProvince().isEmpty()) addressParts.add(employee.getProvince());
-            String fullAddress = String.join(", ", addressParts);
-            if (employee.getPostalcode() != null && !employee.getPostalcode().isEmpty()) {
-                fullAddress += " " + employee.getPostalcode();
-            }
-            address_field.setText(fullAddress);
-            
+            street_field.setText(employee.getStreet()!= null ? employee.getStreet() : "");
+            brgy_field.setText(employee.getBarangay()!= null ? employee.getBarangay() : "");
+            city_field.setText(employee.getCity()!= null ? employee.getCity() : "");
+            province_field.setText(employee.getProvince()!= null ? employee.getProvince() : "");
+            postalcode_field.setText(employee.getPostalcode()!= null ? employee.getPostalcode() : "");
             contact_field.setText(employee.getPhoneNumber() != null ? employee.getPhoneNumber() : "");
             email_field.setText(employee.getEmail() != null ? employee.getEmail() : "");
             sss_field.setText(employee.getSssNum() != null ? employee.getSssNum() : "");
@@ -242,7 +210,30 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     date.setText(dates.format(now));
     }
     
+    public void autoFillLeaveId() {
+    try {
+        int nextLeaveId = dbConnect.getNextLeaveId(); // Call your existing method
+        
+        // Assuming you have a JTextField for leave ID display
+        if (leaveNum_field != null) {
+            leaveNum_field.setText(String.valueOf(nextLeaveId));
+            leaveNum_field.setEditable(false); // Make it read-only since it's auto-generated
+        }
+        
+        // Alternative: If you're using a JLabel to display the leave ID
+        // leaveIdLabel.setText("Leave ID: " + nextLeaveId);
+        
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Error generating leave ID: " + e.getMessage());
+        // Set a default value in case of error
+         if (leaveNum_field != null) {
+            leaveNum_field.setText("50042"); 
+        }
+    }
+}
+     
     public void loadLeaveRecords() {
+        autoFillLeaveId();
         // Only load leave records for the logged-in employee
         if (this.employeeID == null || this.employeeID.trim().isEmpty()) {
             return; // Skip if no employee ID is set
@@ -271,7 +262,8 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                 row.add(rs.getString("leave_type"));
                 row.add(rs.getString("status"));
                 leaveTableModel.addRow(row);
-            }
+            } 
+            refreshList();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error loading leave records: " + e.getMessage());
         } finally {
@@ -284,7 +276,9 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
             }
         }
     }
-   
+    public void refreshLeaveId() {
+    autoFillLeaveId();
+}
     public ArrayList refreshList() {
         // Only refresh leave records for the logged-in employee
         if (this.employeeID == null || this.employeeID.trim().isEmpty()) {
@@ -386,8 +380,38 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
             }
         });
     }
-   
-    @SuppressWarnings("unchecked")
+    
+     public void generatePayslipReport(int employeeId) {
+        Connection conn = null;
+        try {
+            // Establish a database connection
+            DatabaseConnect dbConnect = new DatabaseConnect() {};
+            conn = dbConnect.connect();
+            // Path to the JasperReport template
+            String reportPath = "C:\\Users\\user\\Desktop\\Monina\\MMDC\\Term 2 24-25\\MotorPHPortal\\src\\main\\java\\com\\mmdc\\motor_ph_util\\reportPayslipTemplate.jrxml";
+            JasperReport jr = JasperCompileManager.compileReport(reportPath);
+            // Create parameters map
+            Map<String, Object> parameters = new HashMap<>();
+            parameters.put("employee_id", employeeId); // Pass the employee ID as a parameter
+            // Fill the report with parameters and database connection
+            JasperPrint jp = JasperFillManager.fillReport(jr, parameters, conn);
+            // Display the report
+            JasperViewer.viewReport(jp);
+        } catch (Exception e) {
+            e.printStackTrace(); // Handle exceptions
+        } finally {
+            // Close the connection
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+            @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -414,8 +438,16 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         noe_title8 = new javax.swing.JLabel();
         lastname_field = new javax.swing.JTextField();
         address_title = new javax.swing.JLabel();
-        address_field = new javax.swing.JTextField();
+        street_field = new javax.swing.JTextField();
         empProfileTitle = new javax.swing.JLabel();
+        brgy_field = new javax.swing.JTextField();
+        city_field = new javax.swing.JTextField();
+        province_field = new javax.swing.JTextField();
+        postalcode_field = new javax.swing.JTextField();
+        address_title1 = new javax.swing.JLabel();
+        address_title2 = new javax.swing.JLabel();
+        address_title3 = new javax.swing.JLabel();
+        address_title4 = new javax.swing.JLabel();
         timeLogTab = new javax.swing.JPanel();
         timeLogFirstNameField = new javax.swing.JTextField();
         first_name = new javax.swing.JLabel();
@@ -435,7 +467,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         leaveLastName_field = new javax.swing.JTextField();
         leave_type = new javax.swing.JLabel();
         leaveTypeComboBox = new javax.swing.JComboBox<>();
-        addButton = new javax.swing.JButton();
+        addLeaveRequestButton = new javax.swing.JButton();
         enddate_lbl1 = new javax.swing.JLabel();
         enddate_chooser = new com.toedter.calendar.JDateChooser();
         leaveNum1 = new javax.swing.JLabel();
@@ -443,6 +475,17 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         startdate_lbl2 = new javax.swing.JLabel();
         startdate_chooser = new com.toedter.calendar.JDateChooser();
         leave_title = new javax.swing.JLabel();
+        leaveTab1 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        payslipTable = new javax.swing.JTable();
+        noe_title9 = new javax.swing.JLabel();
+        payslipFirstName_field = new javax.swing.JTextField();
+        noe_title10 = new javax.swing.JLabel();
+        payslipLastName_field = new javax.swing.JTextField();
+        payslipBtn = new javax.swing.JButton();
+        leave_title1 = new javax.swing.JLabel();
+        noe_title11 = new javax.swing.JLabel();
+        payPeriodComboBox = new javax.swing.JComboBox<>();
         empName = new javax.swing.JLabel();
         date = new javax.swing.JLabel();
         time = new javax.swing.JLabel();
@@ -482,18 +525,22 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         email_title.setForeground(new java.awt.Color(250, 250, 255));
         email_title.setText("Email:");
 
+        firstName_field.setEditable(false);
         firstName_field.setBackground(new java.awt.Color(250, 250, 255));
         firstName_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         firstName_field.setForeground(new java.awt.Color(92, 101, 138));
 
+        bday_field.setEditable(false);
         bday_field.setBackground(new java.awt.Color(250, 250, 255));
         bday_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         bday_field.setForeground(new java.awt.Color(92, 101, 138));
 
+        contact_field.setEditable(false);
         contact_field.setBackground(new java.awt.Color(250, 250, 255));
         contact_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         contact_field.setForeground(new java.awt.Color(92, 101, 138));
 
+        email_field.setEditable(false);
         email_field.setBackground(new java.awt.Color(250, 250, 255));
         email_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         email_field.setForeground(new java.awt.Color(92, 101, 138));
@@ -518,18 +565,22 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         tin_title.setForeground(new java.awt.Color(250, 250, 255));
         tin_title.setText("TIN :");
 
+        sss_field.setEditable(false);
         sss_field.setBackground(new java.awt.Color(250, 250, 255));
         sss_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         sss_field.setForeground(new java.awt.Color(92, 101, 138));
 
+        pagibig_field.setEditable(false);
         pagibig_field.setBackground(new java.awt.Color(250, 250, 255));
         pagibig_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         pagibig_field.setForeground(new java.awt.Color(92, 101, 138));
 
+        philhealth_field.setEditable(false);
         philhealth_field.setBackground(new java.awt.Color(250, 250, 255));
         philhealth_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         philhealth_field.setForeground(new java.awt.Color(92, 101, 138));
 
+        tin_field.setEditable(false);
         tin_field.setBackground(new java.awt.Color(250, 250, 255));
         tin_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         tin_field.setForeground(new java.awt.Color(92, 101, 138));
@@ -538,28 +589,66 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         noe_title8.setForeground(new java.awt.Color(250, 250, 255));
         noe_title8.setText("Last Name :");
 
+        lastname_field.setEditable(false);
         lastname_field.setBackground(new java.awt.Color(250, 250, 255));
         lastname_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         lastname_field.setForeground(new java.awt.Color(92, 101, 138));
 
         address_title.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         address_title.setForeground(new java.awt.Color(250, 250, 255));
-        address_title.setText("Address :");
+        address_title.setText("Street Address :");
 
-        address_field.setBackground(new java.awt.Color(250, 250, 255));
-        address_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        address_field.setForeground(new java.awt.Color(92, 101, 138));
+        street_field.setEditable(false);
+        street_field.setBackground(new java.awt.Color(250, 250, 255));
+        street_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        street_field.setForeground(new java.awt.Color(92, 101, 138));
 
         empProfileTitle.setFont(new java.awt.Font("Calibri", 1, 36)); // NOI18N
         empProfileTitle.setForeground(new java.awt.Color(253, 56, 29));
         empProfileTitle.setText("EMPLOYEE PROFILE");
+
+        brgy_field.setEditable(false);
+        brgy_field.setBackground(new java.awt.Color(250, 250, 255));
+        brgy_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        brgy_field.setForeground(new java.awt.Color(92, 101, 138));
+
+        city_field.setEditable(false);
+        city_field.setBackground(new java.awt.Color(250, 250, 255));
+        city_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        city_field.setForeground(new java.awt.Color(92, 101, 138));
+
+        province_field.setEditable(false);
+        province_field.setBackground(new java.awt.Color(250, 250, 255));
+        province_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        province_field.setForeground(new java.awt.Color(92, 101, 138));
+
+        postalcode_field.setEditable(false);
+        postalcode_field.setBackground(new java.awt.Color(250, 250, 255));
+        postalcode_field.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        postalcode_field.setForeground(new java.awt.Color(92, 101, 138));
+
+        address_title1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        address_title1.setForeground(new java.awt.Color(250, 250, 255));
+        address_title1.setText("Barangay:");
+
+        address_title2.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        address_title2.setForeground(new java.awt.Color(250, 250, 255));
+        address_title2.setText("City:");
+
+        address_title3.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        address_title3.setForeground(new java.awt.Color(250, 250, 255));
+        address_title3.setText("Province:");
+
+        address_title4.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        address_title4.setForeground(new java.awt.Color(250, 250, 255));
+        address_title4.setText("Postal Code:");
 
         javax.swing.GroupLayout empProfileTabLayout = new javax.swing.GroupLayout(empProfileTab);
         empProfileTab.setLayout(empProfileTabLayout);
         empProfileTabLayout.setHorizontalGroup(
             empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(empProfileTabLayout.createSequentialGroup()
-                .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(empProfileTabLayout.createSequentialGroup()
                         .addGap(175, 175, 175)
                         .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -574,41 +663,57 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                             .addComponent(sss_field, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(tin_field, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(empProfileTabLayout.createSequentialGroup()
-                        .addGap(76, 76, 76)
-                        .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(51, 51, 51)
+                        .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(empProfileTabLayout.createSequentialGroup()
+                                .addComponent(b_title)
+                                .addGap(18, 18, 18)
+                                .addComponent(bday_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(empProfileTabLayout.createSequentialGroup()
+                                .addComponent(noe_title8)
+                                .addGap(18, 18, 18)
+                                .addComponent(lastname_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(empProfileTabLayout.createSequentialGroup()
+                                .addComponent(noe_title)
+                                .addGap(18, 18, 18)
+                                .addComponent(firstName_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(empProfileTabLayout.createSequentialGroup()
                                 .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(empProfileTabLayout.createSequentialGroup()
-                                        .addComponent(b_title)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(bday_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(empProfileTabLayout.createSequentialGroup()
-                                        .addComponent(noe_title8)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(lastname_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(empProfileTabLayout.createSequentialGroup()
-                                        .addComponent(noe_title)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(firstName_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(54, 54, 54)
+                                    .addComponent(address_title2)
+                                    .addComponent(address_title))
+                                .addGap(18, 18, 18)
                                 .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(email_title, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(cn_title, javax.swing.GroupLayout.Alignment.TRAILING))
-                                .addGap(18, 18, 18)
-                                .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(contact_field)
-                                    .addComponent(email_field, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(empProfileTabLayout.createSequentialGroup()
-                                .addGap(14, 14, 14)
-                                .addComponent(address_title)
-                                .addGap(18, 18, 18)
-                                .addComponent(address_field, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(street_field, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(city_field, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(17, 17, 17)))
+                        .addGap(54, 54, 54)
+                        .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(email_title, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(cn_title, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(18, 18, 18)
+                        .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(contact_field)
+                            .addComponent(email_field, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(empProfileTabLayout.createSequentialGroup()
                         .addGap(56, 56, 56)
                         .addComponent(govIdNum_title))
                     .addGroup(empProfileTabLayout.createSequentialGroup()
                         .addGap(204, 204, 204)
-                        .addComponent(empProfileTitle)))
+                        .addComponent(empProfileTitle))
+                    .addGroup(empProfileTabLayout.createSequentialGroup()
+                        .addGap(359, 359, 359)
+                        .addComponent(address_title1)
+                        .addGap(18, 18, 18)
+                        .addComponent(brgy_field, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(empProfileTabLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(address_title3)
+                        .addGap(18, 18, 18)
+                        .addComponent(province_field, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(address_title4)
+                        .addGap(18, 18, 18)
+                        .addComponent(postalcode_field, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(90, Short.MAX_VALUE))
         );
         empProfileTabLayout.setVerticalGroup(
@@ -641,8 +746,18 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(address_title)
-                    .addComponent(address_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(37, 37, 37)
+                    .addComponent(street_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(brgy_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(address_title1))
+                .addGap(9, 9, 9)
+                .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(province_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(postalcode_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(city_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(address_title2)
+                    .addComponent(address_title3)
+                    .addComponent(address_title4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(govIdNum_title)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -668,6 +783,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         timeLogTab.setBackground(new java.awt.Color(30, 43, 93));
         timeLogTab.setForeground(new java.awt.Color(69, 123, 157));
 
+        timeLogFirstNameField.setEditable(false);
         timeLogFirstNameField.setBackground(new java.awt.Color(250, 250, 255));
         timeLogFirstNameField.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         timeLogFirstNameField.setForeground(new java.awt.Color(92, 101, 138));
@@ -676,6 +792,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         first_name.setForeground(new java.awt.Color(250, 250, 255));
         first_name.setText("First Name :");
 
+        timeLogLastNameField.setEditable(false);
         timeLogLastNameField.setBackground(new java.awt.Color(250, 250, 255));
         timeLogLastNameField.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         timeLogLastNameField.setForeground(new java.awt.Color(92, 101, 138));
@@ -828,6 +945,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         noe_title6.setForeground(new java.awt.Color(250, 250, 255));
         noe_title6.setText("First Name :");
 
+        leaveFirstName_field.setEditable(false);
         leaveFirstName_field.setBackground(new java.awt.Color(250, 250, 255));
         leaveFirstName_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
         leaveFirstName_field.setForeground(new java.awt.Color(92, 101, 138));
@@ -836,6 +954,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         noe_title7.setForeground(new java.awt.Color(250, 250, 255));
         noe_title7.setText("Last Name :");
 
+        leaveLastName_field.setEditable(false);
         leaveLastName_field.setBackground(new java.awt.Color(250, 250, 255));
         leaveLastName_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
         leaveLastName_field.setForeground(new java.awt.Color(92, 101, 138));
@@ -849,13 +968,13 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         leaveTypeComboBox.setForeground(new java.awt.Color(92, 101, 138));
         leaveTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Vacation Leave", "Sick Leave", "Emergency Leave", "Birthday Leave" }));
 
-        addButton.setBackground(new java.awt.Color(253, 56, 29));
-        addButton.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        addButton.setForeground(new java.awt.Color(250, 250, 255));
-        addButton.setText("File Leave");
-        addButton.addActionListener(new java.awt.event.ActionListener() {
+        addLeaveRequestButton.setBackground(new java.awt.Color(253, 56, 29));
+        addLeaveRequestButton.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        addLeaveRequestButton.setForeground(new java.awt.Color(250, 250, 255));
+        addLeaveRequestButton.setText("File Leave");
+        addLeaveRequestButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addButtonActionPerformed(evt);
+                addLeaveRequestButtonActionPerformed(evt);
             }
         });
 
@@ -872,14 +991,10 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         leaveNum1.setForeground(new java.awt.Color(250, 250, 255));
         leaveNum1.setText("Leave No. :");
 
+        leaveNum_field.setEditable(false);
         leaveNum_field.setBackground(new java.awt.Color(250, 250, 255));
         leaveNum_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
         leaveNum_field.setForeground(new java.awt.Color(92, 101, 138));
-        leaveNum_field.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                leaveNum_fieldKeyReleased(evt);
-            }
-        });
 
         startdate_lbl2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         startdate_lbl2.setForeground(new java.awt.Color(250, 250, 255));
@@ -898,10 +1013,6 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         leaveTab.setLayout(leaveTabLayout);
         leaveTabLayout.setHorizontalGroup(
             leaveTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, leaveTabLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(321, 321, 321))
             .addGroup(leaveTabLayout.createSequentialGroup()
                 .addGap(70, 70, 70)
                 .addGroup(leaveTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -934,6 +1045,10 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                         .addGap(85, 85, 85)
                         .addComponent(leave_title)))
                 .addContainerGap(101, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, leaveTabLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(addLeaveRequestButton, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(321, 321, 321))
         );
         leaveTabLayout.setVerticalGroup(
             leaveTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -967,13 +1082,144 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                             .addComponent(noe_title7)
                             .addComponent(leaveLastName_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(21, 21, 21)
-                .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(addLeaveRequestButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(72, Short.MAX_VALUE))
         );
 
         tab.addTab("Leave", leaveTab);
+
+        leaveTab1.setBackground(new java.awt.Color(30, 43, 93));
+        leaveTab1.setPreferredSize(new java.awt.Dimension(650, 450));
+
+        payslipTable.setBackground(new java.awt.Color(250, 250, 255));
+        payslipTable.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        payslipTable.setForeground(new java.awt.Color(92, 101, 138));
+        payslipTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Date", "Payroll ID", "Payslip Number", "Employee ID", "Start Date", "End Date", "Status"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false, true, true, false, false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane4.setViewportView(payslipTable);
+
+        noe_title9.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        noe_title9.setForeground(new java.awt.Color(250, 250, 255));
+        noe_title9.setText("First Name :");
+
+        payslipFirstName_field.setEditable(false);
+        payslipFirstName_field.setBackground(new java.awt.Color(250, 250, 255));
+        payslipFirstName_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
+        payslipFirstName_field.setForeground(new java.awt.Color(92, 101, 138));
+
+        noe_title10.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        noe_title10.setForeground(new java.awt.Color(250, 250, 255));
+        noe_title10.setText("Last Name :");
+
+        payslipLastName_field.setEditable(false);
+        payslipLastName_field.setBackground(new java.awt.Color(250, 250, 255));
+        payslipLastName_field.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
+        payslipLastName_field.setForeground(new java.awt.Color(92, 101, 138));
+
+        payslipBtn.setBackground(new java.awt.Color(253, 56, 29));
+        payslipBtn.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        payslipBtn.setForeground(new java.awt.Color(250, 250, 255));
+        payslipBtn.setText("View Payslip");
+        payslipBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                payslipBtnActionPerformed(evt);
+            }
+        });
+
+        leave_title1.setFont(new java.awt.Font("Calibri", 1, 36)); // NOI18N
+        leave_title1.setForeground(new java.awt.Color(253, 56, 29));
+        leave_title1.setText("EMPLOYEE PAYSLIP");
+
+        noe_title11.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        noe_title11.setForeground(new java.awt.Color(250, 250, 255));
+        noe_title11.setText("Pay Period:");
+
+        payPeriodComboBox.setBackground(new java.awt.Color(250, 250, 255));
+        payPeriodComboBox.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        payPeriodComboBox.setForeground(new java.awt.Color(30, 43, 93));
+        payPeriodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1st Cut-off", "2nd Cut-off" }));
+
+        javax.swing.GroupLayout leaveTab1Layout = new javax.swing.GroupLayout(leaveTab1);
+        leaveTab1.setLayout(leaveTab1Layout);
+        leaveTab1Layout.setHorizontalGroup(
+            leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(leaveTab1Layout.createSequentialGroup()
+                .addContainerGap(88, Short.MAX_VALUE)
+                .addGroup(leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, leaveTab1Layout.createSequentialGroup()
+                        .addGroup(leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(leaveTab1Layout.createSequentialGroup()
+                                .addGap(26, 26, 26)
+                                .addGroup(leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(leaveTab1Layout.createSequentialGroup()
+                                        .addComponent(noe_title9)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(payslipFirstName_field, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(leaveTab1Layout.createSequentialGroup()
+                                        .addGroup(leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(noe_title10)
+                                            .addComponent(noe_title11))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(payslipLastName_field, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
+                                            .addComponent(payPeriodComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addGroup(leaveTab1Layout.createSequentialGroup()
+                                        .addComponent(payslipBtn)
+                                        .addGap(54, 54, 54))))
+                            .addComponent(leave_title1))
+                        .addGap(233, 233, 233))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, leaveTab1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 602, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(83, 83, 83))))
+        );
+        leaveTab1Layout.setVerticalGroup(
+            leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(leaveTab1Layout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addComponent(leave_title1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(noe_title9)
+                    .addComponent(payslipFirstName_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(noe_title10)
+                    .addComponent(payslipLastName_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(payPeriodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(noe_title11))
+                .addGap(26, 26, 26)
+                .addComponent(payslipBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(69, Short.MAX_VALUE))
+        );
+
+        tab.addTab("Payslip", leaveTab1);
 
         empName.setFont(new java.awt.Font("Bernard MT Condensed", 1, 36)); // NOI18N
         empName.setForeground(new java.awt.Color(30, 43, 93));
@@ -991,16 +1237,15 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         en_title.setForeground(new java.awt.Color(92, 101, 138));
         en_title.setText("Employee Number :");
 
+        id_field.setEditable(false);
         id_field.setBackground(new java.awt.Color(250, 250, 255));
         id_field.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         id_field.setForeground(new java.awt.Color(253, 56, 29));
 
-        img.setIcon(new javax.swing.ImageIcon("C:\\Users\\user\\Desktop\\Monina\\MMDC\\Term 3 24-25\\icon.png")); // NOI18N
-
         logOutButton.setBackground(new java.awt.Color(253, 56, 29));
         logOutButton.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        logOutButton.setForeground(new java.awt.Color(217, 217, 217));
-        logOutButton.setText("LOG OUT");
+        logOutButton.setForeground(new java.awt.Color(250, 250, 255));
+        logOutButton.setText("Log Out");
         logOutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 logOutButtonActionPerformed(evt);
@@ -1020,16 +1265,16 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                         .addComponent(en_title)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(id_field, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
-                        .addComponent(logOutButton)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 264, Short.MAX_VALUE)
                         .addComponent(date)
                         .addGap(18, 18, 18)
                         .addComponent(time)
-                        .addGap(20, 20, 20))
+                        .addGap(85, 85, 85))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(empName)
-                        .addGap(26, 26, 26))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(logOutButton)
+                        .addGap(20, 20, 20))))
             .addComponent(tab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
@@ -1038,7 +1283,9 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
-                        .addComponent(empName)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(empName)
+                            .addComponent(logOutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(en_title)
@@ -1046,13 +1293,13 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(img, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(time)
-                            .addComponent(date)
-                            .addComponent(logOutButton))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(time)
+                                    .addComponent(date)))
+                            .addComponent(img, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE))))
                 .addGap(10, 10, 10)
                 .addComponent(tab, javax.swing.GroupLayout.PREFERRED_SIZE, 519, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -1072,83 +1319,252 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    private void id_fieldKeyReleased(java.awt.event.KeyEvent evt) {
-        // This method is no longer needed as the field is read-only
-        // Employee data is now loaded automatically based on login credentials
-     }
-
-    private void leaveNum_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_leaveNum_fieldKeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_leaveNum_fieldKeyReleased
-
-    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+ 
+    private void addLeaveRequestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addLeaveRequestButtonActionPerformed
         // add data to sql
-        String leaveNum = leaveNum_field.getText();
-        String employeeId = this.employeeID; // Use the employee ID from logged-in user
-        String firstName = firstName_field.getText(); // Use the actual employee first name
-        String lastName = lastname_field.getText(); // Use the actual employee last name
+          try {
+        // Retrieve and parse input values
+        String leaveNumText = leaveNum_field.getText().trim();
+        int leaveNum = 0; // Initialize as int
+        
+        String employeeId = this.employeeID; // Use the employee ID from the logged-in user
+        String firstName = firstName_field.getText().trim(); // Actual employee first name
+        String lastName = lastname_field.getText().trim(); // Actual employee last name
         String startDate = startdate_chooser.getDate() != null ?
-        new SimpleDateFormat("MMMM d, y").format(startdate_chooser.getDate()) : "";
+            new SimpleDateFormat("yyyy-MM-dd").format(startdate_chooser.getDate()) : "";
         String endDate = enddate_chooser.getDate() != null ?
-        new SimpleDateFormat("MMMM d, y").format(enddate_chooser.getDate()) : "";
+            new SimpleDateFormat("yyyy-MM-dd").format(enddate_chooser.getDate()) : "";
         String leaveType = leaveTypeComboBox.getSelectedItem().toString();
-        String status = "Pending";
-
-        // Validate required fields
-        if (leaveNum.trim().isEmpty()) {
+        String status = "Pending"; // Set status to Pending for the new leave request
+        
+        // Validate and parse leave number
+        if (leaveNumText.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please enter a Leave Number", "Validation Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
+        try {
+            leaveNum = Integer.parseInt(leaveNumText);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Leave Number must be a valid number", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         if (startDate.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please select a Start Date", "Validation Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
         if (endDate.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please select an End Date", "Validation Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
-        DefaultTableModel model = (DefaultTableModel) leaveTable.getModel();
-        model.addRow(new Object[]{leaveNum, employeeId, firstName, lastName, startDate, endDate, leaveType, status});
-        LeaveRecord leaveRecord = new LeaveRecord(leaveNum, employeeId, firstName, lastName, startDate, endDate, leaveType, status);
-
-        dbConnect.addLeaveRequest(leaveRecord);
-        JOptionPane.showMessageDialog(null, "Leave request added successfully!");
         
-        // Clear the form fields
-        leaveNum_field.setText("");
-        startdate_chooser.setDate(null);
-        enddate_chooser.setDate(null);
-        leaveTypeComboBox.setSelectedIndex(0);
+        // Additional validation: Check if start date is before end date
+        if (startdate_chooser.getDate() != null && enddate_chooser.getDate() != null) {
+            if (startdate_chooser.getDate().after(enddate_chooser.getDate())) {
+                JOptionPane.showMessageDialog(null, "Start Date cannot be after End Date", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+        
+        // Create a LeaveRecord object including status
+        LeaveRecord leaveRecord = new LeaveRecord(leaveNum, employeeId, firstName, lastName, startDate, endDate, leaveType, status);
+        
+        // Add the leave request to the database
+        if (dbConnect.addLeaveRequest(leaveRecord)) {
+            // Update the table model
+            DefaultTableModel model = (DefaultTableModel) leaveTable.getModel();
+            model.addRow(new Object[]{leaveNum, employeeId, firstName, lastName, startDate, endDate, leaveType, status});
+            
+            JOptionPane.showMessageDialog(null, "Leave request added successfully!");
+            
+            autoFillLeaveId(); // Generate the next leave ID for the next request
+            
+        } else {
+            JOptionPane.showMessageDialog(null, "Failed to add leave request. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
         
         loadLeaveRecords(); // Refresh the leave records display
-    }//GEN-LAST:event_addButtonActionPerformed
+        
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Error adding leave request: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    }//GEN-LAST:event_addLeaveRequestButtonActionPerformed
 
     private void timeOutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeOutBtnActionPerformed
         // Time Out Function + update SQL
-        boolean success = dbConnect.logTimeOut(this.employeeID, date.getText(), time.getText());
+           try {
+        String employeeId = this.employeeID;
+        String dateStr = date.getText().trim();
+        String timeStr = time.getText().trim();
+
+        // Validate inputs
+        if (dateStr.isEmpty() || timeStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, 
+                "Please ensure both date and time are entered",
+                "Validation Error", 
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Format date for MySQL (if it's not already in YYYY-MM-DD format)
+        String formattedDate = dateStr;
+        try {
+            // If date is in a different format, convert it to YYYY-MM-DD
+            SimpleDateFormat inputFormat = new SimpleDateFormat("MM/dd/yyyy"); // Adjust based on your date field format
+            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date parsedDate = inputFormat.parse(dateStr);
+            formattedDate = outputFormat.format(parsedDate);
+        } catch (ParseException e) {
+            // If parsing fails, assume it's already in correct format
+            System.out.println("Date parsing failed, using original format: " + dateStr);
+        }
+
+        // Validate time format (ensure it's in HH:mm:ss or HH:mm format)
+        String formattedTime = timeStr;
+        if (!timeStr.matches("\\d{2}:\\d{2}(:\\d{2})?")) {
+            JOptionPane.showMessageDialog(this, 
+                "Time must be in HH:mm or HH:mm:ss format (e.g., 17:30 or 17:30:00)",
+                "Validation Error", 
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Add seconds if not present (MySQL TIME expects HH:mm:ss)
+        if (timeStr.length() == 5) { // HH:mm format
+            formattedTime = timeStr + ":00";
+        }
+
+        System.out.println("Attempting to log time out with:");
+        System.out.println("Employee ID: " + employeeId);
+        System.out.println("Date: " + formattedDate);
+        System.out.println("Time: " + formattedTime);
+
+        boolean success = dbConnect.logTimeOut(employeeId, formattedDate, formattedTime);
 
         if (success) {
-            JOptionPane.showMessageDialog(this, "Time Out Successfully Added");
-            refreshTimeLog(); // Refresh the time log display
+            JOptionPane.showMessageDialog(this, 
+                "Time Out Successfully Recorded",
+                "Success", 
+                JOptionPane.INFORMATION_MESSAGE);
+            refreshTimeLog();
+
+            // Optional: Clear fields or set for next entry
+            // time.setText("");
+
         } else {
-            JOptionPane.showMessageDialog(this, "Failed to add Time Out. Have you timed in today?");
+            JOptionPane.showMessageDialog(this, 
+                "Failed to record Time Out. Possible reasons:\n"
+                + "1. You haven't timed in today\n"
+                + "2. You've already timed out today\n"
+                + "3. No time-in record found for today\n"
+                + "4. Database connection error",
+                "Operation Failed", 
+                JOptionPane.ERROR_MESSAGE);
         }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, 
+            "An error occurred: " + e.getMessage(),
+            "Error", 
+            JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace(); // For debugging
+    }
     }//GEN-LAST:event_timeOutBtnActionPerformed
 
     private void timeInBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeInBtnActionPerformed
-        // Time In Function + insert to SQL
-        boolean success = dbConnect.logTimeIn(this.employeeID, date.getText(), time.getText());
+        try {
+            String employeeId = this.employeeID;
+            String dateStr = date.getText().trim();
+            String timeStr = time.getText().trim();
 
-        if (success) {
-            JOptionPane.showMessageDialog(this, "Time In Successfully Added");
-            refreshTimeLog(); // Refresh the time log display
-        } else {
-            JOptionPane.showMessageDialog(this, "Failed to add Time In");
+            // Validate inputs
+            if (dateStr.isEmpty() || timeStr.isEmpty()) {
+                JOptionPane.showMessageDialog(this, 
+                    "Please ensure both date and time are entered.",
+                    "Validation Error", 
+                    JOptionPane.WARNING_MESSAGE);
+                return; // Exit if validation fails
+            }
+
+            // Format date for MySQL (if it's not already in YYYY-MM-DD format)
+            String formattedDate = dateStr;
+            try {
+                // If date is in a different format, convert it to YYYY-MM-DD
+                // Assuming your date field might be in MM/dd/yyyy or similar format
+                SimpleDateFormat inputFormat = new SimpleDateFormat("MM/dd/yyyy"); // Adjust based on your date field format
+                SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date parsedDate = inputFormat.parse(dateStr);
+                formattedDate = outputFormat.format(parsedDate);
+            } catch (ParseException e) {
+                // If parsing fails, assume it's already in correct format or handle accordingly
+                System.out.println("Date parsing failed, using original format: " + dateStr);
+            }
+
+            // Validate time format (optional - ensure it's in HH:mm:ss or HH:mm format)
+            String formattedTime = timeStr;
+            if (!timeStr.matches("\\d{2}:\\d{2}(:\\d{2})?")) {
+                JOptionPane.showMessageDialog(this, 
+                    "Time must be in HH:mm or HH:mm:ss format (e.g., 09:30 or 09:30:00)",
+                    "Validation Error", 
+                    JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Add seconds if not present (MySQL TIME expects HH:mm:ss)
+            if (timeStr.length() == 5) { // HH:mm format
+                formattedTime = timeStr + ":00";
+            }
+
+            System.out.println("Attempting to log time in with:");
+            System.out.println("Employee ID: " + employeeId);
+            System.out.println("Date: " + formattedDate);
+            System.out.println("Time: " + formattedTime);
+
+            // Attempt to log time in
+            boolean success = dbConnect.logTimeIn(employeeId, formattedDate, formattedTime);
+
+            if (success) {
+                JOptionPane.showMessageDialog(this, 
+                    "Time In Successfully Recorded.",
+                    "Success", 
+                    JOptionPane.INFORMATION_MESSAGE);
+                refreshTimeLog(); // Refresh the time log display
+
+                // Clear the fields after successful entry (optional)
+                // time.setText("");
+                // Or set current time for next entry
+                // time.setText(new SimpleDateFormat("HH:mm:ss").format(new Date()));
+
+            } else {
+                JOptionPane.showMessageDialog(this, 
+                    "Failed to add Time In. Possible reasons:\n"
+                    + "1. You have already timed in today.\n"
+                    + "2. Database connection error.\n"
+                    + "3. Invalid date/time format.",
+                    "Operation Failed", 
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, 
+                "An error occurred: " + e.getMessage(),
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace(); // For debugging
         }
+
     }//GEN-LAST:event_timeInBtnActionPerformed
+
+    private void payslipBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payslipBtnActionPerformed
+        String employeeIdStr = id_field.getText(); // Assuming id_field is a JTextField
+        int employeeId;
+        try {
+            employeeId = Integer.parseInt(employeeIdStr); // Convert to int
+            // Call the report generation method
+            generatePayslipReport(employeeId);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "No Payslip Found.");
+        }
+    }//GEN-LAST:event_payslipBtnActionPerformed
 
     private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {
         int result = JOptionPane.showConfirmDialog(null,"Are you sure you want to Log Out?", "Log Out", JOptionPane.YES_NO_OPTION);
@@ -1199,13 +1615,18 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addButton;
-    private javax.swing.JTextField address_field;
+    private javax.swing.JButton addLeaveRequestButton;
     private javax.swing.JLabel address_title;
+    private javax.swing.JLabel address_title1;
+    private javax.swing.JLabel address_title2;
+    private javax.swing.JLabel address_title3;
+    private javax.swing.JLabel address_title4;
     private javax.swing.JTable attendance_table;
     private javax.swing.JLabel attendance_title;
     private javax.swing.JLabel b_title;
     private javax.swing.JTextField bday_field;
+    private javax.swing.JTextField brgy_field;
+    private javax.swing.JTextField city_field;
     private javax.swing.JLabel cn_title;
     private javax.swing.JTextField contact_field;
     private javax.swing.JLabel date;
@@ -1225,28 +1646,43 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextField lastname_field;
     private javax.swing.JTextField leaveFirstName_field;
     private javax.swing.JTextField leaveLastName_field;
     private javax.swing.JLabel leaveNum1;
     private javax.swing.JTextField leaveNum_field;
     private javax.swing.JPanel leaveTab;
+    private javax.swing.JPanel leaveTab1;
     private javax.swing.JTable leaveTable;
     private javax.swing.JComboBox<String> leaveTypeComboBox;
     private javax.swing.JLabel leave_title;
+    private javax.swing.JLabel leave_title1;
     private javax.swing.JLabel leave_type;
+    private javax.swing.JButton logOutButton;
     private javax.swing.JLabel noe_title;
+    private javax.swing.JLabel noe_title10;
+    private javax.swing.JLabel noe_title11;
     private javax.swing.JLabel noe_title6;
     private javax.swing.JLabel noe_title7;
     private javax.swing.JLabel noe_title8;
+    private javax.swing.JLabel noe_title9;
     private javax.swing.JTextField pagibig_field;
     private javax.swing.JLabel pagibig_title;
+    private javax.swing.JComboBox<String> payPeriodComboBox;
+    private javax.swing.JButton payslipBtn;
+    private javax.swing.JTextField payslipFirstName_field;
+    private javax.swing.JTextField payslipLastName_field;
+    private javax.swing.JTable payslipTable;
     private javax.swing.JLabel phhealth_title;
     private javax.swing.JTextField philhealth_field;
+    private javax.swing.JTextField postalcode_field;
+    private javax.swing.JTextField province_field;
     private javax.swing.JTextField sss_field;
     private javax.swing.JLabel sss_title;
     private com.toedter.calendar.JDateChooser startdate_chooser;
     private javax.swing.JLabel startdate_lbl2;
+    private javax.swing.JTextField street_field;
     private javax.swing.JTabbedPane tab;
     private javax.swing.JLabel time;
     private javax.swing.JButton timeInBtn;
@@ -1257,6 +1693,5 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     private javax.swing.JButton timeOutBtn;
     private javax.swing.JTextField tin_field;
     private javax.swing.JLabel tin_title;
-    private javax.swing.JButton logOutButton;
     // End of variables declaration//GEN-END:variables
 }

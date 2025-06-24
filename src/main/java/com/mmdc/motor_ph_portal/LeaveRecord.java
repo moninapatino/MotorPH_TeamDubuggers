@@ -3,7 +3,7 @@ package com.mmdc.motor_ph_portal;
 
 
 public class LeaveRecord {
-     private String leaveId;
+     private int leaveId;
      private String employeeId;
      private String firstName;
      private String lastName;
@@ -12,7 +12,7 @@ public class LeaveRecord {
      private String leaveType;
      private String status;
 
-    public LeaveRecord(String leaveId, String employeeId, String firstName, String lastName, 
+    public LeaveRecord(int leaveId, String employeeId, String firstName, String lastName, 
                        String startDate, String endDate, String leaveType, String status) {
         this.leaveId = leaveId;
         this.employeeId = employeeId;
@@ -25,7 +25,7 @@ public class LeaveRecord {
     }
 
     // Getters for each field
-    public String getLeaveId() { return leaveId; }
+    public int getLeaveId() { return leaveId; }
     public String getEmployeeId() { return employeeId; }
     public String getFirstName() { return firstName; }
     public String getLastName() { return lastName; }

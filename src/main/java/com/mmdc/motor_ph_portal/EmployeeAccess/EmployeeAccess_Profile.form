@@ -67,7 +67,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="empName" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Component id="logOut" min="-2" max="-2" attributes="0"/>
+                          <Component id="logOutButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -83,7 +83,7 @@
                           <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="empName" min="-2" max="-2" attributes="0"/>
-                              <Component id="logOut" min="-2" pref="30" max="-2" attributes="0"/>
+                              <Component id="logOutButton" min="-2" pref="30" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -367,6 +367,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="firstName_field">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="fa" red="fa" type="rgb"/>
                     </Property>
@@ -380,6 +381,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="bday_field">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="fa" red="fa" type="rgb"/>
                     </Property>
@@ -393,6 +395,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="contact_field">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="fa" red="fa" type="rgb"/>
                     </Property>
@@ -406,6 +409,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="email_field">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="fa" red="fa" type="rgb"/>
                     </Property>
@@ -474,6 +478,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="sss_field">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="fa" red="fa" type="rgb"/>
                     </Property>
@@ -487,6 +492,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="pagibig_field">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="fa" red="fa" type="rgb"/>
                     </Property>
@@ -500,6 +506,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="philhealth_field">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="fa" red="fa" type="rgb"/>
                     </Property>
@@ -513,6 +520,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="tin_field">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="fa" red="fa" type="rgb"/>
                     </Property>
@@ -537,6 +545,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="lastname_field">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="fa" red="fa" type="rgb"/>
                     </Property>
@@ -561,6 +570,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="street_field">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="fa" red="fa" type="rgb"/>
                     </Property>
@@ -585,6 +595,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="brgy_field">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="fa" red="fa" type="rgb"/>
                     </Property>
@@ -598,6 +609,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="city_field">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="fa" red="fa" type="rgb"/>
                     </Property>
@@ -611,6 +623,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="province_field">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="fa" red="fa" type="rgb"/>
                     </Property>
@@ -624,6 +637,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="postalcode_field">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="fa" red="fa" type="rgb"/>
                     </Property>
@@ -773,6 +787,7 @@
               <SubComponents>
                 <Component class="javax.swing.JTextField" name="timeLogFirstNameField">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="fa" red="fa" type="rgb"/>
                     </Property>
@@ -797,6 +812,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="timeLogLastNameField">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="fa" red="fa" type="rgb"/>
                     </Property>
@@ -949,11 +965,6 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          <Component id="leaveButton" min="-2" pref="104" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="321" max="-2" attributes="0"/>
-                      </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -995,6 +1006,11 @@
                               </Group>
                           </Group>
                           <EmptySpace pref="101" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="addLeaveRequestButton" min="-2" pref="131" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="321" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1039,7 +1055,7 @@
                               </Group>
                           </Group>
                           <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-                          <Component id="leaveButton" min="-2" pref="38" max="-2" attributes="0"/>
+                          <Component id="addLeaveRequestButton" min="-2" pref="38" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="jScrollPane3" min="-2" pref="167" max="-2" attributes="0"/>
                           <EmptySpace pref="72" max="32767" attributes="0"/>
@@ -1098,6 +1114,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="leaveFirstName_field">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="fa" red="fa" type="rgb"/>
                     </Property>
@@ -1122,6 +1139,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="leaveLastName_field">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="fa" red="fa" type="rgb"/>
                     </Property>
@@ -1168,7 +1186,7 @@
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                   </AuxValues>
                 </Component>
-                <Component class="javax.swing.JButton" name="leaveButton">
+                <Component class="javax.swing.JButton" name="addLeaveRequestButton">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="1d" green="38" red="fd" type="rgb"/>
@@ -1182,7 +1200,7 @@
                     <Property name="text" type="java.lang.String" value="File Leave"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="leaveButtonActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addLeaveRequestButtonActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="enddate_lbl1">
@@ -1223,6 +1241,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="leaveNum_field">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="fa" red="fa" type="rgb"/>
                     </Property>
@@ -1233,9 +1252,6 @@
                       <Color blue="8a" green="65" red="5c" type="rgb"/>
                     </Property>
                   </Properties>
-                  <Events>
-                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="leaveNum_fieldKeyReleased"/>
-                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="startdate_lbl2">
                   <Properties>
@@ -1306,7 +1322,7 @@
                                               <Group type="102" alignment="1" attributes="0">
                                                   <Component id="noe_title9" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                                  <Component id="leaveFirstName_field1" min="-2" pref="146" max="-2" attributes="0"/>
+                                                  <Component id="payslipFirstName_field" min="-2" pref="146" max="-2" attributes="0"/>
                                               </Group>
                                               <Group type="102" alignment="1" attributes="0">
                                                   <Group type="103" groupAlignment="1" attributes="0">
@@ -1315,8 +1331,8 @@
                                                   </Group>
                                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                                      <Component id="leaveLastName_field1" pref="146" max="32767" attributes="0"/>
-                                                      <Component id="jComboBox1" max="32767" attributes="0"/>
+                                                      <Component id="payslipLastName_field" pref="146" max="32767" attributes="0"/>
+                                                      <Component id="payPeriodComboBox" max="32767" attributes="0"/>
                                                   </Group>
                                               </Group>
                                               <Group type="102" alignment="1" attributes="0">
@@ -1345,16 +1361,16 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="noe_title9" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="leaveFirstName_field1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="payslipFirstName_field" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="noe_title10" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="leaveLastName_field1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="payslipLastName_field" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jComboBox1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="payPeriodComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="noe_title11" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
@@ -1374,7 +1390,7 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTable" name="leaveTable1">
+                    <Component class="javax.swing.JTable" name="payslipTable">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="fa" red="fa" type="rgb"/>
@@ -1453,8 +1469,9 @@
                     <Property name="text" type="java.lang.String" value="First Name :"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="leaveFirstName_field1">
+                <Component class="javax.swing.JTextField" name="payslipFirstName_field">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="fa" red="fa" type="rgb"/>
                     </Property>
@@ -1477,8 +1494,9 @@
                     <Property name="text" type="java.lang.String" value="Last Name :"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="leaveLastName_field1">
+                <Component class="javax.swing.JTextField" name="payslipLastName_field">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="fa" red="fa" type="rgb"/>
                     </Property>
@@ -1529,7 +1547,7 @@
                     <Property name="text" type="java.lang.String" value="Pay Period:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="jComboBox1">
+                <Component class="javax.swing.JComboBox" name="payPeriodComboBox">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="fa" red="fa" type="rgb"/>
@@ -1601,6 +1619,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="id_field">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="fa" red="fa" type="rgb"/>
             </Property>
@@ -1611,13 +1630,10 @@
               <Color blue="1d" green="38" red="fd" type="rgb"/>
             </Property>
           </Properties>
-          <Events>
-            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="id_fieldKeyReleased"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="img">
         </Component>
-        <Component class="javax.swing.JButton" name="logOut">
+        <Component class="javax.swing.JButton" name="logOutButton">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="1d" green="38" red="fd" type="rgb"/>
@@ -1631,7 +1647,7 @@
             <Property name="text" type="java.lang.String" value="Log Out"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="logOutActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="logOutButtonActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

@@ -6,9 +6,11 @@ import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.WindowConstants;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.stream.Stream;
 import javax.swing.JOptionPane;
 
 public class EmployeeProfile extends javax.swing.JFrame {
@@ -31,6 +33,8 @@ public class EmployeeProfile extends javax.swing.JFrame {
         time();
         date();
         conn = dbConnect.connect();
+        id_field.setEditable(false); 
+        id_field.setFocusable(false);
     }
 
     public final void time() {
@@ -660,10 +664,8 @@ public class EmployeeProfile extends javax.swing.JFrame {
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
         // ADD EMPLOYEE RECORD
-
-        try {
-            // Retrieve and trim ALL input values from fields (consistency)
-        String employeeID = id_field.getText().trim();
+    try {
+        // Retrieve and trim ALL input values
         String firstName = firstname_field.getText().trim();
         String lastName = lastname_field.getText().trim();
         String birthday = bday_field.getText().trim();
@@ -678,59 +680,63 @@ public class EmployeeProfile extends javax.swing.JFrame {
         String philHealthNum = phhealth_field.getText().trim();
         String pagibigNum = pagibig_field.getText().trim();
         String tinNum = tin_field.getText().trim();
-        
-        // Debug output to help track the issue
-        System.out.println("=== ADD EMPLOYEE DEBUG ===");
-        System.out.println("Employee ID: " + employeeID);
-        System.out.println("Postal Code: '" + postalcode + "' (length: " + postalcode.length() + ")");
-        System.out.println("Street: " + street);
-        System.out.println("City: " + city);
-        
-        // Validate postal code length
-        if (postalcode.length() > 4) {
-            JOptionPane.showMessageDialog(this, "Postal code cannot exceed 4 characters.", 
-                    "Input Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        // Additional postal code validation - only digits
-        if (!postalcode.matches("\\d{1,4}")) {
-            JOptionPane.showMessageDialog(this, "Postal code must contain only digits (1-4 characters).", 
-                    "Input Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        // Check for empty fields
-        if (employeeID.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || birthday.isEmpty()
-                || street.isEmpty() || barangay.isEmpty() || city.isEmpty() || province.isEmpty()
-                || postalcode.isEmpty() || phoneNumber.isEmpty() || email.isEmpty()
-                || sssNum.isEmpty() || philHealthNum.isEmpty() || pagibigNum.isEmpty() || tinNum.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please fill in all required fields.", 
-                    "Input Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        // Create new employee object
-        Admin_Class newEmployee = new Admin_Class(employeeID, firstName, lastName, birthday, 
-                null, street, barangay, city, province,
-                postalcode, email, phoneNumber, sssNum, 
-                philHealthNum, tinNum, pagibigNum, 
-                null, null);
-        
-        // Debug: Check if dbConnect is initialized
-        if (dbConnect == null) {
-            JOptionPane.showMessageDialog(this, "Database connection not initialized!", 
-                    "Database Error", JOptionPane.ERROR_MESSAGE);
+
+        // Validate postal code
+        if (postalcode.length() > 4 || !postalcode.matches("\\d{1,4}")) {
+            JOptionPane.showMessageDialog(this, 
+                "Postal code must be 1-4 digits.",
+                "Validation Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-            // call the method from DatabaseConnect
-            dbConnect.addEmployee(newEmployee);
-            JOptionPane.showMessageDialog(this, "Employee Profile Added!");
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error adding employee: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        // Check empty fields
+        if (Stream.of(firstName, lastName, birthday, street, barangay, city, province,
+                     postalcode, phoneNumber, email, sssNum, philHealthNum, pagibigNum, tinNum)
+                .anyMatch(String::isEmpty)) {
+            JOptionPane.showMessageDialog(this, 
+                "All fields are required.",
+                "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
+
+        // Generate IDs
+        int addressId = dbConnect.AddressIdAutoIncrement();
+        int employeeId = dbConnect.EmployeeIdAutoIncrement();
+
+        // Create objects
+        Admin_Class newEmployee = new Admin_Class(
+            String.valueOf(employeeId), // Auto-generated employee ID
+            firstName, lastName, birthday,
+            null, // Additional field placeholder
+            street, barangay, city, province,
+            postalcode, email, phoneNumber,
+            sssNum, philHealthNum, tinNum, pagibigNum,
+            null, null
+        );
+
+        // Execute database operations
+        dbConnect.addAddress(addressId, street, barangay, city, province, postalcode);
+        dbConnect.addEmployee(newEmployee, addressId); // Modified to accept addressId
+
+        // Update UI
+        id_field.setText(String.valueOf(employeeId));
+        JOptionPane.showMessageDialog(this, 
+            "Employee added successfully!\nEmployee ID: " + employeeId + 
+            "\nAddress ID: " + addressId,
+            "Success", JOptionPane.INFORMATION_MESSAGE);
+
+        // Clear form
+        clear();
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, 
+            "Database error: " + e.getMessage(),
+            "Database Error", JOptionPane.ERROR_MESSAGE);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, 
+            "System error: " + e.getMessage(),
+            "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
