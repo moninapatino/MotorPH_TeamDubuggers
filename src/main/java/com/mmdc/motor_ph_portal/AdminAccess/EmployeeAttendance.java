@@ -14,7 +14,7 @@ import javax.swing.table.TableRowSorter;
 
 
 public class EmployeeAttendance extends javax.swing.JFrame {
-    
+    private String username;
     DatabaseConnect dbConnect = new DatabaseConnect() {};
        
     public EmployeeAttendance() {

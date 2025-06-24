@@ -744,7 +744,21 @@ public abstract class DatabaseConnect {
 
     return employee;
 }
-    
+    public String getUsernameByEmployeeID(String employeeID) {
+    String username = null;
+    String sql = "SELECT username FROM position WHERE employee_id = ?";
+    try (Connection conn = connect();
+         PreparedStatement pst = conn.prepareStatement(sql)) {
+        pst.setString(1, employeeID);
+        ResultSet rs = pst.executeQuery();
+        if (rs.next()) {
+            username = rs.getString("username");
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return username;
+}
      public boolean updatePassword(String employeeID, String newPassword) {
         boolean isUpdated = false;
         String updateQuery = "UPDATE position SET password = ? WHERE employee_id = ?";
@@ -760,5 +774,17 @@ public abstract class DatabaseConnect {
         return isUpdated;
     }    
        
-     
+     public boolean verifyCredentials(String username, String password) {
+    String sql = "SELECT * FROM position WHERE username = ? AND password = ?";
+    try (Connection conn = connect();
+         PreparedStatement pst = conn.prepareStatement(sql)) {
+        pst.setString(1, username);
+        pst.setString(2, password);
+        ResultSet rs = pst.executeQuery();
+        return rs.next(); // Returns true if match found
+    } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+    }
+}
 }

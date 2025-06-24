@@ -9,6 +9,7 @@ com\mmdc\motor_ph_portal\AdminAccess\EmployeeProfileTabbed$3.class
 com\mmdc\motor_ph_portal\EmployeeAccess\EmployeeAccess_Profile$1.class
 com\mmdc\motor_ph_portal\AdminAccess\Admin_Class.class
 com\mmdc\motor_ph_portal\AdminAccess\EmployeeAttendance.class
+com\mmdc\motor_ph_portal\AdminAccess\EmployeePortal$8.class
 com\mmdc\motor_ph_portal\NewPassword$1.class
 com\mmdc\motor_ph_portal\EmployeeAccess\EmployeeAccess_Profile$5.class
 com\mmdc\motor_ph_portal\Login$3.class

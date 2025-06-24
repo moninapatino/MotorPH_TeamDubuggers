@@ -2,18 +2,20 @@
 package com.mmdc.motor_ph_portal.AdminAccess;
 
 import com.mmdc.motor_ph_portal.EmployeeAccess.EmployeeAccess_Profile;
-import com.mmdc.motor_ph_portal.EmployeeAccess.Employee_Class;
 import com.mmdc.motor_ph_portal.Login;
+import com.mmdc.motor_ph_util.DatabaseConnect;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.swing.WindowConstants;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 
 
 public class EmployeePortal extends javax.swing.JFrame {
     
+    DatabaseConnect dbConnect = new DatabaseConnect() {};
     
     public EmployeePortal() {
         initComponents();
@@ -29,6 +31,7 @@ public class EmployeePortal extends javax.swing.JFrame {
         date();
                 
     }
+    
     public final void time(){
     DateTimeFormatter times = DateTimeFormatter.ofPattern("hh:mm:ss a");
     LocalDateTime now =LocalDateTime.now();
@@ -41,7 +44,6 @@ public class EmployeePortal extends javax.swing.JFrame {
     date.setText(dates.format(now));
     }
 
-  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -286,9 +288,62 @@ public class EmployeePortal extends javax.swing.JFrame {
     }//GEN-LAST:event_attendanceButtonActionPerformed
 
     private void employeeAccessBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employeeAccessBtnActionPerformed
-        // go to Employee Portal
-        EmployeeAccess_Profile empPortal = new EmployeeAccess_Profile(); 
+            // go to Employee Portal
+        String employeeID = JOptionPane.showInputDialog(this, "Enter Employee ID to view:");
+
+        if (employeeID == null || employeeID.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid Employee ID.");
+            return;
+        }
+
+        // Step 2: Ask for admin credentials once
+        String adminUsername = JOptionPane.showInputDialog(this, "Enter your Admin Username:");
+
+        JPasswordField passwordField = new JPasswordField();
+        int option = JOptionPane.showConfirmDialog(this, passwordField, "Enter your Admin Password:", JOptionPane.OK_CANCEL_OPTION);
+
+        if (option != JOptionPane.OK_OPTION) {
+            JOptionPane.showMessageDialog(this, "Admin password entry cancelled.");
+            return;
+        }
+
+        String adminPassword = new String(passwordField.getPassword());
+
+        if (adminUsername == null || adminUsername.trim().isEmpty() || adminPassword.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Admin credentials are required.");
+            return;
+        }
+
+        // Step 3: Verify admin credentials
+        if (!dbConnect.verifyCredentials(adminUsername, adminPassword)) {
+            JOptionPane.showMessageDialog(this, "Incorrect admin username or password.");
+            return;
+        }
+
+        // Step 4: Get employee's username from employee ID
+        String employeeUsername = dbConnect.getUsernameByEmployeeID(employeeID);
+
+        if (employeeUsername == null || employeeUsername.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No username found for employee ID: " + employeeID);
+            return;
+        }
+
+        // Step 6: Get employee info and open profile
+        Admin_Class employee = dbConnect.getEmployeeByUsername(employeeUsername);
+
+        if (employee == null) {
+            JOptionPane.showMessageDialog(this, "Employee not found for username: " + employeeUsername);
+            return;
+        }
+
+        EmployeeAccess_Profile empPortal = new EmployeeAccess_Profile(
+            employee.getEmployeeID(),
+            employee.getFirstName(),
+            employee.getLastName()
+        );
         empPortal.setVisible(true);
+        dispose();
+
     }//GEN-LAST:event_employeeAccessBtnActionPerformed
 
     /**

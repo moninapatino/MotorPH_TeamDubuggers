@@ -82,6 +82,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         this.employeeID = employeeID;
         
         // Load employee data and populate fields
+        
         loadEmployeeData(employeeID);
         loadLeaveRecords();
         loadPayslipList();
