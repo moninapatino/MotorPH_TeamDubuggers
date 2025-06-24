@@ -254,7 +254,7 @@ public class EmployeePortal extends javax.swing.JFrame {
 
     private void employeeProfileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employeeProfileButtonActionPerformed
         // go to Employee Profile
-        EmployeeProfile employeeProfile = new EmployeeProfile();
+        EmployeeProfileTabbed employeeProfile = new EmployeeProfileTabbed();
         employeeProfile.show();
         
         dispose();

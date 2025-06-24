@@ -3,8 +3,11 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportPayslipTemplate" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="94b7d5e2-02dc-48d6-b971-4e6ae7696cfa">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MySQL"/>
+	<parameter name="employee_id" class="java.lang.Integer"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT * FROM payrollsystem_db.employee_payslip_1st_cutoff_view]]>
+		<![CDATA[SELECT * 
+FROM payrollsystem_db.employee_payslip_1st_cutoff_view 
+WHERE employee_id = $P{employee_id}]]>
 	</queryString>
 	<field name="payslip_number" class="java.lang.String"/>
 	<field name="employee_id" class="java.lang.Integer">
@@ -147,14 +150,14 @@
 				<text><![CDATA[EMPLOYEE NAME]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="295" y="110" width="150" height="18" forecolor="#1E2B5D" uuid="e46f79d5-d786-49a3-b6ae-67c812f63d64"/>
+				<reportElement x="295" y="124" width="150" height="18" forecolor="#1E2B5D" uuid="e46f79d5-d786-49a3-b6ae-67c812f63d64"/>
 				<textElement>
 					<font fontName="Arial Black" size="12"/>
 				</textElement>
 				<text><![CDATA[PERIOD START DATE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="295" y="130" width="150" height="18" forecolor="#1E2B5D" uuid="bda39abd-3252-4102-b902-8e4e8f0b32b9"/>
+				<reportElement x="295" y="144" width="150" height="18" forecolor="#1E2B5D" uuid="bda39abd-3252-4102-b902-8e4e8f0b32b9"/>
 				<textElement>
 					<font fontName="Arial Black" size="12"/>
 				</textElement>
@@ -169,11 +172,11 @@
 				<textFieldExpression><![CDATA[$F{employee_name}]]></textFieldExpression>
 			</textField>
 			<textField pattern="MMMM d, yyyy">
-				<reportElement x="445" y="110" width="100" height="18" uuid="0f477e5c-fe7d-4a8f-9e61-7cd63c443207"/>
+				<reportElement x="446" y="123" width="100" height="18" uuid="0f477e5c-fe7d-4a8f-9e61-7cd63c443207"/>
 				<textFieldExpression><![CDATA[$F{period_start}]]></textFieldExpression>
 			</textField>
 			<textField pattern="MMMM d, yyyy">
-				<reportElement x="446" y="130" width="100" height="18" uuid="2df832e8-2f9a-4c00-932a-3f14873fe98d"/>
+				<reportElement x="446" y="144" width="100" height="18" uuid="2df832e8-2f9a-4c00-932a-3f14873fe98d"/>
 				<textFieldExpression><![CDATA[$F{period_end}]]></textFieldExpression>
 			</textField>
 			<staticText>
@@ -190,6 +193,17 @@
 			<textField>
 				<reportElement x="134" y="104" width="100" height="18" uuid="d5c0dc42-4071-4f8b-bbfd-61fb20e6366c"/>
 				<textFieldExpression><![CDATA[$F{payslip_number}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="295" y="104" width="150" height="18" forecolor="#1E2B5D" uuid="c5ff1d92-5453-4db3-9fdb-188605ba1f5c"/>
+				<textElement>
+					<font fontName="Arial Black" size="12"/>
+				</textElement>
+				<text><![CDATA[PERIOD CUT-OFF]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="447" y="104" width="100" height="18" uuid="5bd8e01a-2995-46c3-b665-caa1b6bb4288"/>
+				<textFieldExpression><![CDATA[$F{payperiod_id}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

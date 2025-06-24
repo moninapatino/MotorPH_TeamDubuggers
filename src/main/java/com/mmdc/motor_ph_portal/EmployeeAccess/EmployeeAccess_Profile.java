@@ -427,37 +427,51 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     return payslipList;
 }
     
+   
+    private void generatePayslipReport() {
+    // Get employee ID from the text field
+    String employeeIdStr = id_field.getText().trim();
+    int employeeId;
+        employeeId = Integer.parseInt(employeeIdStr);
     
-    
-    public void generatePayslipReport(int employeeId) {
-        Connection conn = null;
-        try {
-            // Establish a database connection
-            DatabaseConnect dbConnect = new DatabaseConnect() {};
-            conn = dbConnect.connect();
-            // Path to the JasperReport template
-            String reportPath = "C:\\Users\\user\\Desktop\\Monina\\MMDC\\Term 2 24-25\\MotorPHPortal\\src\\main\\java\\com\\mmdc\\motor_ph_util\\reportPayslipTemplate.jrxml";
-            JasperReport jr = JasperCompileManager.compileReport(reportPath);
-            // Create parameters map
-            Map<String, Object> parameters = new HashMap<>();
-            parameters.put("employee_id", employeeId); // Pass the employee ID as a parameter
-            // Fill the report with parameters and database connection
-            JasperPrint jp = JasperFillManager.fillReport(jr, parameters, conn);
-            // Display the report
-            JasperViewer.viewReport(jp);
-        } catch (Exception e) {
-            e.printStackTrace(); // Handle exceptions
-        } finally {
-            // Close the connection
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+    try {
+        
+        conn = dbConnect.connect();
+        
+        // Path to the JasperReport template
+        String reportPath = "C:\\Users\\user\\Desktop\\Monina\\MMDC\\Term 2 24-25\\MotorPHPortal\\src\\main\\java\\com\\mmdc\\motor_ph_util\\reportPayslipTemplate.jrxml";
+        JasperReport jr = JasperCompileManager.compileReport(reportPath);
+        
+        // Create parameters map
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("employee_id", employeeId);
+        
+        // Fill the report with parameters and database connection
+        JasperPrint jp = JasperFillManager.fillReport(jr, parameters, conn);
+        
+        // Check if report has data
+        if (jp.getPages().size() == 0) {
+            JOptionPane.showMessageDialog(this, "No Payslip Found for Employee ID: " + employeeId, "No Data", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        
+        // Display the report
+        JasperViewer.viewReport(jp, false);
+        
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error generating report: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    } finally {
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
+}
+    
 
             @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1542,15 +1556,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     }//GEN-LAST:event_timeInBtnActionPerformed
 
     private void payslipBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payslipBtnActionPerformed
-        String employeeIdStr = id_field.getText(); // Assuming id_field is a JTextField
-        int employeeId;
-        try {
-            employeeId = Integer.parseInt(employeeIdStr); // Convert to int
-            // Call the report generation method
-            generatePayslipReport(employeeId);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "No Payslip Found.");
-        }
+        generatePayslipReport(); 
     }//GEN-LAST:event_payslipBtnActionPerformed
 
     private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {

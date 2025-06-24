@@ -122,93 +122,76 @@ public abstract class DatabaseConnect {
         }
         return employee;
     }
-    //EMPLOYEE ID AUTO INCREMENT
-    public int EmployeeIdAutoIncrement() {
-    int nextId = 1; // Default if no employees exist
-    Connection conn = null;
-    PreparedStatement pst = null;
-    ResultSet rs = null;
     
-    try {
-        conn = connect();
-        String sql = "SELECT MAX(employee_id) FROM employee";
-        pst = conn.prepareStatement(sql);
-        rs = pst.executeQuery();
+    public int getNextEmployeeId() {
+    String sql = "SELECT MAX(employee_id) FROM employee";
+    try (Connection conn = connect(); 
+         PreparedStatement pst = conn.prepareStatement(sql);
+         ResultSet rs = pst.executeQuery()) {
+        
         if (rs.next()) {
-            nextId = rs.getInt(1) + 1;
+            return rs.getInt(1) + 1; // Next available Employee ID
         }
-    } catch (Exception e) {
+    } catch (SQLException e) {
         e.printStackTrace();
-    } finally {
-        try {
-            if (rs != null) rs.close();
-            if (pst != null) pst.close();
-            if (conn != null) conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
-    return nextId;
+    return 10001; // Start from a default base if table is empty
 }
-    //ADDRESS ID AUTO INCREMENT
-    public int AddressIdAutoIncrement() {
-    int nextId = 1; // Default value in case the table is empty
-    try {
-        conn = connect();
-        String addSQL = "SELECT * FROM address ORDER BY address_id DESC LIMIT 1";
-        pst = conn.prepareStatement(addSQL);
-        rs = pst.executeQuery();
-        if (rs.next()) {
-            int id = rs.getInt(1);
-            nextId = id + 1;
-        }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, e);
-    }
-    return nextId;
-}
-
     
-    // ADD BUTTON FOR EMPLOYEE PROFILE
-  // In DatabaseConnect class
-    public void addAddress(int addressId, String street, String barangay, 
-                          String city, String province, String postalcode) 
-                          throws SQLException {
-        String sql = "INSERT INTO address (address_id, street, barangay, city, province, postalcode) VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection conn = connect();
-             PreparedStatement pst = conn.prepareStatement(sql)) {
-            pst.setInt(1, addressId);
-            pst.setString(2, street);
-            pst.setString(3, barangay);
-            pst.setString(4, city);
-            pst.setString(5, province);
-            pst.setString(6, postalcode);
-            pst.executeUpdate();
+    //EMPLOYEE ID AUTO INCREMENT
+    public int addEmployeeAndReturnId(Admin_Class employee, int addressId) throws SQLException {
+    String sql = "INSERT INTO employee (first_name, last_name, email, birthday, " +
+                 "address_id, phone, sss_num, philhealth_num, tin, pagibig_num) " +
+                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
+    try (Connection conn = connect();
+         PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        
+        pst.setString(1, employee.getFirstName());
+        pst.setString(2, employee.getLastName());
+        pst.setString(3, employee.getEmail());
+        pst.setString(4, employee.getBirthday());
+        pst.setInt(5, addressId);
+        pst.setString(6, employee.getPhoneNumber());
+        pst.setString(7, employee.getSssNum());
+        pst.setString(8, employee.getPhilHealthNum());
+        pst.setString(9, employee.getTinNum());
+        pst.setString(10, employee.getPagibigNum());
+
+        pst.executeUpdate();
+
+        try (ResultSet rs = pst.getGeneratedKeys()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
         }
     }
+    throw new SQLException("Failed to insert employee and retrieve ID.");
+}
 
-    public void addEmployee(Admin_Class employee, int addressId) throws SQLException {
-        String sql = "INSERT INTO employee (employee_id, first_name, last_name, email, birthday, " +
-                     "address_id, phone, sss_num, philhealth_num, tin, pagibig_num) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = connect();
-             PreparedStatement pst = conn.prepareStatement(sql)) {
-            pst.setString(1, employee.getEmployeeID()); // Employee ID
-            pst.setString(2, employee.getFirstName()); // First Name
-            pst.setString(3, employee.getLastName()); // Last Name
-            pst.setString(4, employee.getEmail()); // Email
-            pst.setString(5, employee.getBirthday()); // Birthday
-            pst.setInt(6, addressId); // Address ID
-            pst.setString(7, employee.getPhoneNumber()); // Phone Number
-            pst.setString(8, employee.getSssNum()); // SSS Number
-            pst.setString(9, employee.getPhilHealthNum()); // PhilHealth Number
-            pst.setString(10, employee.getTinNum()); // TIN
-            pst.setString(11, employee.getPagibigNum()); // Pag-IBIG Number
-            pst.executeUpdate();
+    public int addAddressAndReturnId(String street, String barangay, 
+                                 String city, String province, String postalcode) throws SQLException {
+    String sql = "INSERT INTO address (street, barangay, city, province, postalcode) VALUES (?, ?, ?, ?, ?)";
+    
+    try (Connection conn = connect();
+         PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        
+        pst.setString(1, street);
+        pst.setString(2, barangay);
+        pst.setString(3, city);
+        pst.setString(4, province);
+        pst.setString(5, postalcode);
+        
+        pst.executeUpdate();
+        
+        try (ResultSet rs = pst.getGeneratedKeys()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
         }
     }
-
-
+    throw new SQLException("Failed to insert address and retrieve ID.");
+}
 
     // UPDATE BTN FOR EMPLOYEE PROFILE
     public void updateEmployee(Admin_Class employeeId) {
@@ -266,68 +249,89 @@ public abstract class DatabaseConnect {
 
     //DELETE BTN FOR EMPLOYEE PROFILE
     public void deleteEmployee(String employeeId) {
+        try {
+            conn = connect();
+            conn.setAutoCommit(false); // Start transaction
 
-         try {
-        conn = connect();
-        conn.setAutoCommit(false); // Start transaction
-        
-        // First, get the address_id before deleting the employee
-        int addressId = 0;
-        String getAddressIdSql = "SELECT address_id FROM employee WHERE employee_id = ?";
-        try (PreparedStatement getAddressPst = conn.prepareStatement(getAddressIdSql)) {
-            getAddressPst.setString(1, employeeId);
-            ResultSet rs = getAddressPst.executeQuery();
-            if (rs.next()) {
-                addressId = rs.getInt("address_id");
+            // First, get the address_id before deleting the employee
+            int addressId = 0;
+            String getAddressIdSql = "SELECT address_id FROM employee WHERE employee_id = ?";
+            try (PreparedStatement getAddressPst = conn.prepareStatement(getAddressIdSql)) {
+                getAddressPst.setString(1, employeeId);
+                ResultSet rs = getAddressPst.executeQuery();
+                if (rs.next()) {
+                    addressId = rs.getInt("address_id");
+                } else {
+                    // Employee not found
+                    conn.rollback();
+                    JOptionPane.showMessageDialog(null, "No employee found with ID: " + employeeId);
+                    return;
+                }
             }
-        }
-        
-        // Delete from employee table first (due to foreign key constraint)
-        String deleteEmployeeSql = "DELETE FROM employee WHERE employee_id = ?";
-        int employeeRowsAffected = 0;
-        try (PreparedStatement employeePst = conn.prepareStatement(deleteEmployeeSql)) {
-            employeePst.setString(1, employeeId);
-            employeeRowsAffected = employeePst.executeUpdate();
-        }
-        
-        // If employee was deleted and we have an address_id, delete the address
-        if (employeeRowsAffected > 0 && addressId > 0) {
-            String deleteAddressSql = "DELETE FROM address WHERE AddressID = ?";
-            try (PreparedStatement addressPst = conn.prepareStatement(deleteAddressSql)) {
-                addressPst.setInt(1, addressId);
-                addressPst.executeUpdate();
+
+            // Delete from employee table first (due to foreign key constraint)
+            String deleteEmployeeSql = "DELETE FROM employee WHERE employee_id = ?";
+            int employeeRowsAffected = 0;
+            try (PreparedStatement employeePst = conn.prepareStatement(deleteEmployeeSql)) {
+                employeePst.setString(1, employeeId);
+                employeeRowsAffected = employeePst.executeUpdate();
             }
-        }
-        
-        if (employeeRowsAffected > 0) {
-            conn.commit(); // Commit the transaction
-            JOptionPane.showMessageDialog(null, "Employee Profile Deleted!");
-        } else {
-            conn.rollback();
-            JOptionPane.showMessageDialog(null, "No employee found with the given ID.");
-        }
-        
-    } catch (Exception e) {
-        try {
-            if (conn != null) {
-                conn.rollback(); // Rollback on error
+
+            // Delete the associated address if it exists
+            int addressRowsAffected = 0;
+            if (addressId > 0) {
+                String deleteAddressSql = "DELETE FROM address WHERE address_id = ?";
+                try (PreparedStatement addressPst = conn.prepareStatement(deleteAddressSql)) {
+                    addressPst.setInt(1, addressId);
+                    addressRowsAffected = addressPst.executeUpdate();
+                }
             }
-        } catch (SQLException rollbackEx) {
-            rollbackEx.printStackTrace();
-        }
-        JOptionPane.showMessageDialog(null, "Error deleting employee: " + e.getMessage());
-        e.printStackTrace(); // For debugging
-        
-    } finally {
-        try {
-            if (conn != null) {
-                conn.setAutoCommit(true); // Reset auto-commit
-                conn.close();
+
+            // Check if both deletions were successful
+            if (employeeRowsAffected > 0) {
+                conn.commit(); // Commit the transaction
+                String message = "Employee Profile Deleted!";
+                if (addressRowsAffected > 0) {
+                    message += " (Including associated address)";
+                }
+                JOptionPane.showMessageDialog(null, message);
+            } else {
+                conn.rollback();
+                JOptionPane.showMessageDialog(null, "Failed to delete employee.");
             }
+
         } catch (SQLException e) {
+            try {
+                if (conn != null) {
+                    conn.rollback(); // Rollback on error
+                }
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+            JOptionPane.showMessageDialog(null, "Database error while deleting employee: " + e.getMessage());
             e.printStackTrace();
+
+        } catch (Exception e) {
+            try {
+                if (conn != null) {
+                    conn.rollback(); // Rollback on error
+                }
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+            JOptionPane.showMessageDialog(null, "Error deleting employee: " + e.getMessage());
+            e.printStackTrace();
+
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.setAutoCommit(true); // Reset auto-commit
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-    }
     }
 
     // PAYROLL DETAILS KEY RELEASE
