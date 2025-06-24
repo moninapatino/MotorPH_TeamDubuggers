@@ -52,6 +52,21 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
       
         // Setup tab change listener
         setupTabChangeListener();
+        payslipTable.getSelectionModel().addListSelectionListener(e -> {
+        if (!e.getValueIsAdjusting()) {
+            int selectedRow = payslipTable.getSelectedRow();
+            if (selectedRow != -1) {
+                String cutOff = payslipTable.getValueAt(selectedRow, 6).toString();
+                if (cutOff.equalsIgnoreCase("1st")) {
+                    payPeriodComboBox.setSelectedItem("1st Cut-off");
+                } else if (cutOff.equalsIgnoreCase("2nd")) {
+                    payPeriodComboBox.setSelectedItem("2nd Cut-off");
+                } else {
+                    payPeriodComboBox.setSelectedIndex(0);
+                }
+            }
+        }
+    });
     }
     
     public EmployeeAccess_Profile(String employeeID, String firstName, String lastName) {
@@ -75,6 +90,21 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
       
         // Setup tab change listener
         setupTabChangeListener();
+        payslipTable.getSelectionModel().addListSelectionListener(e -> {
+        if (!e.getValueIsAdjusting()) {
+            int selectedRow = payslipTable.getSelectedRow();
+            if (selectedRow != -1) {
+                String cutOff = payslipTable.getValueAt(selectedRow, 6).toString();
+                if (cutOff.equalsIgnoreCase("1st")) {
+                    payPeriodComboBox.setSelectedItem("1st Cut-off");
+                } else if (cutOff.equalsIgnoreCase("2nd")) {
+                    payPeriodComboBox.setSelectedItem("2nd Cut-off");
+                } else {
+                    payPeriodComboBox.setSelectedIndex(0);
+                }
+            }
+        }
+    });
     }
     
     public EmployeeAccess_Profile(String username) {
@@ -98,6 +128,21 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         
         // Setup tab change listener
         setupTabChangeListener();
+        payslipTable.getSelectionModel().addListSelectionListener(e -> {
+        if (!e.getValueIsAdjusting()) {
+            int selectedRow = payslipTable.getSelectedRow();
+            if (selectedRow != -1) {
+                String cutOff = payslipTable.getValueAt(selectedRow, 6).toString();
+                if (cutOff.equalsIgnoreCase("1st")) {
+                    payPeriodComboBox.setSelectedItem("1st Cut-off");
+                } else if (cutOff.equalsIgnoreCase("2nd")) {
+                    payPeriodComboBox.setSelectedItem("2nd Cut-off");
+                } else {
+                    payPeriodComboBox.setSelectedIndex(0);
+                }
+            }
+        }
+    });
     }
     
     
@@ -387,10 +432,11 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         conn = dbConnect.connect();
 
         String sql = "SELECT p.payslip_id, p.payslip_number, p.employee_id, " +
-                     "pp.start_date, pp.end_date, p.generated_date, p.status " +
-                     "FROM payslip p " +
-                     "JOIN pay_period pp ON p.payperiod_id = pp.payperiod_id " +
-                     "WHERE p.employee_id = ?";
+             "pp.start_date, pp.end_date, p.generated_date, p.status, pp.cut_off " +
+             "FROM payslip p " +
+             "JOIN pay_period pp ON p.payperiod_id = pp.payperiod_id " +
+             "WHERE p.employee_id = ?";
+
 
         pst = conn.prepareStatement(sql);
         pst.setString(1, this.employeeID);
@@ -404,9 +450,11 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
             row.add(rs.getString("generated_date"));
             row.add(rs.getString("payslip_number"));
             row.add(rs.getString("employee_id"));
+            row.add(rs.getString("cut_off"));
             row.add(rs.getString("start_date"));
             row.add(rs.getString("end_date"));
             row.add(rs.getString("status"));
+            
             payslipTableModel.addRow(row);
 
             payslipList.add(row); // Add to ArrayList as well (optional)
@@ -431,33 +479,42 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     private void generatePayslipReport() {
     // Get employee ID from the text field
     String employeeIdStr = id_field.getText().trim();
-    int employeeId;
-        employeeId = Integer.parseInt(employeeIdStr);
-    
+    int employeeId = Integer.parseInt(employeeIdStr);
+
+    // Get selected cut-off from combo box
+    String selectedCutOff = payPeriodComboBox.getSelectedItem().toString();
+    String cutOffValue = "";
+
+    if (selectedCutOff.equalsIgnoreCase("1st Cut-off")) {
+        cutOffValue = "1st";
+    } else if (selectedCutOff.equalsIgnoreCase("2nd Cut-off")) {
+        cutOffValue = "2nd";
+    }
+
     try {
-        
         conn = dbConnect.connect();
-        
+
         // Path to the JasperReport template
         String reportPath = "C:\\Users\\user\\Desktop\\Monina\\MMDC\\Term 2 24-25\\MotorPHPortal\\src\\main\\java\\com\\mmdc\\motor_ph_util\\reportPayslipTemplate.jrxml";
         JasperReport jr = JasperCompileManager.compileReport(reportPath);
-        
+
         // Create parameters map
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("employee_id", employeeId);
-        
+        parameters.put("cut_off", cutOffValue); // Add cut_off parameter
+
         // Fill the report with parameters and database connection
         JasperPrint jp = JasperFillManager.fillReport(jr, parameters, conn);
-        
+
         // Check if report has data
         if (jp.getPages().size() == 0) {
-            JOptionPane.showMessageDialog(this, "No Payslip Found for Employee ID: " + employeeId, "No Data", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No Payslip Found for Employee ID: " + employeeId + " (" + cutOffValue + " Cut-off)", "No Data", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        
+
         // Display the report
         JasperViewer.viewReport(jp, false);
-        
+
     } catch (Exception e) {
         e.printStackTrace();
         JOptionPane.showMessageDialog(this, "Error generating report: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -471,6 +528,8 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         }
     }
 }
+
+
     
 
             @SuppressWarnings("unchecked")
@@ -1163,14 +1222,14 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Date", "Payslip Number", "Employee ID", "Start Date", "End Date", "Status"
+                "Date", "Payslip Number", "Employee ID", "Cut-Off", "Start Date", "End Date", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                true, true, true, false, false, true
+                true, true, true, true, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1329,16 +1388,16 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                         .addComponent(en_title)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(id_field, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 264, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(logOutButton)
+                        .addGap(18, 18, 18)
                         .addComponent(date)
                         .addGap(18, 18, 18)
                         .addComponent(time)
                         .addGap(85, 85, 85))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(empName)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(logOutButton)
-                        .addGap(20, 20, 20))))
+                        .addGap(20, 464, Short.MAX_VALUE))))
             .addComponent(tab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
@@ -1347,9 +1406,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(empName)
-                            .addComponent(logOutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(empName)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(en_title)
@@ -1359,12 +1416,13 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGap(0, 78, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(time)
-                                    .addComponent(date)))
-                            .addComponent(img, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE))))
-                .addGap(10, 10, 10)
+                                    .addComponent(date)
+                                    .addComponent(logOutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(img, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE))))
+                .addGap(4, 4, 4)
                 .addComponent(tab, javax.swing.GroupLayout.PREFERRED_SIZE, 519, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -1565,7 +1623,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         if (result == JOptionPane.YES_OPTION){
             Login loginPage = new Login();
             loginPage.setVisible(true);
-            this.dispose();
+            dispose();
         }
     }
 

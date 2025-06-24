@@ -56,49 +56,59 @@ public class Payroll extends javax.swing.JFrame {
     LocalDateTime now =LocalDateTime.now();
     date.setText(dates.format(now));
     }
-        private void generatePayslipReport() {
-       // Get employee ID from the text field
-       String employeeIdStr = id_field.getText().trim();
-       int employeeId;
-           employeeId = Integer.parseInt(employeeIdStr);
+       private void generatePayslipReport() {
+    // Get employee ID from the text field
+    String employeeIdStr = id_field.getText().trim();
+    int employeeId = Integer.parseInt(employeeIdStr);
 
-       try {
+    // Get selected cut-off from combo box
+    String selectedCutOff = payPeriodComboBox.getSelectedItem().toString();
+    String cutOffValue = "";
 
-           conn = dbConnect.connect();
+    if (selectedCutOff.equalsIgnoreCase("1st Cut-off")) {
+        cutOffValue = "1st";
+    } else if (selectedCutOff.equalsIgnoreCase("2nd Cut-off")) {
+        cutOffValue = "2nd";
+    }
 
-           // Path to the JasperReport template
-           String reportPath = "C:\\Users\\user\\Desktop\\Monina\\MMDC\\Term 2 24-25\\MotorPHPortal\\src\\main\\java\\com\\mmdc\\motor_ph_util\\reportPayslipTemplate.jrxml";
-           JasperReport jr = JasperCompileManager.compileReport(reportPath);
+    try {
+        conn = dbConnect.connect();
 
-           // Create parameters map
-           Map<String, Object> parameters = new HashMap<>();
-           parameters.put("employee_id", employeeId);
+        // Path to the JasperReport template
+        String reportPath = "C:\\Users\\user\\Desktop\\Monina\\MMDC\\Term 2 24-25\\MotorPHPortal\\src\\main\\java\\com\\mmdc\\motor_ph_util\\reportPayslipTemplate.jrxml";
+        JasperReport jr = JasperCompileManager.compileReport(reportPath);
 
-           // Fill the report with parameters and database connection
-           JasperPrint jp = JasperFillManager.fillReport(jr, parameters, conn);
+        // Create parameters map
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("employee_id", employeeId);
+        parameters.put("cut_off", cutOffValue); // Add cut_off parameter
 
-           // Check if report has data
-           if (jp.getPages().size() == 0) {
-               JOptionPane.showMessageDialog(this, "No Payslip Found for Employee ID: " + employeeId, "No Data", JOptionPane.INFORMATION_MESSAGE);
-               return;
-           }
+        // Fill the report with parameters and database connection
+        JasperPrint jp = JasperFillManager.fillReport(jr, parameters, conn);
 
-           // Display the report
-           JasperViewer.viewReport(jp, false);
+        // Check if report has data
+        if (jp.getPages().size() == 0) {
+            JOptionPane.showMessageDialog(this, "No Payslip Found for Employee ID: " + employeeId + " (" + cutOffValue + " Cut-off)", "No Data", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
 
-       } catch (Exception e) {
-           e.printStackTrace();
-           JOptionPane.showMessageDialog(this, "Error generating report: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-       } finally {
-           if (conn != null) {
-               try {
-                   conn.close();
-               } catch (Exception e) {
-                   e.printStackTrace();
-               }
-           }
-       }
-   }
+        // Display the report
+        JasperViewer.viewReport(jp, false);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error generating report: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    } finally {
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
     private void populateFields(PayrollCalculation payroll) {
      id_field.setText(payroll.getEmployeeID());
      employeename_field.setText(payroll.getEmployeeName());
@@ -655,6 +665,7 @@ public class Payroll extends javax.swing.JFrame {
         grosspay_field.setText("");
         netpay_field.setText("");
         daysWorked_field.setText("");
+        payPeriodComboBox.removeAllItems(); 
                  
     }//GEN-LAST:event_clearButton1ActionPerformed
 
@@ -669,13 +680,9 @@ public class Payroll extends javax.swing.JFrame {
     private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
        
     String employeeId = id_field.getText().trim();
+    String selectedPayPeriod = payPeriodComboBox.getSelectedItem().toString();
 
-    if (employeeId.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Please enter Employee ID");
-        return;
-    }
-
-    PayrollCalculation payroll = dbConnect.getPayrollDetails(employeeId);
+    PayrollCalculation payroll = dbConnect.getPayrollDetails(employeeId, selectedPayPeriod);
 
     if (payroll != null) {
         populateFields(payroll);

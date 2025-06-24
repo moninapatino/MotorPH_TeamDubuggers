@@ -67,6 +67,7 @@ public class LeaveManagement extends javax.swing.JFrame {
         leaveType_field.setText("");
         approve_rb.setSelected(false);
         reject_rb.setSelected(false);
+        buttonGroup.clearSelection();
     }
 
     public void loadLeaveRecords() {
