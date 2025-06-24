@@ -45,6 +45,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         Dimension size=toolkit.getScreenSize();
         setLocation(size.width/2-getWidth()/2,size.height/2-getHeight()/2);
         loadLeaveRecords();
+        loadPayslipList();
         
         time();
         date();
@@ -67,8 +68,8 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         
         // Load employee data and populate fields
         loadEmployeeData(employeeID);
-        
         loadLeaveRecords();
+        loadPayslipList();
         time();
         date();
       
@@ -90,7 +91,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         
         // Load employee data by username and populate fields
         loadAndFillEmployeeDataByUsername(username);
-        
+        loadPayslipList();
         loadLeaveRecords();
         time();
         date();
@@ -165,7 +166,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
             leaveFirstName_field.setText(employee.getFirstName());
             leaveLastName_field.setText(employee.getLastName());
             payslipFirstName_field.setText(employee.getFirstName());
-            payslipLastName_field.setText(employee.getFirstName());
+            payslipLastName_field.setText(employee.getLastName());
 
             // Set employee name display
             String fullName = employee.getFirstName() + " " + employee.getLastName();
@@ -375,7 +376,60 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         });
     }
     
-     public void generatePayslipReport(int employeeId) {
+    public ArrayList loadPayslipList() {
+    ArrayList payslipList = new ArrayList();
+    
+    if (this.employeeID == null || this.employeeID.trim().isEmpty()) {
+        return payslipList;
+    }
+
+    try {
+        conn = dbConnect.connect();
+
+        String sql = "SELECT p.payslip_id, p.payslip_number, p.employee_id, " +
+                     "pp.start_date, pp.end_date, p.generated_date, p.status " +
+                     "FROM payslip p " +
+                     "JOIN pay_period pp ON p.payperiod_id = pp.payperiod_id " +
+                     "WHERE p.employee_id = ?";
+
+        pst = conn.prepareStatement(sql);
+        pst.setString(1, this.employeeID);
+        rs = pst.executeQuery();
+
+        DefaultTableModel payslipTableModel = (DefaultTableModel) payslipTable.getModel(); // Assuming you have this JTable
+        payslipTableModel.setRowCount(0); // Clear existing rows
+
+        while (rs.next()) {
+            Vector<String> row = new Vector<>();
+            row.add(rs.getString("generated_date"));
+            row.add(rs.getString("payslip_number"));
+            row.add(rs.getString("employee_id"));
+            row.add(rs.getString("start_date"));
+            row.add(rs.getString("end_date"));
+            row.add(rs.getString("status"));
+            payslipTableModel.addRow(row);
+
+            payslipList.add(row); // Add to ArrayList as well (optional)
+        }
+
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(null, "Error loading payslip list: " + ex.getMessage());
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (pst != null) pst.close();
+            if (conn != null) conn.close();
+        } catch (Exception e) {
+            // ignore
+        }
+    }
+
+    return payslipList;
+}
+    
+    
+    
+    public void generatePayslipReport(int employeeId) {
         Connection conn = null;
         try {
             // Establish a database connection
@@ -1095,14 +1149,14 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Date", "Payroll ID", "Payslip Number", "Employee ID", "Start Date", "End Date", "Status"
+                "Date", "Payslip Number", "Employee ID", "Start Date", "End Date", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true, true, false, false, true
+                true, true, true, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1235,6 +1289,8 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         id_field.setBackground(new java.awt.Color(250, 250, 255));
         id_field.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         id_field.setForeground(new java.awt.Color(253, 56, 29));
+
+        img.setIcon(new javax.swing.ImageIcon("C:\\Users\\user\\Desktop\\Monina\\MMDC\\Term 2 24-25\\MotorPHPortal\\src\\main\\java\\images\\icon.png")); // NOI18N
 
         logOutButton.setBackground(new java.awt.Color(253, 56, 29));
         logOutButton.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
