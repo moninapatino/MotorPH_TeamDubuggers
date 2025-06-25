@@ -334,67 +334,70 @@ public abstract class DatabaseConnect {
         }
     }
 
-    // PAYROLL DETAILS KEY RELEASE
-      public PayrollCalculation getPayrollDetails(String employeeId, String selectedPayPeriod) {
-        PayrollCalculation payroll = null;
+    // PAYROLL DETAILS 
+      public PayrollCalculation getPayrollDetails(String employeeId, String selectedPayPeriod, int monthNumber) {
+    PayrollCalculation payroll = null;
 
-        try {
-            conn = connect();
+    try {
+        conn = connect();
 
-            String cutOff = "";
-            String sql = "";
+        String cutOff = "";
+        String sql = "";
 
-            if (selectedPayPeriod.equals("1st Cut-off")) {
-                cutOff = "1st";
-                sql = "SELECT * FROM employee_payslip_1st_cutoff_view WHERE employee_id = ? AND cut_off = ?";
-            } else if (selectedPayPeriod.equals("2nd Cut-off")) {
-                cutOff = "2nd";
-                sql = "SELECT * FROM employee_payslip_2nd_cutoff_view WHERE employee_id = ? AND cut_off = ?";
-            } else {
-                // Invalid selection
-                return null;
-            }
-
-            pst = conn.prepareStatement(sql);
-            pst.setString(1, employeeId);
-            pst.setString(2, cutOff);
-            rs = pst.executeQuery();
-
-            if (rs.next()) {
-                payroll = new PayrollCalculation(
-                    rs.getString("employee_id"),
-                    rs.getString("employee_name"),
-                    rs.getDouble("daily_rate"),
-                    rs.getDouble("days_worked"),
-                    rs.getDouble("rice_allowance"),
-                    rs.getDouble("phone_allowance"),
-                    rs.getDouble("clothing_allowance"),
-                    rs.getDouble("sss"),
-                    rs.getDouble("philhealth"),
-                    rs.getDouble("pagibig"),
-                    rs.getDouble("total_allowance"),
-                    rs.getDouble("total_deductions"),
-                    rs.getDouble("gross_income"),
-                    rs.getDouble("withholding_tax"),
-                    rs.getDouble("take_home_pay"),
-                    rs.getString("pay_date"),
-                    null,null, null,null
-                );
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (pst != null) pst.close();
-                if (conn != null) conn.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
+        if (selectedPayPeriod.equals("1st Cut-off")) {
+            cutOff = "1st";
+            sql = "SELECT * FROM employee_payslip_1st_cutoff_view WHERE employee_id = ? AND cut_off = ? AND MONTH(pay_date) = ?";
+        } else if (selectedPayPeriod.equals("2nd Cut-off")) {
+            cutOff = "2nd";
+            sql = "SELECT * FROM employee_payslip_2nd_cutoff_view WHERE employee_id = ? AND cut_off = ? AND MONTH(pay_date) = ?";
+        } else {
+            // Invalid selection
+            return null;
         }
 
-        return payroll;
+        pst = conn.prepareStatement(sql);
+        pst.setString(1, employeeId);
+        pst.setString(2, cutOff);
+        pst.setInt(3, monthNumber);
+
+        rs = pst.executeQuery();
+
+        if (rs.next()) {
+            payroll = new PayrollCalculation(
+                rs.getString("employee_id"),
+                rs.getString("employee_name"),
+                rs.getDouble("daily_rate"),
+                rs.getDouble("days_worked"),
+                rs.getDouble("rice_allowance"),
+                rs.getDouble("phone_allowance"),
+                rs.getDouble("clothing_allowance"),
+                rs.getDouble("sss"),
+                rs.getDouble("philhealth"),
+                rs.getDouble("pagibig"),
+                rs.getDouble("total_allowance"),
+                rs.getDouble("total_deductions"),
+                rs.getDouble("gross_income"),
+                rs.getDouble("withholding_tax"),
+                rs.getDouble("take_home_pay"),
+                rs.getString("pay_date"),
+                null, null, null, null
+            );
+        }
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (pst != null) pst.close();
+            if (conn != null) conn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
+
+    return payroll;
+}
+
 
     public ArrayList<LeaveRecord> userList(String employeeID) {
     ArrayList<LeaveRecord> leaveRecords = new ArrayList<>();

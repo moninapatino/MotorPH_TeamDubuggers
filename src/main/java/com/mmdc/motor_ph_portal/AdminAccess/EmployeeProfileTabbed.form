@@ -91,11 +91,11 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jPanel1" alignment="0" pref="859" max="32767" attributes="0"/>
+                      <Component id="jPanel1" alignment="0" pref="881" max="32767" attributes="0"/>
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace pref="64" max="32767" attributes="0"/>
+                          <EmptySpace pref="86" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Group type="102" alignment="1" attributes="0">
+                              <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Group type="102" alignment="1" attributes="0">
                                           <Component id="en_title" min="-2" max="-2" attributes="0"/>
@@ -113,8 +113,16 @@
                                           <Component id="searchLastname_field" min="-2" pref="184" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="102" alignment="1" attributes="0">
-                                          <Component id="address_title" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="1" attributes="0">
+                                              <Group type="102" attributes="0">
+                                                  <Component id="address_title" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Group type="102" alignment="1" attributes="0">
+                                                  <Component id="address_title2" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Component id="searchCity_field" min="-2" pref="102" max="-2" attributes="0"/>
                                               <Component id="searchStreet_field" min="-2" pref="184" max="-2" attributes="0"/>
@@ -133,95 +141,90 @@
                                       <Component id="searchBday_field" alignment="0" max="32767" attributes="0"/>
                                       <Component id="searchEmail_field" alignment="0" max="32767" attributes="0"/>
                                   </Group>
+                                  <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                                   <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="91" max="-2" attributes="0"/>
                               </Group>
+                              <Component id="searchBackButton" alignment="1" min="-2" max="-2" attributes="0"/>
                               <Group type="102" alignment="1" attributes="0">
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="searchBackButton" alignment="1" min="-2" max="-2" attributes="0"/>
-                                      <Group type="102" alignment="1" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                                                  <Group type="103" groupAlignment="0" attributes="0">
-                                                      <Group type="102" alignment="1" attributes="0">
-                                                          <Group type="103" groupAlignment="1" attributes="0">
-                                                              <Component id="pagibig_title" alignment="1" min="-2" pref="116" max="-2" attributes="0"/>
-                                                              <Component id="sss_title" alignment="1" min="-2" pref="116" max="-2" attributes="0"/>
-                                                          </Group>
-                                                          <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
-                                                      </Group>
-                                                      <Group type="102" alignment="1" attributes="0">
-                                                          <Component id="tin_title" min="-2" pref="105" max="-2" attributes="0"/>
-                                                          <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
-                                                      </Group>
-                                                      <Group type="102" alignment="0" attributes="0">
-                                                          <Component id="phhealth_title" min="-2" pref="116" max="-2" attributes="0"/>
-                                                          <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
-                                                      </Group>
+                                              <Group type="102" alignment="1" attributes="0">
+                                                  <Group type="103" groupAlignment="1" attributes="0">
+                                                      <Component id="pagibig_title" alignment="1" min="-2" pref="116" max="-2" attributes="0"/>
+                                                      <Component id="sss_title" alignment="1" min="-2" pref="116" max="-2" attributes="0"/>
                                                   </Group>
-                                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                                      <Component id="searchPhhealth_field" alignment="0" pref="151" max="32767" attributes="0"/>
-                                                      <Component id="searchPagibig_field" alignment="0" max="32767" attributes="0"/>
-                                                      <Component id="searchSss_field" alignment="0" max="32767" attributes="0"/>
-                                                      <Component id="searchTin_field" max="32767" attributes="0"/>
-                                                  </Group>
+                                                  <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                                               </Group>
-                                              <Component id="govIdNum_title" min="-2" max="-2" attributes="0"/>
+                                              <Group type="102" alignment="1" attributes="0">
+                                                  <Component id="tin_title" min="-2" pref="105" max="-2" attributes="0"/>
+                                                  <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <Component id="phhealth_title" min="-2" pref="116" max="-2" attributes="0"/>
+                                                  <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                                              </Group>
                                           </Group>
-                                          <EmptySpace max="32767" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="searchUpdateBtn" alignment="1" min="-2" pref="94" max="-2" attributes="0"/>
-                                              <Component id="searchBtn" alignment="1" min="-2" pref="94" max="-2" attributes="0"/>
-                                              <Component id="searchClearButton" alignment="1" min="-2" pref="94" max="-2" attributes="0"/>
-                                              <Component id="searchDeleteBtn" alignment="1" min="-2" pref="94" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                              <Component id="searchPhhealth_field" alignment="0" pref="151" max="32767" attributes="0"/>
+                                              <Component id="searchPagibig_field" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="searchSss_field" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="searchTin_field" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
+                                      <Component id="govIdNum_title" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="-2" pref="90" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="searchUpdateBtn" alignment="1" min="-2" pref="94" max="-2" attributes="0"/>
+                                      <Component id="searchBtn" alignment="1" min="-2" pref="94" max="-2" attributes="0"/>
+                                      <Component id="searchClearButton" alignment="1" min="-2" pref="94" max="-2" attributes="0"/>
+                                      <Component id="searchDeleteBtn" alignment="1" min="-2" pref="94" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
+                          <EmptySpace min="-2" pref="90" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="396" max="-2" attributes="0"/>
-                                  <Component id="address_title1" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="address_title4" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="searchBrgy_field" min="-2" pref="102" max="-2" attributes="0"/>
+                                  <Component id="searchPostalcode_field" min="-2" pref="54" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                              <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" alignment="0" attributes="0">
-                                          <Component id="date" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="time" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <Component id="date" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="time" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                                                  <Component id="greetings" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
-                                          <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-                                          <Component id="greetings" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="133" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <EmptySpace min="-2" pref="369" max="-2" attributes="0"/>
-                                          <Component id="address_title4" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                                          <Component id="searchPostalcode_field" min="-2" pref="54" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="address_title2" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="169" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="360" max="-2" attributes="0"/>
                                           <Component id="address_title3" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                                          <Component id="searchProvince_field" min="-2" pref="102" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="107" max="-2" attributes="0"/>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="searchProvince_field" min="-2" pref="102" max="-2" attributes="0"/>
+                                              <Group type="102" attributes="0">
+                                                  <Component id="address_title1" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                                  <Component id="searchBrgy_field" min="-2" pref="102" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
                                       </Group>
                                   </Group>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
@@ -248,90 +251,82 @@
                               <Component id="searchFirstname_field" linkSize="4" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
                               <Component id="noe_title" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace min="4" pref="4" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="noe_title1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="searchBday_field" linkSize="4" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="b_title" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="searchLastname_field" linkSize="4" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="searchBday_field" linkSize="4" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="b_title" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                                          <Component id="searchBrgy_field" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="address_title1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="3" attributes="0">
-                                              <Component id="searchStreet_field" linkSize="4" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="address_title" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                  </Group>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="searchProvince_field" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="address_title4" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="searchPostalcode_field" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="address_title2" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="address_title3" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="searchCity_field" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <Component id="searchBtn" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="searchUpdateBtn" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="searchDeleteBtn" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="searchClearButton" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <Component id="govIdNum_title" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="3" attributes="0">
-                                              <Component id="sss_title" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="searchSss_field" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="3" attributes="0">
-                                              <Component id="pagibig_title" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="searchPagibig_field" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="3" attributes="0">
-                                              <Component id="phhealth_title" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="searchPhhealth_field" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="3" attributes="0">
-                                              <Component id="tin_title" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="searchTin_field" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                  </Group>
-                                  <EmptySpace pref="45" max="32767" attributes="0"/>
-                                  <Component id="searchBackButton" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="date" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="time" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                                  <Component id="searchBrgy_field" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="address_title1" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="102" attributes="0">
-                                  <EmptySpace min="4" pref="4" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="searchLastname_field" linkSize="4" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
-                                      <Component id="noe_title1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="searchStreet_field" linkSize="4" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="address_title" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace max="32767" attributes="0"/>
                               </Group>
                           </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="searchCity_field" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="searchProvince_field" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="address_title4" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="searchPostalcode_field" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="address_title3" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="address_title2" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <EmptySpace pref="47" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="searchBtn" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="searchUpdateBtn" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="searchDeleteBtn" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="searchClearButton" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="govIdNum_title" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="sss_title" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="searchSss_field" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="pagibig_title" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="searchPagibig_field" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="phhealth_title" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="searchPhhealth_field" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="tin_title" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="searchTin_field" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
+                          <EmptySpace pref="48" max="32767" attributes="0"/>
+                          <Component id="searchBackButton" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="date" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="time" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -920,84 +915,83 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jPanel3" alignment="0" pref="859" max="32767" attributes="0"/>
+                      <Component id="jPanel3" alignment="0" pref="881" max="32767" attributes="0"/>
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="1" attributes="0">
                                       <Group type="102" alignment="1" attributes="0">
                                           <Component id="en_title1" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-                                          <Component id="id_field" pref="184" max="32767" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <Component id="address_title5" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                                          <Component id="street_field" min="-2" pref="184" max="-2" attributes="0"/>
+                                          <EmptySpace type="unrelated" max="32767" attributes="0"/>
+                                          <Component id="id_field" linkSize="5" min="-2" pref="181" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="102" alignment="1" attributes="0">
                                           <EmptySpace min="42" pref="42" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Group type="102" alignment="1" attributes="0">
+                                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                                   <Component id="noe_title2" min="-2" max="-2" attributes="0"/>
-                                                  <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="firstname_field" pref="184" max="32767" attributes="0"/>
+                                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                                  <Component id="firstname_field" linkSize="5" min="-2" pref="181" max="-2" attributes="0"/>
                                               </Group>
                                               <Group type="102" alignment="1" attributes="0">
                                                   <Component id="noe_title3" min="-2" max="-2" attributes="0"/>
-                                                  <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="lastname_field" pref="184" max="32767" attributes="0"/>
+                                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                                  <Component id="lastname_field" max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
                                       </Group>
-                                  </Group>
-                                  <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="1" attributes="0">
                                       <Group type="102" alignment="1" attributes="0">
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="b_title1" alignment="1" min="-2" max="-2" attributes="0"/>
-                                              <Component id="cn_title1" alignment="1" min="-2" max="-2" attributes="0"/>
-                                              <Component id="email_title1" alignment="1" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="contact_field" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="bday_field" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="email_field" alignment="0" max="32767" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <Component id="address_title6" min="-2" max="-2" attributes="0"/>
+                                          <Component id="address_title5" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                                          <Component id="brgy_field" min="-2" pref="102" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="130" max="-2" attributes="0"/>
+                                          <Component id="street_field" min="-2" pref="193" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="1" attributes="0">
+                                              <Group type="102" alignment="1" attributes="0">
+                                                  <Group type="103" groupAlignment="0" attributes="0">
+                                                      <Component id="cn_title1" alignment="1" min="-2" max="-2" attributes="0"/>
+                                                      <Component id="email_title1" alignment="1" min="-2" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                                  <Group type="103" groupAlignment="0" attributes="0">
+                                                      <Component id="contact_field" linkSize="5" alignment="0" min="-2" pref="203" max="-2" attributes="0"/>
+                                                      <Component id="email_field" linkSize="5" alignment="0" min="-2" pref="203" max="-2" attributes="0"/>
+                                                  </Group>
+                                              </Group>
+                                              <Group type="102" alignment="1" attributes="0">
+                                                  <Component id="address_title6" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                                  <Component id="brgy_field" min="-2" pref="102" max="-2" attributes="0"/>
+                                                  <EmptySpace min="-2" pref="130" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                      </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="b_title1" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Component id="bday_field" linkSize="5" min="-2" pref="203" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                                   <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="91" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="102" alignment="1" attributes="0">
+                              <Group type="102" attributes="0">
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="addBtn" alignment="1" min="-2" pref="94" max="-2" attributes="0"/>
                                       <Component id="clearButton" alignment="1" min="-2" pref="94" max="-2" attributes="0"/>
                                       <Component id="backButton" alignment="1" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="-2" pref="90" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-                                  <Component id="greetings1" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="date1" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" alignment="0" attributes="0">
                                           <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
@@ -1020,7 +1014,7 @@
                                           </Group>
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Component id="tin_field" alignment="1" min="-2" pref="152" max="-2" attributes="0"/>
-                                              <Group type="103" groupAlignment="1" attributes="0">
+                                              <Group type="103" alignment="0" groupAlignment="1" attributes="0">
                                                   <Component id="pagibig_field" alignment="1" min="-2" pref="152" max="-2" attributes="0"/>
                                                   <Component id="sss_field" min="-2" pref="152" max="-2" attributes="0"/>
                                                   <Component id="phhealth_field" alignment="1" min="-2" pref="152" max="-2" attributes="0"/>
@@ -1028,32 +1022,53 @@
                                           </Group>
                                       </Group>
                                       <Component id="govIdNum_title1" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="time1" min="-2" max="-2" attributes="0"/>
                                   </Group>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
+                          <EmptySpace min="-2" pref="90" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="132" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Component id="city_field" min="-2" pref="102" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="393" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <EmptySpace min="-2" pref="369" max="-2" attributes="0"/>
-                                      <Component id="address_title9" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="postalcode_field" min="-2" pref="54" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                                          <Component id="greetings1" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="date1" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="time1" min="-2" max="-2" attributes="0"/>
+                                      </Group>
                                   </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="address_title7" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="169" max="-2" attributes="0"/>
-                                      <Component id="address_title8" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="province_field" min="-2" pref="102" max="-2" attributes="0"/>
-                                      <EmptySpace pref="182" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" pref="146" max="-2" attributes="0"/>
+                                  <Component id="address_title7" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace min="-2" pref="158" max="-2" attributes="0"/>
+                                          <Component id="address_title8" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="province_field" min="-2" pref="102" max="-2" attributes="0"/>
+                                          <EmptySpace pref="182" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Group type="102" alignment="1" attributes="0">
+                                                  <Component id="address_title9" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                                  <Component id="postalcode_field" min="-2" pref="54" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Group type="102" alignment="1" attributes="0">
+                                                  <Component id="city_field" min="-2" pref="102" max="-2" attributes="0"/>
+                                                  <EmptySpace min="-2" pref="393" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                      </Group>
                                   </Group>
                               </Group>
                           </Group>
@@ -1064,69 +1079,83 @@
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
+                          <Component id="jPanel3" min="-2" pref="84" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                          <Component id="greetings1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="contact_field" linkSize="1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="cn_title1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="en_title1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="id_field" linkSize="1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="jPanel3" min="-2" pref="84" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                                  <Component id="greetings1" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="contact_field" linkSize="1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="cn_title1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="en_title1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="id_field" linkSize="1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="-2" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="email_field" linkSize="1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="email_title1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Group type="102" alignment="3" attributes="0">
-                                          <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                                          <Component id="firstname_field" linkSize="1" min="-2" pref="16" max="-2" attributes="0"/>
-                                      </Group>
+                                      <Component id="firstname_field" linkSize="1" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
                                       <Component id="noe_title2" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="bday_field" linkSize="1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="b_title1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="noe_title3" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Group type="102" alignment="3" attributes="0">
+                                      <Component id="email_title1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="email_field" linkSize="1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="3" attributes="0">
+                                          <Component id="noe_title3" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lastname_field" linkSize="1" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
                                           <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                                          <Component id="lastname_field" linkSize="1" min="-2" pref="16" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="3" attributes="0">
+                                              <Component id="b_title1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          </Group>
                                       </Group>
                                   </Group>
-                                  <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                                           <Component id="brgy_field" alignment="3" min="-2" max="-2" attributes="0"/>
                                           <Component id="address_title6" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <Component id="street_field" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-                                          <Component id="address_title5" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="city_field" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                                          <Component id="province_field" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="address_title9" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="postalcode_field" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="address_title7" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="address_title8" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="street_field" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="address_title5" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
-                                  <EmptySpace pref="101" max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="bday_field" linkSize="1" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                                  <Component id="city_field" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="address_title7" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                                  <Component id="province_field" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="address_title9" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="postalcode_field" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="address_title8" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <EmptySpace pref="29" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="1" attributes="0">
                                   <Component id="addBtn" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="clearButton" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="102" attributes="0">
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
                                   <Component id="govIdNum_title1" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
@@ -1152,7 +1181,7 @@
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="backButton" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="57" max="32767" attributes="0"/>
+                          <EmptySpace pref="53" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="date1" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="time1" alignment="3" min="-2" max="-2" attributes="0"/>

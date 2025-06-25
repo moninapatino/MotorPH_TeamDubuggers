@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import javax.swing.WindowConstants;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -46,27 +47,11 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         setLocation(size.width/2-getWidth()/2,size.height/2-getHeight()/2);
         loadLeaveRecords();
         loadPayslipList();
-        
         time();
         date();
       
-        // Setup tab change listener
         setupTabChangeListener();
-        payslipTable.getSelectionModel().addListSelectionListener(e -> {
-        if (!e.getValueIsAdjusting()) {
-            int selectedRow = payslipTable.getSelectedRow();
-            if (selectedRow != -1) {
-                String cutOff = payslipTable.getValueAt(selectedRow, 6).toString();
-                if (cutOff.equalsIgnoreCase("1st")) {
-                    payPeriodComboBox.setSelectedItem("1st Cut-off");
-                } else if (cutOff.equalsIgnoreCase("2nd")) {
-                    payPeriodComboBox.setSelectedItem("2nd Cut-off");
-                } else {
-                    payPeriodComboBox.setSelectedIndex(0);
-                }
-            }
-        }
-    });
+        
     }
     
     public EmployeeAccess_Profile(String employeeID, String firstName, String lastName) {
@@ -81,31 +66,12 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         
         this.employeeID = employeeID;
         
-        // Load employee data and populate fields
-        
         loadEmployeeData(employeeID);
         loadLeaveRecords();
         loadPayslipList();
         time();
         date();
-      
-        // Setup tab change listener
         setupTabChangeListener();
-        payslipTable.getSelectionModel().addListSelectionListener(e -> {
-        if (!e.getValueIsAdjusting()) {
-            int selectedRow = payslipTable.getSelectedRow();
-            if (selectedRow != -1) {
-                String cutOff = payslipTable.getValueAt(selectedRow, 6).toString();
-                if (cutOff.equalsIgnoreCase("1st")) {
-                    payPeriodComboBox.setSelectedItem("1st Cut-off");
-                } else if (cutOff.equalsIgnoreCase("2nd")) {
-                    payPeriodComboBox.setSelectedItem("2nd Cut-off");
-                } else {
-                    payPeriodComboBox.setSelectedIndex(0);
-                }
-            }
-        }
-    });
     }
     
     public EmployeeAccess_Profile(String username) {
@@ -126,24 +92,8 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         loadLeaveRecords();
         time();
         date();
-        
-        // Setup tab change listener
         setupTabChangeListener();
-        payslipTable.getSelectionModel().addListSelectionListener(e -> {
-        if (!e.getValueIsAdjusting()) {
-            int selectedRow = payslipTable.getSelectedRow();
-            if (selectedRow != -1) {
-                String cutOff = payslipTable.getValueAt(selectedRow, 6).toString();
-                if (cutOff.equalsIgnoreCase("1st")) {
-                    payPeriodComboBox.setSelectedItem("1st Cut-off");
-                } else if (cutOff.equalsIgnoreCase("2nd")) {
-                    payPeriodComboBox.setSelectedItem("2nd Cut-off");
-                } else {
-                    payPeriodComboBox.setSelectedIndex(0);
-                }
-            }
-        }
-    });
+        
     }
     
     
@@ -304,7 +254,9 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                 row.add(rs.getString("status"));
                 leaveTableModel.addRow(row);
             } 
+            
             refreshList();
+            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error loading leave records: " + e.getMessage());
         } finally {
@@ -477,43 +429,43 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
 }
     
    
-    private void generatePayslipReport() {
-    // Get employee ID from the text field
-    String employeeIdStr = id_field.getText().trim();
-    int employeeId = Integer.parseInt(employeeIdStr);
-
-    // Get selected cut-off from combo box
-    String selectedCutOff = payPeriodComboBox.getSelectedItem().toString();
-    String cutOffValue = "";
-
-    if (selectedCutOff.equalsIgnoreCase("1st Cut-off")) {
-        cutOffValue = "1st";
-    } else if (selectedCutOff.equalsIgnoreCase("2nd Cut-off")) {
-        cutOffValue = "2nd";
-    }
-
+     private void generatePayslipReport() {
     try {
+        // Get employee ID
+        String employeeIdStr = id_field.getText().trim();
+        int employeeId = Integer.parseInt(employeeIdStr);
+
+        // Get selected cut-off
+        String selectedCutOff = payPeriodComboBox.getSelectedItem().toString();
+        String cutOffValue = selectedCutOff.equalsIgnoreCase("1st Cut-off") ? "1st" : "2nd";
+
+        // Get selected month name and convert to month number
+        String selectedMonth = monthComboBox.getSelectedItem().toString();
+        int monthNumber = Month.valueOf(selectedMonth.toUpperCase()).getValue(); // Java 8+
+
+        // Connect to DB
         conn = dbConnect.connect();
 
-        // Path to the JasperReport template
+        // Compile report
         String reportPath = "C:\\Users\\user\\Desktop\\Monina\\MMDC\\Term 2 24-25\\MotorPHPortal\\src\\main\\java\\com\\mmdc\\motor_ph_util\\reportPayslipTemplate.jrxml";
         JasperReport jr = JasperCompileManager.compileReport(reportPath);
 
-        // Create parameters map
+        // Set report parameters
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("employee_id", employeeId);
-        parameters.put("cut_off", cutOffValue); // Add cut_off parameter
+        parameters.put("cut_off", cutOffValue);
+        parameters.put("month_number", monthNumber); // Pass month number
 
-        // Fill the report with parameters and database connection
+        // Fill report
         JasperPrint jp = JasperFillManager.fillReport(jr, parameters, conn);
 
-        // Check if report has data
-        if (jp.getPages().size() == 0) {
-            JOptionPane.showMessageDialog(this, "No Payslip Found for Employee ID: " + employeeId + " (" + cutOffValue + " Cut-off)", "No Data", JOptionPane.INFORMATION_MESSAGE);
+        // Handle no data
+        if (jp.getPages().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No Payslip Found for Employee ID: " + employeeId + " (" + cutOffValue + " Cut-off, Month: " + selectedMonth + ")", "No Data", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
-        // Display the report
+        // View report
         JasperViewer.viewReport(jp, false);
 
     } catch (Exception e) {
@@ -529,6 +481,9 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         }
     }
 }
+ 
+
+
 
 
     
@@ -608,6 +563,8 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         leave_title1 = new javax.swing.JLabel();
         noe_title11 = new javax.swing.JLabel();
         payPeriodComboBox = new javax.swing.JComboBox<>();
+        noe_title12 = new javax.swing.JLabel();
+        monthComboBox = new javax.swing.JComboBox<>();
         empName = new javax.swing.JLabel();
         date = new javax.swing.JLabel();
         time = new javax.swing.JLabel();
@@ -1227,10 +1184,10 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                true, true, true, true, false, false, true
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1279,50 +1236,54 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         noe_title11.setForeground(new java.awt.Color(250, 250, 255));
         noe_title11.setText("Pay Period:");
 
-        payPeriodComboBox.setBackground(new java.awt.Color(250, 250, 255));
+        payPeriodComboBox.setBackground(new java.awt.Color(92, 101, 138));
         payPeriodComboBox.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        payPeriodComboBox.setForeground(new java.awt.Color(30, 43, 93));
+        payPeriodComboBox.setForeground(new java.awt.Color(250, 250, 255));
         payPeriodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1st Cut-off", "2nd Cut-off" }));
+
+        noe_title12.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        noe_title12.setForeground(new java.awt.Color(250, 250, 255));
+        noe_title12.setText("Pay Period Month:");
+
+        monthComboBox.setBackground(new java.awt.Color(92, 101, 138));
+        monthComboBox.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        monthComboBox.setForeground(new java.awt.Color(250, 250, 255));
+        monthComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }));
 
         javax.swing.GroupLayout leaveTab1Layout = new javax.swing.GroupLayout(leaveTab1);
         leaveTab1.setLayout(leaveTab1Layout);
         leaveTab1Layout.setHorizontalGroup(
             leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(leaveTab1Layout.createSequentialGroup()
-                .addContainerGap(88, Short.MAX_VALUE)
+                .addContainerGap(87, Short.MAX_VALUE)
                 .addGroup(leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, leaveTab1Layout.createSequentialGroup()
                         .addGroup(leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(leave_title1)
                             .addGroup(leaveTab1Layout.createSequentialGroup()
-                                .addGap(26, 26, 26)
                                 .addGroup(leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(leaveTab1Layout.createSequentialGroup()
-                                        .addComponent(noe_title9)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(payslipFirstName_field, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(leaveTab1Layout.createSequentialGroup()
-                                        .addGroup(leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(noe_title10)
-                                            .addComponent(noe_title11))
-                                        .addGap(18, 18, 18)
-                                        .addGroup(leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(payslipLastName_field, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
-                                            .addComponent(payPeriodComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                    .addGroup(leaveTab1Layout.createSequentialGroup()
-                                        .addComponent(payslipBtn)
-                                        .addGap(54, 54, 54))))
-                            .addComponent(leave_title1))
-                        .addGap(233, 233, 233))
+                                    .addComponent(noe_title9)
+                                    .addComponent(noe_title10)
+                                    .addComponent(noe_title11)
+                                    .addComponent(noe_title12))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(payslipLastName_field, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(payslipFirstName_field, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(monthComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(payPeriodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(payslipBtn))))
+                        .addGap(241, 241, 241))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, leaveTab1Layout.createSequentialGroup()
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 602, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(83, 83, 83))))
+                        .addGap(84, 84, 84))))
         );
         leaveTab1Layout.setVerticalGroup(
             leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(leaveTab1Layout.createSequentialGroup()
-                .addGap(43, 43, 43)
+                .addGap(19, 19, 19)
                 .addComponent(leave_title1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(noe_title9)
                     .addComponent(payslipFirstName_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -1330,15 +1291,19 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                 .addGroup(leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(noe_title10)
                     .addComponent(payslipLastName_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(10, 10, 10)
+                .addGroup(leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(monthComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(noe_title12))
+                .addGap(9, 9, 9)
                 .addGroup(leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(payPeriodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(noe_title11))
-                .addGap(26, 26, 26)
+                .addGap(18, 18, 18)
                 .addComponent(payslipBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(69, Short.MAX_VALUE))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
 
         tab.addTab("Payslip", leaveTab1);
@@ -1712,9 +1677,11 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     private javax.swing.JLabel leave_title1;
     private javax.swing.JLabel leave_type;
     private javax.swing.JButton logOutButton;
+    private javax.swing.JComboBox<String> monthComboBox;
     private javax.swing.JLabel noe_title;
     private javax.swing.JLabel noe_title10;
     private javax.swing.JLabel noe_title11;
+    private javax.swing.JLabel noe_title12;
     private javax.swing.JLabel noe_title6;
     private javax.swing.JLabel noe_title7;
     private javax.swing.JLabel noe_title8;

@@ -5,18 +5,22 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MySQL"/>
 	<parameter name="employee_id" class="java.lang.Integer"/>
 	<parameter name="cut_off" class="java.lang.String"/>
+	<parameter name="pay_date" class="java.sql.Date" isForPrompting="false"/>
+	<parameter name="month_number" class="java.lang.Integer"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT * 
 FROM employee_payslip_1st_cutoff_view 
 WHERE employee_id = $P{employee_id}
-AND $P{cut_off} = '1st'
+  AND $P{cut_off} = '1st'
+  AND MONTH(pay_date) = $P{month_number}
 
 UNION ALL
 
 SELECT * 
 FROM employee_payslip_2nd_cutoff_view 
 WHERE employee_id = $P{employee_id}
-AND $P{cut_off} = '2nd']]>
+  AND $P{cut_off} = '2nd'
+  AND MONTH(pay_date) = $P{month_number}]]>
 	</queryString>
 	<field name="payslip_number" class="java.lang.String"/>
 	<field name="employee_id" class="java.lang.Integer">
@@ -138,81 +142,92 @@ AND $P{cut_off} = '2nd']]>
 	<pageHeader>
 		<band height="189" splitType="Stretch">
 			<staticText>
-				<reportElement x="16" y="104" width="110" height="19" forecolor="#1E2B5D" uuid="1c5b866c-2164-4ff5-884d-74f9c63bbbfb"/>
+				<reportElement x="21" y="85" width="110" height="19" forecolor="#1E2B5D" uuid="1c5b866c-2164-4ff5-884d-74f9c63bbbfb"/>
 				<textElement>
 					<font fontName="Arial Black" size="12"/>
 				</textElement>
 				<text><![CDATA[PAYSLIP NO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="16" y="123" width="110" height="19" forecolor="#1E2B5D" uuid="176e0f66-ebe1-493c-be8d-61f14e641ecc"/>
+				<reportElement x="21" y="104" width="110" height="19" forecolor="#1E2B5D" uuid="176e0f66-ebe1-493c-be8d-61f14e641ecc"/>
 				<textElement>
 					<font fontName="Arial Black" size="12"/>
 				</textElement>
 				<text><![CDATA[EMPLOYEE ID]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="15" y="144" width="128" height="19" forecolor="#1E2B5D" uuid="4196c229-7747-44b9-822d-2c74de5828a5"/>
+				<reportElement x="20" y="125" width="128" height="19" forecolor="#1E2B5D" uuid="4196c229-7747-44b9-822d-2c74de5828a5"/>
 				<textElement>
 					<font fontName="Arial Black" size="12"/>
 				</textElement>
 				<text><![CDATA[EMPLOYEE NAME]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="295" y="124" width="150" height="18" forecolor="#1E2B5D" uuid="e46f79d5-d786-49a3-b6ae-67c812f63d64"/>
+				<reportElement x="296" y="125" width="150" height="18" forecolor="#1E2B5D" uuid="e46f79d5-d786-49a3-b6ae-67c812f63d64"/>
 				<textElement>
 					<font fontName="Arial Black" size="12"/>
 				</textElement>
 				<text><![CDATA[PERIOD START DATE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="295" y="144" width="150" height="18" forecolor="#1E2B5D" uuid="bda39abd-3252-4102-b902-8e4e8f0b32b9"/>
+				<reportElement x="296" y="145" width="150" height="18" forecolor="#1E2B5D" uuid="bda39abd-3252-4102-b902-8e4e8f0b32b9"/>
 				<textElement>
 					<font fontName="Arial Black" size="12"/>
 				</textElement>
 				<text><![CDATA[PERIOD END DATE]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="135" y="123" width="100" height="18" uuid="66ca841b-f356-4c0d-840c-10dfc4d41cfd"/>
+				<reportElement x="140" y="104" width="100" height="18" uuid="66ca841b-f356-4c0d-840c-10dfc4d41cfd"/>
 				<textFieldExpression><![CDATA[$F{employee_id}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="145" y="144" width="100" height="18" uuid="4bb64f58-c83b-4a14-b4af-632d69faaaa2"/>
+				<reportElement x="150" y="125" width="100" height="18" uuid="4bb64f58-c83b-4a14-b4af-632d69faaaa2"/>
 				<textFieldExpression><![CDATA[$F{employee_name}]]></textFieldExpression>
 			</textField>
 			<textField pattern="MMMM d, yyyy">
-				<reportElement x="446" y="123" width="100" height="18" uuid="0f477e5c-fe7d-4a8f-9e61-7cd63c443207"/>
+				<reportElement x="447" y="124" width="100" height="18" uuid="0f477e5c-fe7d-4a8f-9e61-7cd63c443207"/>
 				<textFieldExpression><![CDATA[$F{period_start}]]></textFieldExpression>
 			</textField>
 			<textField pattern="MMMM d, yyyy">
-				<reportElement x="446" y="144" width="100" height="18" uuid="2df832e8-2f9a-4c00-932a-3f14873fe98d"/>
+				<reportElement x="447" y="145" width="100" height="18" uuid="2df832e8-2f9a-4c00-932a-3f14873fe98d"/>
 				<textFieldExpression><![CDATA[$F{period_end}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="106" y="61" width="339" height="42" forecolor="#1E2B5D" uuid="efeba1de-0e07-43e4-a518-93a318b176dd"/>
+				<reportElement x="108" y="41" width="339" height="42" forecolor="#1E2B5D" uuid="efeba1de-0e07-43e4-a518-93a318b176dd"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial Black" size="23" isBold="true"/>
 				</textElement>
 				<text><![CDATA[EMPLOYEE PAYSLIP]]></text>
 			</staticText>
 			<image>
-				<reportElement x="220" y="0" width="110" height="61" uuid="3a125726-79c9-4f88-97d5-17f973a1ce5a"/>
+				<reportElement x="229" y="-20" width="110" height="61" uuid="3a125726-79c9-4f88-97d5-17f973a1ce5a"/>
 				<imageExpression><![CDATA["C:/Users/user/Desktop/Monina/MMDC/Term 2 24-25/MotorPH Logo.png"]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="134" y="104" width="100" height="18" uuid="d5c0dc42-4071-4f8b-bbfd-61fb20e6366c"/>
+				<reportElement x="139" y="85" width="100" height="18" uuid="d5c0dc42-4071-4f8b-bbfd-61fb20e6366c"/>
 				<textFieldExpression><![CDATA[$F{payslip_number}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="295" y="104" width="150" height="18" forecolor="#1E2B5D" uuid="c5ff1d92-5453-4db3-9fdb-188605ba1f5c"/>
+				<reportElement x="296" y="105" width="150" height="18" forecolor="#1E2B5D" uuid="c5ff1d92-5453-4db3-9fdb-188605ba1f5c"/>
 				<textElement>
 					<font fontName="Arial Black" size="12"/>
 				</textElement>
 				<text><![CDATA[PERIOD CUT-OFF]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="447" y="104" width="100" height="18" uuid="5bd8e01a-2995-46c3-b665-caa1b6bb4288"/>
+				<reportElement x="448" y="105" width="100" height="18" uuid="5bd8e01a-2995-46c3-b665-caa1b6bb4288"/>
 				<textFieldExpression><![CDATA[$F{cut_off}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="296" y="85" width="150" height="18" forecolor="#1E2B5D" uuid="feddf23b-a35a-4f4b-bccd-74c0170ae5ef"/>
+				<textElement>
+					<font fontName="Arial Black" size="12"/>
+				</textElement>
+				<text><![CDATA[PAY DATE]]></text>
+			</staticText>
+			<textField pattern="MMMM d, yyyy">
+				<reportElement x="447" y="85" width="100" height="18" uuid="e45c771a-a5c9-4a43-ae68-dfce672492c3"/>
+				<textFieldExpression><![CDATA[$F{pay_date}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
