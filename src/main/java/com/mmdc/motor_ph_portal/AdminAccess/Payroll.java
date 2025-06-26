@@ -2,8 +2,11 @@
 package com.mmdc.motor_ph_portal.AdminAccess;
 
 import com.mmdc.motor_ph_util.DatabaseConnect;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,10 +18,10 @@ import java.util.Map;
 import javax.swing.WindowConstants;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
 
 
 public class Payroll extends javax.swing.JFrame {
@@ -57,7 +60,10 @@ public class Payroll extends javax.swing.JFrame {
     LocalDateTime now =LocalDateTime.now();
     date.setText(dates.format(now));
     }
+      
     private void generatePayslipReport() {
+    Connection conn = null;
+
     try {
         // Get employee ID
         String employeeIdStr = id_field.getText().trim();
@@ -89,16 +95,52 @@ public class Payroll extends javax.swing.JFrame {
 
         // Handle no data
         if (jp.getPages().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No Payslip Found for Employee ID: " + employeeId + " (" + cutOffValue + " Cut-off, Month: " + selectedMonth + ")", "No Data", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "No Payslip Found for Employee ID: " + employeeId + " (" + cutOffValue + " Cut-off, Month: " + selectedMonth + ")",
+                    "No Data",
+                    JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
-        // View report
-        JasperViewer.viewReport(jp, false);
+        // Generate PDF file path
+         String outputPath = "C:\\Users\\user\\Desktop\\Monina\\MMDC\\Term 3 24-25\\AOOP\\Payslips" + employeeId + "" + selectedMonth + "" + cutOffValue + ".pdf";
+
+        // Export report to PDF
+        JasperExportManager.exportReportToPdfFile(jp, outputPath);
+
+        // Try to open the PDF file
+        File pdfFile = new File(outputPath);
+        if (pdfFile.exists()) {
+            if (Desktop.isDesktopSupported()) {
+                Desktop desktop = Desktop.getDesktop();
+                try {
+                    desktop.open(pdfFile);
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(this,
+                            "Error opening PDF: " + e.getMessage(),
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Desktop is not supported. PDF file generated at:\n" + outputPath,
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+
+        // Notify user
+        JOptionPane.showMessageDialog(this,
+                "Payslip PDF generated successfully:\n" + outputPath,
+                "Success",
+                JOptionPane.INFORMATION_MESSAGE);
 
     } catch (Exception e) {
         e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "Error generating report: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this,
+                "Error generating report: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
     } finally {
         if (conn != null) {
             try {

@@ -346,10 +346,10 @@ public abstract class DatabaseConnect {
 
         if (selectedPayPeriod.equals("1st Cut-off")) {
             cutOff = "1st";
-            sql = "SELECT * FROM employee_payslip_1st_cutoff_view WHERE employee_id = ? AND cut_off = ? AND MONTH(pay_date) = ?";
+            sql = "SELECT * FROM employee_payslip_1st_cutoff_view WHERE employee_id = ? AND cut_off = ? AND MONTH(period_start) = ?";
         } else if (selectedPayPeriod.equals("2nd Cut-off")) {
             cutOff = "2nd";
-            sql = "SELECT * FROM employee_payslip_2nd_cutoff_view WHERE employee_id = ? AND cut_off = ? AND MONTH(pay_date) = ?";
+            sql = "SELECT * FROM employee_payslip_2nd_cutoff_view WHERE employee_id = ? AND cut_off = ? AND MONTH(period_start) = ?";
         } else {
             // Invalid selection
             return null;

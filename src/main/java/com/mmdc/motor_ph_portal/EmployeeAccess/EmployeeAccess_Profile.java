@@ -4,8 +4,11 @@ import com.mmdc.motor_ph_portal.AdminAccess.Admin_Class;
 import com.mmdc.motor_ph_portal.LeaveRecord;
 import com.mmdc.motor_ph_portal.Login;
 import com.mmdc.motor_ph_util.DatabaseConnect;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,10 +24,10 @@ import javax.swing.table.DefaultTableModel;
 import java.util.HashMap;
 import java.util.Map;
 import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
 
 
 public class EmployeeAccess_Profile extends javax.swing.JFrame {
@@ -385,7 +388,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         conn = dbConnect.connect();
 
         String sql = "SELECT p.payslip_id, p.payslip_number, p.employee_id, " +
-             "pp.start_date, pp.end_date, p.generated_date, p.status, pp.cut_off " +
+             "pp.start_date, pp.end_date, pp.pay_date, p.status, pp.cut_off " +
              "FROM payslip p " +
              "JOIN pay_period pp ON p.payperiod_id = pp.payperiod_id " +
              "WHERE p.employee_id = ?";
@@ -400,7 +403,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
 
         while (rs.next()) {
             Vector<String> row = new Vector<>();
-            row.add(rs.getString("generated_date"));
+            row.add(rs.getString("pay_date"));
             row.add(rs.getString("payslip_number"));
             row.add(rs.getString("employee_id"));
             row.add(rs.getString("cut_off"));
@@ -429,7 +432,9 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
 }
     
    
-     private void generatePayslipReport() {
+   private void generatePayslipReport() {
+    Connection conn = null;
+
     try {
         // Get employee ID
         String employeeIdStr = id_field.getText().trim();
@@ -461,16 +466,52 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
 
         // Handle no data
         if (jp.getPages().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No Payslip Found for Employee ID: " + employeeId + " (" + cutOffValue + " Cut-off, Month: " + selectedMonth + ")", "No Data", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "No Payslip Found for Employee ID: " + employeeId + " (" + cutOffValue + " Cut-off, Month: " + selectedMonth + ")",
+                    "No Data",
+                    JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
-        // View report
-        JasperViewer.viewReport(jp, false);
+        // Generate PDF file path
+        String outputPath = "C:\\Users\\user\\Desktop\\Monina\\MMDC\\Term 3 24-25\\AOOP\\Payslips" + employeeId + "" + selectedMonth + "" + cutOffValue + ".pdf";
+
+        // Export report to PDF
+        JasperExportManager.exportReportToPdfFile(jp, outputPath);
+
+        // Try to open the PDF file
+        File pdfFile = new File(outputPath);
+        if (pdfFile.exists()) {
+            if (Desktop.isDesktopSupported()) {
+                Desktop desktop = Desktop.getDesktop();
+                try {
+                    desktop.open(pdfFile);
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(this,
+                            "Error opening PDF: " + e.getMessage(),
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Desktop is not supported. PDF file generated at:\n" + outputPath,
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+
+        // Notify user
+        JOptionPane.showMessageDialog(this,
+                "Payslip PDF generated successfully:\n" + outputPath,
+                "Success",
+                JOptionPane.INFORMATION_MESSAGE);
 
     } catch (Exception e) {
         e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "Error generating report: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this,
+                "Error generating report: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
     } finally {
         if (conn != null) {
             try {
