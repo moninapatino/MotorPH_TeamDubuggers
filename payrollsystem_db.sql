@@ -57,7 +57,9 @@ CREATE TABLE `attendance_record` (
   `time_in` time NOT NULL,
   `time_out` time NOT NULL,
   `status` varchar(25) DEFAULT NULL,
-  PRIMARY KEY (`attendance_id`)
+  PRIMARY KEY (`attendance_id`),
+  KEY `AttendanceEmpID_idx` (`employee_id`),
+  CONSTRAINT `AttendanceEmpID` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`employee_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16169 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -119,7 +121,11 @@ CREATE TABLE `deduction` (
   `total_contribution` decimal(10,2) DEFAULT NULL,
   `withholding_tax` decimal(10,2) DEFAULT NULL,
   `total_deduction` decimal(10,2) DEFAULT NULL,
-  PRIMARY KEY (`deduction_id`)
+  PRIMARY KEY (`deduction_id`),
+  KEY `DeductionEmpId_idx` (`employee_id`),
+  KEY `DeductionPayPeriodId_idx` (`payperiod_id`),
+  CONSTRAINT `DeductionEmpId` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`employee_id`),
+  CONSTRAINT `DeductionPayPeriodId` FOREIGN KEY (`payperiod_id`) REFERENCES `pay_period` (`payperiod_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=60239 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -308,6 +314,8 @@ CREATE TABLE `payroll` (
   KEY `PayrollEmpId_idx` (`employee_id`),
   KEY `PayrollDeductionId_idx` (`deduction_id`),
   KEY `PayrollPayPeriodId_idx` (`payperiod_id`),
+  KEY `PayrollBenefitsID_idx` (`benefits_id`),
+  CONSTRAINT `PayrollBenefitsID` FOREIGN KEY (`benefits_id`) REFERENCES `benefits` (`benefit_id`),
   CONSTRAINT `PayrollEmpId` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`employee_id`),
   CONSTRAINT `PayrollPayPeriodId` FOREIGN KEY (`payperiod_id`) REFERENCES `pay_period` (`payperiod_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -339,7 +347,9 @@ CREATE TABLE `payslip` (
   `status` enum('Draft','Generated','Sent') DEFAULT 'Draft',
   PRIMARY KEY (`payslip_id`),
   KEY `employee_id` (`employee_id`),
-  CONSTRAINT `payslip_ibfk_1` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`employee_id`)
+  KEY `payslipPayperiodID_idx` (`payperiod_id`),
+  CONSTRAINT `payslip_ibfk_1` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`employee_id`),
+  CONSTRAINT `payslipPayperiodID` FOREIGN KEY (`payperiod_id`) REFERENCES `pay_period` (`payperiod_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -543,29 +553,30 @@ DROP TABLE IF EXISTS `vw_payslip_report`;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `vw_payslip_report` AS SELECT 
- 1 AS `Payslip No`,
- 1 AS `Employee ID`,
- 1 AS `Employee Name`,
- 1 AS `Period Start Date`,
- 1 AS `Period End Date`,
- 1 AS `Pay Date`,
- 1 AS `Employee Position`,
- 1 AS `Monthly Rate`,
- 1 AS `Total Hours Worked`,
- 1 AS `Total Undertime Hours`,
- 1 AS `Net Hours Paid`,
- 1 AS `Overtime`,
- 1 AS `Gross Income`,
- 1 AS `Rice Allowance`,
- 1 AS `Phone Allowance`,
- 1 AS `Clothing Allowance`,
- 1 AS `Total Allowance`,
- 1 AS `SSS`,
- 1 AS `PhilHealth`,
- 1 AS `Pag-IBIG`,
- 1 AS `Withholding Tax`,
- 1 AS `Total Deductions`,
- 1 AS `Take Home Pay`*/;
+ 1 AS `payslip_number`,
+ 1 AS `employee_id`,
+ 1 AS `employee_name`,
+ 1 AS `period_start_date`,
+ 1 AS `period_end_date`,
+ 1 AS `pay_date`,
+ 1 AS `employee_position`,
+ 1 AS `monthly_rate`,
+ 1 AS `hourly_rate`,
+ 1 AS `total_hours_worked`,
+ 1 AS `total_undertime_hours`,
+ 1 AS `net_hours_paid`,
+ 1 AS `overtime`,
+ 1 AS `gross_income`,
+ 1 AS `rice_allowance`,
+ 1 AS `phone_allowance`,
+ 1 AS `clothing_allowance`,
+ 1 AS `total_allowance`,
+ 1 AS `sss`,
+ 1 AS `philhealth`,
+ 1 AS `pagibig`,
+ 1 AS `withholding_tax`,
+ 1 AS `total_deductions`,
+ 1 AS `take_home_pay`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -617,7 +628,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_payslip_report` AS select `ps`.`payslip_number` AS `Payslip No`,`e`.`employee_id` AS `Employee ID`,concat(`e`.`last_name`,', ',`e`.`first_name`) AS `Employee Name`,`pp`.`start_date` AS `Period Start Date`,`pp`.`end_date` AS `Period End Date`,`pp`.`pay_date` AS `Pay Date`,`pos`.`position_name` AS `Employee Position`,`pr`.`basic_salary` AS `Monthly Rate`,round(coalesce(`att`.`total_hours_worked`,0),2) AS `Total Hours Worked`,round((coalesce(`att`.`total_undertime_minutes`,0) / 60),2) AS `Total Undertime Hours`,round((coalesce(`att`.`total_hours_worked`,0) - (coalesce(`att`.`total_undertime_minutes`,0) / 60)),2) AS `Net Hours Paid`,0 AS `Overtime`,round(((coalesce(`att`.`total_hours_worked`,0) - (coalesce(`att`.`total_undertime_minutes`,0) / 60)) * `pr`.`hourly_rate`),2) AS `Gross Income`,coalesce(`b`.`rice_allowance`,0) AS `Rice Allowance`,coalesce(`b`.`phone_allowance`,0) AS `Phone Allowance`,coalesce(`b`.`clothing_allowance`,0) AS `Clothing Allowance`,coalesce(`b`.`total_allowance`,((coalesce(`b`.`rice_allowance`,0) + coalesce(`b`.`phone_allowance`,0)) + coalesce(`b`.`clothing_allowance`,0))) AS `Total Allowance`,coalesce(`d`.`sss_deduction`,0) AS `SSS`,coalesce(`d`.`philhealth_deduction`,0) AS `PhilHealth`,coalesce(`d`.`pagibig_deduction`,0) AS `Pag-IBIG`,coalesce(`d`.`withholding_tax`,0) AS `Withholding Tax`,coalesce(`d`.`total_deduction`,(((coalesce(`d`.`sss_deduction`,0) + coalesce(`d`.`philhealth_deduction`,0)) + coalesce(`d`.`pagibig_deduction`,0)) + coalesce(`d`.`withholding_tax`,0))) AS `Total Deductions`,round(((((coalesce(`att`.`total_hours_worked`,0) - (coalesce(`att`.`total_undertime_minutes`,0) / 60)) * `pr`.`hourly_rate`) + coalesce(`b`.`total_allowance`,((coalesce(`b`.`rice_allowance`,0) + coalesce(`b`.`phone_allowance`,0)) + coalesce(`b`.`clothing_allowance`,0)))) - coalesce(`d`.`total_deduction`,(((coalesce(`d`.`sss_deduction`,0) + coalesce(`d`.`philhealth_deduction`,0)) + coalesce(`d`.`pagibig_deduction`,0)) + coalesce(`d`.`withholding_tax`,0)))),2) AS `Take Home Pay` from (((((((`payslip` `ps` join `employee` `e` on((`ps`.`employee_id` = `e`.`employee_id`))) join `pay_period` `pp` on((`ps`.`payperiod_id` = `pp`.`payperiod_id`))) join `position` `pos` on((`e`.`employee_id` = `pos`.`employee_id`))) join `payroll` `pr` on(((`e`.`employee_id` = `pr`.`employee_id`) and (`pr`.`payperiod_id` = `pp`.`payperiod_id`)))) left join `deduction` `d` on(((`pr`.`deduction_id` = `d`.`deduction_id`) and (`d`.`employee_id` = `e`.`employee_id`) and (`d`.`payperiod_id` = `pp`.`payperiod_id`)))) left join `benefits` `b` on(((`pr`.`benefits_id` = `b`.`benefit_id`) and (`b`.`employee_id` = `e`.`employee_id`)))) left join `view_attendance_summary_june_dec_2024` `att` on(((`att`.`employee_id` = `e`.`employee_id`) and (date_format(`pp`.`start_date`,'%Y-%m') = `att`.`month`)))) order by `e`.`employee_id`,`pp`.`start_date` */;
+/*!50001 VIEW `vw_payslip_report` AS select `ps`.`payslip_number` AS `payslip_number`,`e`.`employee_id` AS `employee_id`,concat(`e`.`last_name`,', ',`e`.`first_name`) AS `employee_name`,`pp`.`start_date` AS `period_start_date`,`pp`.`end_date` AS `period_end_date`,`pp`.`pay_date` AS `pay_date`,`pos`.`position_name` AS `employee_position`,`pr`.`basic_salary` AS `monthly_rate`,`pr`.`hourly_rate` AS `hourly_rate`,round(coalesce(`att`.`total_hours_worked`,0),2) AS `total_hours_worked`,round((coalesce(`att`.`total_undertime_minutes`,0) / 60),2) AS `total_undertime_hours`,round((coalesce(`att`.`total_hours_worked`,0) - (coalesce(`att`.`total_undertime_minutes`,0) / 60)),2) AS `net_hours_paid`,0 AS `overtime`,round(((coalesce(`att`.`total_hours_worked`,0) - (coalesce(`att`.`total_undertime_minutes`,0) / 60)) * `pr`.`hourly_rate`),2) AS `gross_income`,coalesce(`b`.`rice_allowance`,0) AS `rice_allowance`,coalesce(`b`.`phone_allowance`,0) AS `phone_allowance`,coalesce(`b`.`clothing_allowance`,0) AS `clothing_allowance`,coalesce(`b`.`total_allowance`,((coalesce(`b`.`rice_allowance`,0) + coalesce(`b`.`phone_allowance`,0)) + coalesce(`b`.`clothing_allowance`,0))) AS `total_allowance`,coalesce(`d`.`sss_deduction`,0) AS `sss`,coalesce(`d`.`philhealth_deduction`,0) AS `philhealth`,coalesce(`d`.`pagibig_deduction`,0) AS `pagibig`,coalesce(`d`.`withholding_tax`,0) AS `withholding_tax`,coalesce(`d`.`total_deduction`,(((coalesce(`d`.`sss_deduction`,0) + coalesce(`d`.`philhealth_deduction`,0)) + coalesce(`d`.`pagibig_deduction`,0)) + coalesce(`d`.`withholding_tax`,0))) AS `total_deductions`,round(((((coalesce(`att`.`total_hours_worked`,0) - (coalesce(`att`.`total_undertime_minutes`,0) / 60)) * `pr`.`hourly_rate`) + coalesce(`b`.`total_allowance`,((coalesce(`b`.`rice_allowance`,0) + coalesce(`b`.`phone_allowance`,0)) + coalesce(`b`.`clothing_allowance`,0)))) - coalesce(`d`.`total_deduction`,(((coalesce(`d`.`sss_deduction`,0) + coalesce(`d`.`philhealth_deduction`,0)) + coalesce(`d`.`pagibig_deduction`,0)) + coalesce(`d`.`withholding_tax`,0)))),2) AS `take_home_pay` from (((((((`payslip` `ps` join `employee` `e` on((`ps`.`employee_id` = `e`.`employee_id`))) join `pay_period` `pp` on((`ps`.`payperiod_id` = `pp`.`payperiod_id`))) join `position` `pos` on((`e`.`employee_id` = `pos`.`employee_id`))) join `payroll` `pr` on(((`e`.`employee_id` = `pr`.`employee_id`) and (`pr`.`payperiod_id` = `pp`.`payperiod_id`)))) left join `deduction` `d` on(((`pr`.`deduction_id` = `d`.`deduction_id`) and (`d`.`employee_id` = `e`.`employee_id`) and (`d`.`payperiod_id` = `pp`.`payperiod_id`)))) left join `benefits` `b` on(((`pr`.`benefits_id` = `b`.`benefit_id`) and (`b`.`employee_id` = `e`.`employee_id`)))) left join `view_attendance_summary_june_dec_2024` `att` on(((`att`.`employee_id` = `e`.`employee_id`) and (date_format(`pp`.`start_date`,'%Y-%m') = `att`.`month`)))) order by `e`.`employee_id`,`pp`.`start_date` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -631,4 +642,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-07-05  1:39:14
+-- Dump completed on 2025-07-05 10:05:59
