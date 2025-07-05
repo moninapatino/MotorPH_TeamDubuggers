@@ -37,6 +37,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     DatabaseConnect dbConnect = new DatabaseConnect() {};
     private String username;
     private String employeeID;
+    
 
      
     public EmployeeAccess_Profile() {
@@ -54,6 +55,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         date();
       
         setupTabChangeListener();
+        monthComboBox.setSelectedItem("June");
         
     }
     
@@ -75,6 +77,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         time();
         date();
         setupTabChangeListener();
+        monthComboBox.setSelectedItem("June");
     }
     
     public EmployeeAccess_Profile(String username) {
@@ -96,6 +99,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         time();
         date();
         setupTabChangeListener();
+        monthComboBox.setSelectedItem("June");
         
     }
     
@@ -228,6 +232,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
      
     public void loadLeaveRecords() {
         autoFillLeaveId();
+        leaveTable.setRowSelectionAllowed(false);
         // Only load leave records for the logged-in employee
         if (this.employeeID == null || this.employeeID.trim().isEmpty()) {
             return; // Skip if no employee ID is set
@@ -322,6 +327,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     
     public ArrayList loadTimeLog() {
         ArrayList timeLog = new ArrayList();
+        attendance_table.setRowSelectionAllowed(false);
         if (this.employeeID == null || this.employeeID.trim().isEmpty()) {
             return timeLog;
         }
@@ -377,8 +383,9 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         });
     }
     
-    public ArrayList loadPayslipList() {
-    ArrayList payslipList = new ArrayList();
+   public ArrayList<Vector<String>> loadPayslipList() {
+    ArrayList<Vector<String>> payslipList = new ArrayList<>();
+    payslipTable.setRowSelectionAllowed(false);
     
     if (this.employeeID == null || this.employeeID.trim().isEmpty()) {
         return payslipList;
@@ -387,18 +394,18 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     try {
         conn = dbConnect.connect();
 
-        String sql = "SELECT p.payslip_id, p.payslip_number, p.employee_id, " +
-             "pp.start_date, pp.end_date, pp.pay_date, p.status, pp.cut_off " +
-             "FROM payslip p " +
-             "JOIN pay_period pp ON p.payperiod_id = pp.payperiod_id " +
-             "WHERE p.employee_id = ?";
-
+        String sql = "SELECT p.payslip_number, p.employee_id, " +
+                     "pp.start_date, pp.end_date, pp.pay_date, p.status " +
+                     "FROM payslip p " +
+                     "JOIN pay_period pp ON p.payperiod_id = pp.payperiod_id " +
+                     "WHERE p.employee_id = ? " +
+                     "ORDER BY pp.pay_date DESC";  // optional: shows latest first
 
         pst = conn.prepareStatement(sql);
         pst.setString(1, this.employeeID);
         rs = pst.executeQuery();
 
-        DefaultTableModel payslipTableModel = (DefaultTableModel) payslipTable.getModel(); // Assuming you have this JTable
+        DefaultTableModel payslipTableModel = (DefaultTableModel) payslipTable.getModel();
         payslipTableModel.setRowCount(0); // Clear existing rows
 
         while (rs.next()) {
@@ -406,14 +413,12 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
             row.add(rs.getString("pay_date"));
             row.add(rs.getString("payslip_number"));
             row.add(rs.getString("employee_id"));
-            row.add(rs.getString("cut_off"));
             row.add(rs.getString("start_date"));
             row.add(rs.getString("end_date"));
             row.add(rs.getString("status"));
             
             payslipTableModel.addRow(row);
-
-            payslipList.add(row); // Add to ArrayList as well (optional)
+            payslipList.add(row);
         }
 
     } catch (Exception ex) {
@@ -430,6 +435,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
 
     return payslipList;
 }
+
     
    
    private void generatePayslipReport() {
@@ -439,10 +445,6 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         // Get employee ID
         String employeeIdStr = id_field.getText().trim();
         int employeeId = Integer.parseInt(employeeIdStr);
-
-        // Get selected cut-off
-        String selectedCutOff = payPeriodComboBox.getSelectedItem().toString();
-        String cutOffValue = selectedCutOff.equalsIgnoreCase("1st Cut-off") ? "1st" : "2nd";
 
         // Get selected month name and convert to month number
         String selectedMonth = monthComboBox.getSelectedItem().toString();
@@ -458,7 +460,6 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         // Set report parameters
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("employee_id", employeeId);
-        parameters.put("cut_off", cutOffValue);
         parameters.put("month_number", monthNumber); // Pass month number
 
         // Fill report
@@ -467,14 +468,14 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         // Handle no data
         if (jp.getPages().isEmpty()) {
             JOptionPane.showMessageDialog(this,
-                    "No Payslip Found for Employee ID: " + employeeId + " (" + cutOffValue + " Cut-off, Month: " + selectedMonth + ")",
+                    "No Payslip Found for Employee ID: " + employeeId + " (" + " Month: " + selectedMonth + ")",
                     "No Data",
                     JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
         // Generate PDF file path
-        String outputPath = "C:\\Users\\user\\Desktop\\Monina\\MMDC\\Term 3 24-25\\AOOP\\Payslips" + employeeId + "" + selectedMonth + "" + cutOffValue + ".pdf";
+        String outputPath = "C:\\Users\\user\\Desktop\\Monina\\MMDC\\Term 3 24-25\\AOOP\\Payslips" + employeeId + "" + selectedMonth + ".pdf";
 
         // Export report to PDF
         JasperExportManager.exportReportToPdfFile(jp, outputPath);
@@ -522,13 +523,53 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         }
     }
 }
- 
 
+   // Employee Details Fields
+    public javax.swing.JTextField getIdField() { return id_field;}
+    public javax.swing.JTextField getFirstnameField() { return firstName_field;}
+    public javax.swing.JTextField getLastnameField() { return lastname_field; }
 
+    // Time Log Fields
+    public javax.swing.JTextField getTimeLogFirstNameField() { return timeLogFirstNameField;    }
+    public javax.swing.JTextField getTimeLogLastNameField() { return timeLogLastNameField;    }
 
+    // Leave Fields
+    public javax.swing.JTextField getLeaveFirstNameField() { return leaveFirstName_field;   }
+    public javax.swing.JTextField getLeaveLastNameField() {  return leaveLastName_field;    }
+    public javax.swing.JTextField getLeaveNumField() { return leaveNum_field;   }
 
+    // Payslip Fields
+    public javax.swing.JTextField getPayslipFirstNameField() {  return payslipFirstName_field;   }
+    public javax.swing.JTextField getPayslipLastNameField() {  return payslipLastName_field;    }
+
+    // Buttons
+    public javax.swing.JButton getAddLeaveRequestButton() {  return addLeaveRequestButton;   }
+    public javax.swing.JButton getTimeInButton() {   return timeInBtn;  }
+    public javax.swing.JButton getTimeOutButton() {   return timeOutBtn;    }
+    public javax.swing.JButton getPayslipBtn() {   return payslipBtn;  }
+
+    // Labels
+    public javax.swing.JLabel getEmpNameLabel() {   return empName;  }
+    public javax.swing.JLabel getTimeLabel() {  return time;   }
+    public javax.swing.JLabel getDateLabel() {  return date;   }
+
+    // Tables
+    public javax.swing.JTable getAttendanceTable() {  return attendance_table;   }
+    public javax.swing.JTable getLeaveTable() {   return leaveTable;    }
+    public javax.swing.JTable getPayslipTable() {    return payslipTable;   }
+
+    // ComboBox
+    public javax.swing.JComboBox<String> getMonthComboBox() {   return monthComboBox;    }
+
+    // Tabs
+    public javax.swing.JTabbedPane getMainTab() {   return tab;   }
     
+    public com.toedter.calendar.JDateChooser getStartDateChooser() { return startdate_chooser;}
+    public com.toedter.calendar.JDateChooser getEndDateChooser() {   return enddate_chooser;}
+    public javax.swing.JComboBox<String> getLeaveTypeComboBox() {   return leaveTypeComboBox;}
 
+  
+ 
             @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -602,8 +643,6 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         payslipLastName_field = new javax.swing.JTextField();
         payslipBtn = new javax.swing.JButton();
         leave_title1 = new javax.swing.JLabel();
-        noe_title11 = new javax.swing.JLabel();
-        payPeriodComboBox = new javax.swing.JComboBox<>();
         noe_title12 = new javax.swing.JLabel();
         monthComboBox = new javax.swing.JComboBox<>();
         empName = new javax.swing.JLabel();
@@ -768,9 +807,59 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         empProfileTabLayout.setHorizontalGroup(
             empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(empProfileTabLayout.createSequentialGroup()
-                .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(empProfileTabLayout.createSequentialGroup()
+                            .addGap(51, 51, 51)
+                            .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(empProfileTabLayout.createSequentialGroup()
+                                    .addComponent(b_title)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(bday_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(empProfileTabLayout.createSequentialGroup()
+                                    .addComponent(noe_title8)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(lastname_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(empProfileTabLayout.createSequentialGroup()
+                                    .addComponent(noe_title)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(firstName_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(empProfileTabLayout.createSequentialGroup()
+                                    .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(address_title2)
+                                        .addComponent(address_title))
+                                    .addGap(18, 18, 18)
+                                    .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(street_field, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(city_field, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(17, 17, 17)))
+                            .addGap(54, 54, 54)
+                            .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(email_title, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(cn_title, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addGap(18, 18, 18)
+                            .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(contact_field)
+                                .addComponent(email_field, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(empProfileTabLayout.createSequentialGroup()
+                            .addGap(204, 204, 204)
+                            .addComponent(empProfileTitle))
+                        .addGroup(empProfileTabLayout.createSequentialGroup()
+                            .addGap(359, 359, 359)
+                            .addComponent(address_title1)
+                            .addGap(18, 18, 18)
+                            .addComponent(brgy_field, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(empProfileTabLayout.createSequentialGroup()
+                            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(address_title3)
+                            .addGap(18, 18, 18)
+                            .addComponent(province_field, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(20, 20, 20)
+                            .addComponent(address_title4)
+                            .addGap(18, 18, 18)
+                            .addComponent(postalcode_field, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(empProfileTabLayout.createSequentialGroup()
-                        .addGap(175, 175, 175)
+                        .addGap(38, 38, 38)
                         .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(tin_title)
                             .addComponent(phhealth_title)
@@ -783,57 +872,8 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                             .addComponent(sss_field, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(tin_field, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(empProfileTabLayout.createSequentialGroup()
-                        .addGap(51, 51, 51)
-                        .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(empProfileTabLayout.createSequentialGroup()
-                                .addComponent(b_title)
-                                .addGap(18, 18, 18)
-                                .addComponent(bday_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(empProfileTabLayout.createSequentialGroup()
-                                .addComponent(noe_title8)
-                                .addGap(18, 18, 18)
-                                .addComponent(lastname_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(empProfileTabLayout.createSequentialGroup()
-                                .addComponent(noe_title)
-                                .addGap(18, 18, 18)
-                                .addComponent(firstName_field, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(empProfileTabLayout.createSequentialGroup()
-                                .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(address_title2)
-                                    .addComponent(address_title))
-                                .addGap(18, 18, 18)
-                                .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(street_field, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(city_field, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(17, 17, 17)))
-                        .addGap(54, 54, 54)
-                        .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(email_title, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(cn_title, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(18, 18, 18)
-                        .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(contact_field)
-                            .addComponent(email_field, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(empProfileTabLayout.createSequentialGroup()
-                        .addGap(56, 56, 56)
-                        .addComponent(govIdNum_title))
-                    .addGroup(empProfileTabLayout.createSequentialGroup()
-                        .addGap(204, 204, 204)
-                        .addComponent(empProfileTitle))
-                    .addGroup(empProfileTabLayout.createSequentialGroup()
-                        .addGap(359, 359, 359)
-                        .addComponent(address_title1)
-                        .addGap(18, 18, 18)
-                        .addComponent(brgy_field, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(empProfileTabLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(address_title3)
-                        .addGap(18, 18, 18)
-                        .addComponent(province_field, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(address_title4)
-                        .addGap(18, 18, 18)
-                        .addComponent(postalcode_field, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(30, 30, 30)
+                        .addComponent(govIdNum_title)))
                 .addContainerGap(90, Short.MAX_VALUE))
         );
         empProfileTabLayout.setVerticalGroup(
@@ -877,9 +917,9 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                     .addComponent(address_title2)
                     .addComponent(address_title3)
                     .addComponent(address_title4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(govIdNum_title)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(sss_title)
                     .addComponent(sss_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -895,7 +935,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                 .addGroup(empProfileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tin_title)
                     .addComponent(tin_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(92, 92, 92))
+                .addGap(86, 86, 86))
         );
 
         tab.addTab("Profile", empProfileTab);
@@ -995,12 +1035,12 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                                 .addComponent(timeInBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(28, 28, 28)
                                 .addComponent(timeOutBtn)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(timeLogTabLayout.createSequentialGroup()
                         .addGap(216, 216, 216)
                         .addComponent(attendance_title)))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         timeLogTabLayout.setVerticalGroup(
             timeLogTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1221,14 +1261,14 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Date", "Payslip Number", "Employee ID", "Cut-Off", "Start Date", "End Date", "Status"
+                "Payslip Number", "Employee ID", "Start Date", "End Date", "Pay Date", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1273,15 +1313,6 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         leave_title1.setForeground(new java.awt.Color(253, 56, 29));
         leave_title1.setText("EMPLOYEE PAYSLIP");
 
-        noe_title11.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        noe_title11.setForeground(new java.awt.Color(250, 250, 255));
-        noe_title11.setText("Pay Period:");
-
-        payPeriodComboBox.setBackground(new java.awt.Color(92, 101, 138));
-        payPeriodComboBox.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        payPeriodComboBox.setForeground(new java.awt.Color(250, 250, 255));
-        payPeriodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1st Cut-off", "2nd Cut-off" }));
-
         noe_title12.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         noe_title12.setForeground(new java.awt.Color(250, 250, 255));
         noe_title12.setText("Pay Period Month:");
@@ -1296,7 +1327,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         leaveTab1Layout.setHorizontalGroup(
             leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(leaveTab1Layout.createSequentialGroup()
-                .addContainerGap(87, Short.MAX_VALUE)
+                .addContainerGap(91, Short.MAX_VALUE)
                 .addGroup(leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, leaveTab1Layout.createSequentialGroup()
                         .addGroup(leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1305,19 +1336,17 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                                 .addGroup(leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(noe_title9)
                                     .addComponent(noe_title10)
-                                    .addComponent(noe_title11)
                                     .addComponent(noe_title12))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(payslipLastName_field, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(payslipFirstName_field, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(monthComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(payPeriodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(payslipBtn))))
                         .addGap(241, 241, 241))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, leaveTab1Layout.createSequentialGroup()
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 602, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(84, 84, 84))))
+                        .addGap(80, 80, 80))))
         );
         leaveTab1Layout.setVerticalGroup(
             leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1336,15 +1365,11 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                 .addGroup(leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(monthComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(noe_title12))
-                .addGap(9, 9, 9)
-                .addGroup(leaveTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(payPeriodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(noe_title11))
                 .addGap(18, 18, 18)
                 .addComponent(payslipBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(29, 29, 29)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap(84, Short.MAX_VALUE))
         );
 
         tab.addTab("Payslip", leaveTab1);
@@ -1721,7 +1746,6 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> monthComboBox;
     private javax.swing.JLabel noe_title;
     private javax.swing.JLabel noe_title10;
-    private javax.swing.JLabel noe_title11;
     private javax.swing.JLabel noe_title12;
     private javax.swing.JLabel noe_title6;
     private javax.swing.JLabel noe_title7;
@@ -1729,7 +1753,6 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     private javax.swing.JLabel noe_title9;
     private javax.swing.JTextField pagibig_field;
     private javax.swing.JLabel pagibig_title;
-    private javax.swing.JComboBox<String> payPeriodComboBox;
     private javax.swing.JButton payslipBtn;
     private javax.swing.JTextField payslipFirstName_field;
     private javax.swing.JTextField payslipLastName_field;

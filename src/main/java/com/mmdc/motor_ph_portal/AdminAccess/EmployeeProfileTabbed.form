@@ -93,8 +93,8 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jPanel1" alignment="0" pref="881" max="32767" attributes="0"/>
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace pref="86" max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <EmptySpace pref="50" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Group type="102" alignment="1" attributes="0">
@@ -114,18 +114,37 @@
                                       </Group>
                                       <Group type="102" alignment="1" attributes="0">
                                           <Group type="103" groupAlignment="1" attributes="0">
-                                              <Group type="102" attributes="0">
-                                                  <Component id="address_title" min="-2" max="-2" attributes="0"/>
-                                                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                                              </Group>
                                               <Group type="102" alignment="1" attributes="0">
                                                   <Component id="address_title2" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace type="separate" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Group type="102" alignment="1" attributes="0">
+                                                  <Group type="103" groupAlignment="1" attributes="0">
+                                                      <Component id="govIdNum_title" min="-2" max="-2" attributes="0"/>
+                                                      <Component id="address_title" min="-2" max="-2" attributes="0"/>
+                                                      <Component id="sss_title" alignment="1" min="-2" pref="88" max="-2" attributes="0"/>
+                                                      <Component id="pagibig_title" alignment="1" min="-2" pref="116" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Group type="102" alignment="1" attributes="0">
+                                                  <Component id="phhealth_title" min="-2" pref="116" max="-2" attributes="0"/>
+                                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Group type="102" alignment="1" attributes="0">
+                                                  <Component id="tin_title" min="-2" pref="35" max="-2" attributes="0"/>
+                                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Component id="searchCity_field" min="-2" pref="102" max="-2" attributes="0"/>
                                               <Component id="searchStreet_field" min="-2" pref="184" max="-2" attributes="0"/>
+                                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                                  <Component id="searchPhhealth_field" alignment="0" max="32767" attributes="0"/>
+                                                  <Component id="searchPagibig_field" alignment="0" max="32767" attributes="0"/>
+                                                  <Component id="searchSss_field" alignment="0" max="32767" attributes="0"/>
+                                                  <Component id="searchTin_field" min="-2" pref="151" max="-2" attributes="0"/>
+                                              </Group>
                                           </Group>
                                       </Group>
                                   </Group>
@@ -136,7 +155,7 @@
                                       <Component id="email_title" alignment="1" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="searchContact_field" alignment="0" pref="200" max="32767" attributes="0"/>
                                       <Component id="searchBday_field" alignment="0" max="32767" attributes="0"/>
                                       <Component id="searchEmail_field" alignment="0" max="32767" attributes="0"/>
@@ -145,44 +164,10 @@
                                   <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Component id="searchBackButton" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Group type="102" alignment="1" attributes="0">
-                                                  <Group type="103" groupAlignment="1" attributes="0">
-                                                      <Component id="pagibig_title" alignment="1" min="-2" pref="116" max="-2" attributes="0"/>
-                                                      <Component id="sss_title" alignment="1" min="-2" pref="116" max="-2" attributes="0"/>
-                                                  </Group>
-                                                  <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
-                                              </Group>
-                                              <Group type="102" alignment="1" attributes="0">
-                                                  <Component id="tin_title" min="-2" pref="105" max="-2" attributes="0"/>
-                                                  <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
-                                              </Group>
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <Component id="phhealth_title" min="-2" pref="116" max="-2" attributes="0"/>
-                                                  <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
-                                              </Group>
-                                          </Group>
-                                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                              <Component id="searchPhhealth_field" alignment="0" pref="151" max="32767" attributes="0"/>
-                                              <Component id="searchPagibig_field" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="searchSss_field" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="searchTin_field" max="32767" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                      <Component id="govIdNum_title" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="searchUpdateBtn" alignment="1" min="-2" pref="94" max="-2" attributes="0"/>
-                                      <Component id="searchBtn" alignment="1" min="-2" pref="94" max="-2" attributes="0"/>
-                                      <Component id="searchClearButton" alignment="1" min="-2" pref="94" max="-2" attributes="0"/>
-                                      <Component id="searchDeleteBtn" alignment="1" min="-2" pref="94" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
+                              <Component id="searchUpdateBtn" alignment="1" min="-2" pref="94" max="-2" attributes="0"/>
+                              <Component id="searchBtn" alignment="1" min="-2" pref="94" max="-2" attributes="0"/>
+                              <Component id="searchClearButton" alignment="1" min="-2" pref="94" max="-2" attributes="0"/>
+                              <Component id="searchDeleteBtn" alignment="1" min="-2" pref="94" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="90" max="-2" attributes="0"/>
                       </Group>
@@ -284,8 +269,10 @@
                                   <Component id="address_title2" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace pref="47" max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
+                          <EmptySpace pref="39" max="32767" attributes="0"/>
+                          <Component id="govIdNum_title" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
                                   <Component id="searchBtn" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
@@ -295,31 +282,30 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="searchClearButton" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Component id="govIdNum_title" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
+                              <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="sss_title" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="searchSss_field" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="sss_title" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="pagibig_title" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="searchPagibig_field" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="pagibig_title" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="phhealth_title" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="searchPhhealth_field" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="phhealth_title" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="tin_title" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="searchTin_field" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="tin_title" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
+                                  <EmptySpace min="4" pref="4" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace pref="48" max="32767" attributes="0"/>
+                          <EmptySpace pref="46" max="32767" attributes="0"/>
                           <Component id="searchBackButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -917,9 +903,10 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jPanel3" alignment="0" pref="881" max="32767" attributes="0"/>
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Group type="102" attributes="0">
+                                  <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="1" attributes="0">
                                       <Group type="102" alignment="1" attributes="0">
                                           <Component id="en_title1" min="-2" max="-2" attributes="0"/>
@@ -984,46 +971,11 @@
                               </Group>
                               <Group type="102" attributes="0">
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="backButton" alignment="1" min="-2" max="-2" attributes="0"/>
                                       <Component id="addBtn" alignment="1" min="-2" pref="94" max="-2" attributes="0"/>
                                       <Component id="clearButton" alignment="1" min="-2" pref="94" max="-2" attributes="0"/>
-                                      <Component id="backButton" alignment="1" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Group type="102" alignment="1" attributes="0">
-                                                  <Group type="103" groupAlignment="1" attributes="0">
-                                                      <Component id="pagibig_title1" alignment="1" min="-2" pref="116" max="-2" attributes="0"/>
-                                                      <Component id="sss_title1" alignment="1" min="-2" pref="116" max="-2" attributes="0"/>
-                                                  </Group>
-                                                  <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
-                                              </Group>
-                                              <Group type="102" alignment="1" attributes="0">
-                                                  <Component id="tin_title1" min="-2" pref="105" max="-2" attributes="0"/>
-                                                  <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
-                                              </Group>
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <Component id="phhealth_title1" min="-2" pref="116" max="-2" attributes="0"/>
-                                                  <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
-                                              </Group>
-                                          </Group>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="tin_field" alignment="1" min="-2" pref="152" max="-2" attributes="0"/>
-                                              <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                                                  <Component id="pagibig_field" alignment="1" min="-2" pref="152" max="-2" attributes="0"/>
-                                                  <Component id="sss_field" min="-2" pref="152" max="-2" attributes="0"/>
-                                                  <Component id="phhealth_field" alignment="1" min="-2" pref="152" max="-2" attributes="0"/>
-                                              </Group>
-                                          </Group>
-                                      </Group>
-                                      <Component id="govIdNum_title1" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace min="-2" pref="90" max="-2" attributes="0"/>
@@ -1045,29 +997,51 @@
                                   </Group>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="146" max="-2" attributes="0"/>
-                                  <Component id="address_title7" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="govIdNum_title1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="address_title7" min="-2" max="-2" attributes="0"/>
+                                      <Component id="sss_title1" alignment="1" min="-2" pref="79" max="-2" attributes="0"/>
+                                      <Component id="pagibig_title1" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="phhealth_title1" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="tin_title1" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <EmptySpace min="-2" pref="158" max="-2" attributes="0"/>
-                                          <Component id="address_title8" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                                          <Component id="province_field" min="-2" pref="102" max="-2" attributes="0"/>
-                                          <EmptySpace pref="182" max="-2" attributes="0"/>
-                                      </Group>
                                       <Group type="102" alignment="1" attributes="0">
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
-                                              <Group type="102" alignment="1" attributes="0">
-                                                  <Component id="address_title9" min="-2" max="-2" attributes="0"/>
-                                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                                  <Component id="postalcode_field" min="-2" pref="54" max="-2" attributes="0"/>
+                                              <Component id="sss_field" min="-2" pref="152" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Group type="102" alignment="1" attributes="0">
+                                                      <Component id="address_title9" min="-2" max="-2" attributes="0"/>
+                                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                                      <Component id="postalcode_field" min="-2" pref="54" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <Group type="102" alignment="1" attributes="0">
+                                                      <Component id="city_field" min="-2" pref="102" max="-2" attributes="0"/>
+                                                      <EmptySpace min="-2" pref="393" max="-2" attributes="0"/>
+                                                  </Group>
                                               </Group>
-                                              <Group type="102" alignment="1" attributes="0">
-                                                  <Component id="city_field" min="-2" pref="102" max="-2" attributes="0"/>
-                                                  <EmptySpace min="-2" pref="393" max="-2" attributes="0"/>
+                                              <Component id="pagibig_field" alignment="0" min="-2" pref="152" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Group type="102" attributes="0">
+                                                  <EmptySpace min="-2" pref="158" max="-2" attributes="0"/>
+                                                  <Component id="address_title8" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                                  <Component id="province_field" min="-2" pref="102" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                                  <Group type="103" groupAlignment="0" attributes="0">
+                                                      <Component id="tin_field" min="-2" pref="152" max="-2" attributes="0"/>
+                                                      <Component id="phhealth_field" min="-2" pref="152" max="-2" attributes="0"/>
+                                                  </Group>
                                               </Group>
                                           </Group>
+                                          <EmptySpace min="-2" pref="182" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -1148,7 +1122,9 @@
                                   <Component id="address_title8" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace pref="29" max="32767" attributes="0"/>
+                          <EmptySpace pref="23" max="32767" attributes="0"/>
+                          <Component id="govIdNum_title1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
                                   <Component id="addBtn" min="-2" max="-2" attributes="0"/>
@@ -1156,8 +1132,6 @@
                                   <Component id="clearButton" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="1" attributes="0">
-                                  <Component id="govIdNum_title1" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="sss_title1" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="sss_field" alignment="3" min="-2" max="-2" attributes="0"/>

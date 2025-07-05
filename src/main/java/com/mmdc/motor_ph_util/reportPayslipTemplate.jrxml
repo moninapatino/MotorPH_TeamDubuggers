@@ -4,23 +4,13 @@
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MySQL"/>
 	<parameter name="employee_id" class="java.lang.Integer"/>
-	<parameter name="cut_off" class="java.lang.String"/>
 	<parameter name="period_start" class="java.sql.Date" isForPrompting="false"/>
 	<parameter name="month_number" class="java.lang.Integer"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT * 
-FROM employee_payslip_1st_cutoff_view 
+FROM payrollsystem_db.vw_payslip_report 
 WHERE employee_id = $P{employee_id}
-  AND $P{cut_off} = '1st'
-  AND MONTH(period_start) = $P{month_number}
-
-UNION ALL
-
-SELECT * 
-FROM employee_payslip_2nd_cutoff_view 
-WHERE employee_id = $P{employee_id}
-  AND $P{cut_off} = '2nd'
-  AND MONTH(period_start) = $P{month_number}]]>
+  AND MONTH(period_start_date) = $P{month_number}]]>
 	</queryString>
 	<field name="payslip_number" class="java.lang.String"/>
 	<field name="employee_id" class="java.lang.Integer">
@@ -33,31 +23,17 @@ WHERE employee_id = $P{employee_id}
 		<property name="com.jaspersoft.studio.field.label" value="employee_name"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="employee_payslip_1st_cutoff_view"/>
 	</field>
-	<field name="email" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="email"/>
-		<property name="com.jaspersoft.studio.field.label" value="email"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="employee"/>
-	</field>
-	<field name="cut_off" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="payperiod_id"/>
-		<property name="com.jaspersoft.studio.field.label" value="payperiod_id"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="pay_period"/>
-	</field>
-	<field name="period_start" class="java.sql.Date">
+	<field name="period_start_date" class="java.sql.Date">
 		<property name="com.jaspersoft.studio.field.name" value="period_start"/>
 		<property name="com.jaspersoft.studio.field.label" value="period_start"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="pay_period"/>
 	</field>
-	<field name="period_end" class="java.sql.Date">
+	<field name="period_end_date" class="java.sql.Date">
 		<property name="com.jaspersoft.studio.field.name" value="period_end"/>
 		<property name="com.jaspersoft.studio.field.label" value="period_end"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="pay_period"/>
 	</field>
-	<field name="pay_date" class="java.sql.Date">
-		<property name="com.jaspersoft.studio.field.name" value="pay_date"/>
-		<property name="com.jaspersoft.studio.field.label" value="pay_date"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="pay_period"/>
-	</field>
+	<field name="pay_date" class="java.lang.String"/>
 	<field name="hourly_rate" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.name" value="hourly_rate"/>
 		<property name="com.jaspersoft.studio.field.label" value="hourly_rate"/>
@@ -68,16 +44,12 @@ WHERE employee_id = $P{employee_id}
 		<property name="com.jaspersoft.studio.field.label" value="monthly_rate"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="payroll"/>
 	</field>
-	<field name="daily_rate" class="java.math.BigDecimal">
-		<property name="com.jaspersoft.studio.field.name" value="daily_rate"/>
-		<property name="com.jaspersoft.studio.field.label" value="daily_rate"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="employee_payslip_1st_cutoff_view"/>
-	</field>
-	<field name="days_worked" class="java.lang.Long">
+	<field name="net_hours_paid" class="java.lang.Long">
 		<property name="com.jaspersoft.studio.field.name" value="days_worked"/>
 		<property name="com.jaspersoft.studio.field.label" value="days_worked"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="employee_payslip_1st_cutoff_view"/>
 	</field>
+	<field name="overtime" class="java.lang.String"/>
 	<field name="gross_income" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.name" value="gross_income"/>
 		<property name="com.jaspersoft.studio.field.label" value="gross_income"/>
@@ -163,14 +135,14 @@ WHERE employee_id = $P{employee_id}
 				<text><![CDATA[EMPLOYEE NAME]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="296" y="125" width="150" height="18" forecolor="#1E2B5D" uuid="e46f79d5-d786-49a3-b6ae-67c812f63d64"/>
+				<reportElement x="297" y="106" width="150" height="18" forecolor="#1E2B5D" uuid="e46f79d5-d786-49a3-b6ae-67c812f63d64"/>
 				<textElement>
 					<font fontName="Arial Black" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[PERIOD START DATE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="296" y="145" width="150" height="18" forecolor="#1E2B5D" uuid="bda39abd-3252-4102-b902-8e4e8f0b32b9"/>
+				<reportElement x="297" y="126" width="150" height="18" forecolor="#1E2B5D" uuid="bda39abd-3252-4102-b902-8e4e8f0b32b9"/>
 				<textElement>
 					<font fontName="Arial Black" size="12" isBold="true"/>
 				</textElement>
@@ -185,12 +157,12 @@ WHERE employee_id = $P{employee_id}
 				<textFieldExpression><![CDATA[$F{employee_name}]]></textFieldExpression>
 			</textField>
 			<textField pattern="MMMM d, yyyy">
-				<reportElement x="449" y="126" width="100" height="18" uuid="0f477e5c-fe7d-4a8f-9e61-7cd63c443207"/>
-				<textFieldExpression><![CDATA[$F{period_start}]]></textFieldExpression>
+				<reportElement x="450" y="107" width="100" height="18" uuid="0f477e5c-fe7d-4a8f-9e61-7cd63c443207"/>
+				<textFieldExpression><![CDATA[$F{period_start_date}]]></textFieldExpression>
 			</textField>
 			<textField pattern="MMMM d, yyyy">
-				<reportElement x="449" y="147" width="100" height="18" uuid="2df832e8-2f9a-4c00-932a-3f14873fe98d"/>
-				<textFieldExpression><![CDATA[$F{period_end}]]></textFieldExpression>
+				<reportElement x="450" y="128" width="100" height="18" uuid="2df832e8-2f9a-4c00-932a-3f14873fe98d"/>
+				<textFieldExpression><![CDATA[$F{period_end_date}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="108" y="41" width="339" height="42" forecolor="#1E2B5D" uuid="efeba1de-0e07-43e4-a518-93a318b176dd"/>
@@ -206,17 +178,6 @@ WHERE employee_id = $P{employee_id}
 			<textField>
 				<reportElement x="150" y="85" width="100" height="18" uuid="d5c0dc42-4071-4f8b-bbfd-61fb20e6366c"/>
 				<textFieldExpression><![CDATA[$F{payslip_number}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="296" y="105" width="150" height="18" forecolor="#1E2B5D" uuid="c5ff1d92-5453-4db3-9fdb-188605ba1f5c"/>
-				<textElement>
-					<font fontName="Arial Black" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[PERIOD CUT-OFF]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="450" y="106" width="100" height="18" uuid="5bd8e01a-2995-46c3-b665-caa1b6bb4288"/>
-				<textFieldExpression><![CDATA[$F{cut_off}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="296" y="85" width="150" height="18" forecolor="#1E2B5D" uuid="feddf23b-a35a-4f4b-bccd-74c0170ae5ef"/>
@@ -287,14 +248,14 @@ WHERE employee_id = $P{employee_id}
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
-				<text><![CDATA[Daily Rate]]></text>
+				<text><![CDATA[Hourly Rate]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="26" y="50" width="100" height="15" forecolor="#1E2B5D" uuid="98b92f3a-bf4d-45d4-9d9c-1deaf3e5ae17"/>
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
-				<text><![CDATA[Days Worked]]></text>
+				<text><![CDATA[Net Hours Paid]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="26" y="80" width="100" height="15" forecolor="#1E2B5D" uuid="bbe845aa-d070-4e65-8632-e3345da01a80"/>
@@ -315,7 +276,7 @@ WHERE employee_id = $P{employee_id}
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{daily_rate}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{hourly_rate}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="438" y="80" width="100" height="14" uuid="f2c9b0e3-1bbd-4bb2-844e-f5ecc34e3026"/>
@@ -461,14 +422,14 @@ WHERE employee_id = $P{employee_id}
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{days_worked}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{net_hours_paid}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="440" y="186" width="100" height="14" uuid="0f65edef-79c0-41b8-b6ab-7deafbdea91c"/>
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{clothing_allowance}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{total_allowance}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="439" y="240" width="100" height="14" uuid="5cc8fbb9-3e09-47a3-a30d-092510a11a32"/>
@@ -532,6 +493,20 @@ WHERE employee_id = $P{employee_id}
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{take_home_pay}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="26" y="65" width="100" height="15" forecolor="#1E2B5D" uuid="f2fa8f67-2105-4822-bdbe-6220b562f28d"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Overtime]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="438" y="65" width="100" height="14" uuid="a64ae564-e263-462a-991b-c3203fa4704f"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{overtime}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

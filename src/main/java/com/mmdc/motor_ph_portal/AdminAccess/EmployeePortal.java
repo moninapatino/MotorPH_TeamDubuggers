@@ -44,6 +44,8 @@ public class EmployeePortal extends javax.swing.JFrame {
     date.setText(dates.format(now));
     }
 
+    public javax.swing.JButton getLogOutButton() {   return logOutButton;  }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -234,21 +236,21 @@ public class EmployeePortal extends javax.swing.JFrame {
 
     private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutButtonActionPerformed
         // log out
-                
-        int result = JOptionPane.showConfirmDialog(null,"Are you sure you want to Log Out?", "Employee Portal", JOptionPane.YES_NO_OPTION);
-        
-        if (result == JOptionPane.YES_OPTION){
-        
+        int choice = JOptionPane.showConfirmDialog(
+        this,
+        "Are you sure you want to Log Out?",
+        "Confirm",
+        JOptionPane.YES_NO_OPTION
+    );
+
+    if (choice == JOptionPane.YES_OPTION) {
+        this.setVisible(false);  // Hide current window first
+        this.dispose();          // Then dispose it completely
+
         Login loginPage = new Login();
-        loginPage.show();
-                
-        dispose();
-        } else if (result == JOptionPane.NO_OPTION){
-        EmployeePortal employeePortal = new EmployeePortal ();
-        employeePortal.show();
-                
-        dispose();   
-        }
+        loginPage.setVisible(true);  // Show login window
+    }
+
         
     
                 

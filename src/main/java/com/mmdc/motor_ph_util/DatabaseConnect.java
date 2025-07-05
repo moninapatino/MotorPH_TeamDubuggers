@@ -335,30 +335,18 @@ public abstract class DatabaseConnect {
     }
 
     // PAYROLL DETAILS 
-      public PayrollCalculation getPayrollDetails(String employeeId, String selectedPayPeriod, int monthNumber) {
+    public PayrollCalculation getPayrollDetails(String employeeId, int monthNumber) {
     PayrollCalculation payroll = null;
 
     try {
         conn = connect();
 
-        String cutOff = "";
-        String sql = "";
-
-        if (selectedPayPeriod.equals("1st Cut-off")) {
-            cutOff = "1st";
-            sql = "SELECT * FROM employee_payslip_1st_cutoff_view WHERE employee_id = ? AND cut_off = ? AND MONTH(period_start) = ?";
-        } else if (selectedPayPeriod.equals("2nd Cut-off")) {
-            cutOff = "2nd";
-            sql = "SELECT * FROM employee_payslip_2nd_cutoff_view WHERE employee_id = ? AND cut_off = ? AND MONTH(period_start) = ?";
-        } else {
-            // Invalid selection
-            return null;
-        }
+        // Assuming the view has employee_id and month_number as columns you can filter on
+        String sql = "SELECT * FROM payrollsystem_db.vw_payslip_report WHERE employee_id = ? AND MONTH(period_start_date) = ?";
 
         pst = conn.prepareStatement(sql);
         pst.setString(1, employeeId);
-        pst.setString(2, cutOff);
-        pst.setInt(3, monthNumber);
+        pst.setInt(2, monthNumber); 
 
         rs = pst.executeQuery();
 
@@ -366,8 +354,8 @@ public abstract class DatabaseConnect {
             payroll = new PayrollCalculation(
                 rs.getString("employee_id"),
                 rs.getString("employee_name"),
-                rs.getDouble("daily_rate"),
-                rs.getDouble("days_worked"),
+                rs.getDouble("hourly_rate"),
+                rs.getDouble("net_hours_paid"),
                 rs.getDouble("rice_allowance"),
                 rs.getDouble("phone_allowance"),
                 rs.getDouble("clothing_allowance"),

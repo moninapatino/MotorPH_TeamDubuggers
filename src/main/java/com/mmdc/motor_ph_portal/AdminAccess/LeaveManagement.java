@@ -109,7 +109,13 @@ public class LeaveManagement extends javax.swing.JFrame {
     }
         return null;
     }
-
+    
+    public javax.swing.JTable getLeaveTable() { return leaveTable;     }
+    public javax.swing.JRadioButton getApproveRadioButton() { return approve_rb;     }
+    public javax.swing.JButton getUpdateButton() {   return updateBtn;     }
+    public javax.swing.JButton getDeleteButton() {   return deleteBtn;     }
+    public javax.swing.JTextField getLeaveNumberField() {   return leaveNum_field; }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

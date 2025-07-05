@@ -17,7 +17,6 @@ com\mmdc\motor_ph_portal\Motor_PH_Portal.class
 com\mmdc\motor_ph_portal\AdminAccess\LeaveManagement$2.class
 com\mmdc\motor_ph_portal\ForgotPassword$4.class
 com\mmdc\motor_ph_portal\AdminAccess\LeaveManagement$9.class
-images\imagetest.class
 com\mmdc\motor_ph_portal\EmployeeAccess\EmployeeAccess_Profile$8.class
 com\mmdc\motor_ph_portal\ForgotPassword.class
 com\mmdc\motor_ph_portal\EmployeeAccess\EmployeeAccess_Profile$10.class
@@ -60,7 +59,6 @@ com\mmdc\motor_ph_portal\User.class
 com\mmdc\motor_ph_portal\AdminAccess\EmployeeAttendance$4.class
 com\mmdc\motor_ph_portal\AdminAccess\LeaveManagement$4.class
 com\mmdc\motor_ph_portal\AdminAccess\LeaveManagement.class
-images\imagetest$1.class
 com\mmdc\motor_ph_portal\NewPassword$4.class
 com\mmdc\motor_ph_portal\AdminAccess\EmployeeAttendance$3.class
 com\mmdc\motor_ph_portal\AdminAccess\EmployeeProfileTabbed.class
