@@ -54,8 +54,8 @@ CREATE TABLE `attendance_record` (
   `attendance_id` int NOT NULL AUTO_INCREMENT,
   `employee_id` int NOT NULL,
   `date` date NOT NULL,
-  `time_in` time NOT NULL,
-  `time_out` time NOT NULL,
+  `time_in` time DEFAULT NULL,
+  `time_out` time DEFAULT NULL,
   `status` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`attendance_id`),
   KEY `AttendanceEmpID_idx` (`employee_id`),
@@ -642,4 +642,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-07-05 10:05:59
+-- Dump completed on 2025-07-05 10:47:50
