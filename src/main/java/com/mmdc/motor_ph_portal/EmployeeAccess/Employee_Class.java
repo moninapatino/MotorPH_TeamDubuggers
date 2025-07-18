@@ -1,6 +1,5 @@
 package com.mmdc.motor_ph_portal.EmployeeAccess;
 
-import com.mmdc.motor_ph_portal.AdminAccess.EmployeePortal;
 import com.mmdc.motor_ph_portal.User;
 import javax.swing.JOptionPane;
 

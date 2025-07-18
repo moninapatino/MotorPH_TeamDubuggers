@@ -175,7 +175,7 @@ public class Payroll extends javax.swing.JFrame {
     public javax.swing.JTextField getNetpayField() { return netpay_field; }
     public javax.swing.JButton getGeneratePayslipButton() { return payslipBtn; }
     
-    @SuppressWarnings("unchecked")
+    
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -677,6 +677,7 @@ public class Payroll extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    @SuppressWarnings("deprecation")
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // go back to Employee Portal
         EmployeePortal employeePortal = new EmployeePortal();

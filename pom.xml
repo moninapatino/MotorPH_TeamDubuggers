@@ -52,5 +52,17 @@
             <version>5.9.2</version>
             <scope>test</scope>
         </dependency>
+    
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-batch</artifactId>
+        <version>7.0.0</version>
+      </dependency>
+    
+      <dependency>
+        <groupId>net.sourceforge.jdatepicker</groupId>
+        <artifactId>jdatepicker</artifactId>
+        <version>1.1.0</version>
+      </dependency>
     </dependencies>
 </project>

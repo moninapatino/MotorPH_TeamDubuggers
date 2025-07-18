@@ -1,9 +1,5 @@
 package com.mmdc.motor_ph_util;
 
-import com.mmdc.motor_ph_portal.AdminAccess.Admin_Class;
-import com.mmdc.motor_ph_portal.AdminAccess.Payroll;
-import com.mmdc.motor_ph_portal.AdminAccess.PayrollCalculation;
-import com.mmdc.motor_ph_portal.LeaveRecord;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,8 +10,13 @@ import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
+import com.mmdc.motor_ph_portal.AdminAccess.Admin_Class;
+import com.mmdc.motor_ph_portal.AdminAccess.PayrollCalculation;
+import com.mmdc.motor_ph_portal.LeaveRecord;
 
 public abstract class DatabaseConnect {
 
@@ -30,8 +31,8 @@ public abstract class DatabaseConnect {
     public DatabaseConnect() {
         this.url = "jdbc:mysql://localhost:3306/payrollsystem_db?useSSL=false";
         this.user = "root";
-        this.password = "@dm1nistr4tor";
-    }
+            this.password = "enaxor";
+        }
 
     public String getUrl() {
         return url;

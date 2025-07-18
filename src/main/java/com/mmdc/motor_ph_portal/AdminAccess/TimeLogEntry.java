@@ -13,7 +13,7 @@ public class TimeLogEntry {
         this.firstName = firstName;
         this.lastName = lastName;
         this.date = date;
-        
+
         this.timeIn = timeIn;
         this.timeOut = timeOut;
     }
