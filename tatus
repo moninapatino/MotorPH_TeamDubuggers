@@ -1,0 +1,37 @@
+[33mbab5c5c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfinal[m[33m, [m[1;31morigin/final[m[33m)[m Remove com.motorph folder in final branch only
+[33mf1d2540[m[33m ([m[1;31morigin/enhanced[m[33m, [m[1;32menhanced[m[33m)[m Refactor and update various components including Payroll, Employee Access, and testing classes. Enhanced functionality in Admin and Employee portals, improved database connection management, and all tests. still ongoing
+[33m512bbcc[m Update README.md
+[33mac3b563[m Changed Employee Access Portal Test
+[33m5b48fb2[m JUnit Testing Conducted ALL PASSED
+[33m6fb284f[m payslip automatic to pdf
+[33m4eb0ec7[m payslip automatic to pdf
+[33m28b211e[m added Pay Month for more accurate payslip and payroll
+[33m4703c9c[m Admin to Employee Access
+[33mbae8408[m Done Payslip for Admin and Employee Access
+[33m1ab31c5[m Payroll Updated
+[33ma70fb4a[m Employee Profile Admin Access
+[33m4ae2246[m Payslip function Employee Access
+[33m23adb69[m Time Log Functionality
+[33me8e7f2e[m Request Leave Functionality
+[33m79a7268[m Added View Payslip in Payroll
+[33m1fc9087[m Merge branch 'master' of https://github.com/moninapatino/MotorPH_TeamDubuggers
+[33mbe6fbf4[m Update Auto fill employee profile
+[33m4ceaa70[m Update Auto fill employee profile
+[33m764d3e0[m Auto Filll
+[33md0e26dc[m Create README.md
+[33m24de586[m "Auto fill"
+[33mfa98123[m Added Reports and View Payslip
+[33maf3e5b4[m Updated Admin Access except for Payroll
+[33m1c52668[m Updated Admin Access except for Payroll
+[33m3853ff2[m Postrgres to MySQL, combined Employee Access classes
+[33m9cba971[m Removed status on Employee Access Profile
+[33m34f8026[m Removed status on Employee Access Profile
+[33mb240f57[m updated leavemanagement and timelog
+[33mf5c679e[m Done updating Payroll
+[33m4241d40[m Still updating Payroll
+[33m3d4288b[m Updated code for keyReleased
+[33m84f461c[m Admin_Class instead of Employee_Class for employeeIdKeyReleased
+[33mf9f2766[m Update:
+[33m7d4103e[m Trial and error
+[33mb77558e[m 
+[33m83c1dca[m 
