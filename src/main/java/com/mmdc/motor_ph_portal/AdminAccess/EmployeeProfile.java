@@ -2,6 +2,7 @@
 package com.mmdc.motor_ph_portal.AdminAccess;
 
 import com.mmdc.motor_ph_util.DatabaseConnect;
+import com.mmdc.motor_ph_portal.DAO.EmployeeProfileDAOImpl;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.Connection;
@@ -16,13 +17,14 @@ import javax.swing.JOptionPane;
 
 
 
-public class EmployeeProfileTabbed extends javax.swing.JFrame {
+public class EmployeeProfile extends javax.swing.JFrame {
     Connection conn = null;
     ResultSet rs = null;
     PreparedStatement pst = null;
     DatabaseConnect dbConnect = new DatabaseConnect() {};
+    EmployeeProfileDAOImpl employeeDAO = new EmployeeProfileDAOImpl() {};
 
-    public EmployeeProfileTabbed() {
+    public EmployeeProfile() {
         
         initComponents();
         setTitle("Motor PH Employee Profile");
@@ -35,7 +37,7 @@ public class EmployeeProfileTabbed extends javax.swing.JFrame {
         //Displaying date and Time
         time();
         date();
-        conn = dbConnect.connect();
+        conn = dbConnect.getConnection();
         autoFillEmployeeId();
     }
 
@@ -88,7 +90,7 @@ public class EmployeeProfileTabbed extends javax.swing.JFrame {
  
   public void autoFillEmployeeId() {
     try {
-        int nextEmployeeId = dbConnect.getNextEmployeeId(); // Call the method
+        int nextEmployeeId = employeeDAO.getNextEmployeeId(); // Call the method
 
         if (id_field != null) {
             id_field.setText(String.valueOf(nextEmployeeId));
@@ -1146,7 +1148,7 @@ public class EmployeeProfileTabbed extends javax.swing.JFrame {
             "Employee Profile Updating...", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
 
-            dbConnect.updateEmployee(employee); // Call the updateEmployee method
+            employeeDAO.updateEmployee(employee); // Call the updateEmployee method
         }
 
         else if (result == JOptionPane.NO_OPTION) {
@@ -1158,8 +1160,8 @@ public class EmployeeProfileTabbed extends javax.swing.JFrame {
         // ADD EMPLOYEE RECORD
         String employeeId = searchId_field.getText();
         try {
-            conn = dbConnect.connect();
-            Admin_Class employee = dbConnect.getEmployeeDetails(employeeId);
+            conn = dbConnect.getConnection();
+            Admin_Class employee = employeeDAO.getEmployeeDetails(employeeId);
 
             if (employee != null) {
                 // Populate fields
@@ -1203,7 +1205,7 @@ public class EmployeeProfileTabbed extends javax.swing.JFrame {
         int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this?", "Employee Profile Deleting...", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
   
-            dbConnect.deleteEmployee(employeeId); // Call the deleteEmployee method
+            employeeDAO.deleteEmployee(employeeId); // Call the deleteEmployee method
 
         } else if (result == JOptionPane.NO_OPTION) {
             JOptionPane.showMessageDialog(this, "Employee Profile Deletion Not Successful!");
@@ -1248,7 +1250,7 @@ public class EmployeeProfileTabbed extends javax.swing.JFrame {
         }
 
         // 4. Add address and get generated address ID
-        int addressId = dbConnect.addAddressAndReturnId(
+        int addressId = employeeDAO.addAddressAndReturnId(
             street, barangay, city, province, postalcode
         );
 
@@ -1261,7 +1263,7 @@ public class EmployeeProfileTabbed extends javax.swing.JFrame {
         );
 
         // 6. Insert employee and get generated ID
-        int employeeId = dbConnect.addEmployeeAndReturnId(newEmployee, addressId);
+        int employeeId = employeeDAO.addEmployeeAndReturnId(newEmployee, addressId);
 
         // 7. Display in form and show success
         searchId_field.setText(String.valueOf(employeeId));
@@ -1313,20 +1315,21 @@ public class EmployeeProfileTabbed extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EmployeeProfileTabbed.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EmployeeProfile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EmployeeProfileTabbed.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EmployeeProfile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EmployeeProfileTabbed.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EmployeeProfile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EmployeeProfileTabbed.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EmployeeProfile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EmployeeProfileTabbed().setVisible(true);
+                new EmployeeProfile().setVisible(true);
             }
         });
     }

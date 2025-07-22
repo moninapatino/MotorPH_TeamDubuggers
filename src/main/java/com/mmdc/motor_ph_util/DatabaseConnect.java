@@ -2,50 +2,51 @@ package com.mmdc.motor_ph_util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 
-import com.mmdc.motor_ph_portal.AdminAccess.Admin_Class;
-import com.mmdc.motor_ph_portal.AdminAccess.PayrollCalculation;
-import com.mmdc.motor_ph_portal.LeaveRecord;
+public class DatabaseConnect { 
 
-public abstract class DatabaseConnect {
+    private static final String url = "jdbc:mysql://localhost:3306/payrollsystem_db?useSSL=false";
+    private static final String user = "root";
+    private static final String password = "@dm1nistr4tor";
 
-    protected String url;
-    protected String user;
-    protected String password;
-    protected String employee_id;
-    Connection conn = null;
-    PreparedStatement pst = null;
-    ResultSet rs = null;
-
-    public DatabaseConnect() {
-        this.url = "jdbc:mysql://localhost:3306/payrollsystem_db?useSSL=false";
-        this.user = "root";
-            this.password = "enaxor";
+   
+    public static Connection getConnection() {
+        Connection conn = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            System.out.println("Trying to connect");
+            conn = DriverManager.getConnection(url, user, password);
+            System.out.println("Connection Established Successfully");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DatabaseConnect.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "MySQL Driver not found." + ex.getMessage());
+        } catch (SQLException ex) {
+            Logger lgr = Logger.getLogger(DatabaseConnect.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+            JOptionPane.showMessageDialog(null, "Unable to make connection with DB: " + ex.getMessage());
         }
-
-    public String getUrl() {
-        return url;
+        return conn;
     }
 
-    public String getUser() {
-        return user;
+    public static void closeResources(AutoCloseable... resources) {
+        for (AutoCloseable resource : resources) {
+            if (resource != null) {
+                try {
+                    resource.close();
+                } catch (Exception ex) {
+                    Logger.getLogger(DatabaseConnect.class.getName()).log(Level.SEVERE, "Error closing resource", ex);
+                }
+            }
+        }
     }
+}
 
-    public String getPassword() {
-        return password;
-    }
-    // CONNECTION TO SQL
+            
+    /*// CONNECTION TO SQL
     public Connection connect() {
         
         try {
@@ -779,4 +780,4 @@ public abstract class DatabaseConnect {
         return false;
     }
 }
-}
+}*/

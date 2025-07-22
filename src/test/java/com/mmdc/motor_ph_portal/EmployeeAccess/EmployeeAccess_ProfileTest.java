@@ -14,12 +14,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class EmployeeAccess_ProfileTest {
 
-    private EmployeeAccess_Profile profile;
+    private EmployeeAccessProfile profile;
 
     @BeforeEach
     public void setUp() {
         // Initialize profile using a valid username (ALim for Antonio Lim)
-        profile = new EmployeeAccess_Profile("ALim");
+        profile = new EmployeeAccessProfile("ALim");
     }
 
     @AfterEach
@@ -41,7 +41,7 @@ public class EmployeeAccess_ProfileTest {
     @Test
     public void testTimeInButtonFunctionality() {
         // 1. Create employee profile
-        profile = new EmployeeAccess_Profile("10002", "Antonio", "Lim");
+        profile = new EmployeeAccessProfile("10002", "Antonio", "Lim");
 
         // 2. Click the Time-In button
         JButton timeInBtn = profile.getTimeInButton();
@@ -90,7 +90,7 @@ public class EmployeeAccess_ProfileTest {
     @Test
     public void testSubmitLeaveRequestSuccessfully() {
       
-      profile = new EmployeeAccess_Profile("10002", "Antonio", "Lim");
+      profile = new EmployeeAccessProfile("10002", "Antonio", "Lim");
       profile.autoFillLeaveId(); // Make sure this populates the leaveNumField
 
       
@@ -146,7 +146,7 @@ public class EmployeeAccess_ProfileTest {
     @Test
     public void testViewPayslipByMonthForEmployee() {
         // Step 1: Log in as Employee 10002 (Antonio Lim)
-        profile = new EmployeeAccess_Profile("10002", "Antonio", "Lim");
+        profile = new EmployeeAccessProfile("10002", "Antonio", "Lim");
 
         // Step 2: Ensure payslips are loaded
         profile.loadPayslipList();
@@ -187,7 +187,7 @@ public class EmployeeAccess_ProfileTest {
     
     @Test
     public void testTimeOutButtonFunctionality() {
-        profile = new EmployeeAccess_Profile("10002", "Antonio", "Lim");
+        profile = new EmployeeAccessProfile("10002", "Antonio", "Lim");
 
         // First, ensure there is a Time-In
         JButton timeInBtn = profile.getTimeInButton();

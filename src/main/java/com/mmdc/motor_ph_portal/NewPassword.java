@@ -1,6 +1,7 @@
 
 package com.mmdc.motor_ph_portal;
 
+import com.mmdc.motor_ph_portal.DAO.EmployeeProfileDAOImpl;
 import com.mmdc.motor_ph_util.DatabaseConnect;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -11,6 +12,7 @@ import javax.swing.WindowConstants;
 public class NewPassword extends javax.swing.JFrame {
     private String employeeID;
     DatabaseConnect dbConnect = new DatabaseConnect() {};
+    EmployeeProfileDAOImpl employeeDAO = new EmployeeProfileDAOImpl() {};
     
     public NewPassword() {
         initComponents();
@@ -24,7 +26,7 @@ public class NewPassword extends javax.swing.JFrame {
         Toolkit toolkit = getToolkit();
         Dimension size = toolkit.getScreenSize();
         setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
-        employeeID = dbConnect.getEmployeeIdByEmail(email); // Get employee ID from the database
+        employeeID = employeeDAO.getEmployeeIdByEmail(email); // Get employee ID from the database
         if (employeeID == null) {
             JOptionPane.showMessageDialog(null, "Email not found.");
         } else {
@@ -216,7 +218,7 @@ public class NewPassword extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Employee ID not found. Cannot reset password.");
         return;
     }
-    boolean isUpdated = dbConnect.updatePassword(employeeID, newPassword);
+    boolean isUpdated = employeeDAO.updatePassword(employeeID, newPassword);
     if (isUpdated) {
         JOptionPane.showMessageDialog(null, "Password reset successfully.");
         new Login().setVisible(true);

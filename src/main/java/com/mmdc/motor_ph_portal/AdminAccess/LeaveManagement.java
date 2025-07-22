@@ -1,5 +1,7 @@
 package com.mmdc.motor_ph_portal.AdminAccess;
 
+import com.mmdc.motor_ph_portal.DAO.EmployeeProfileDAOImpl;
+import com.mmdc.motor_ph_portal.DAO.LeaveManagementDAOImpl;
 import com.mmdc.motor_ph_portal.LeaveRecord;
 import com.mmdc.motor_ph_util.DatabaseConnect;
 import java.awt.Dimension;
@@ -11,17 +13,18 @@ import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Vector;
 import javax.swing.ButtonGroup;
 import javax.swing.RowFilter;
 import javax.swing.table.TableRowSorter;
 
 public class LeaveManagement extends javax.swing.JFrame {
 
-    Connection conn = null;
+    Connection conn;
     private ButtonGroup buttonGroup;
 
     DatabaseConnect dbConnect = new DatabaseConnect() {};
+    EmployeeProfileDAOImpl employeeDAO = new EmployeeProfileDAOImpl() {};
+    LeaveManagementDAOImpl leaveDAO = new LeaveManagementDAOImpl() {};
 
     public LeaveManagement() {
         initComponents();
@@ -33,7 +36,7 @@ public class LeaveManagement extends javax.swing.JFrame {
         Toolkit toolkit = getToolkit();
         Dimension size = toolkit.getScreenSize();
         setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
-        conn = dbConnect.connect();
+        conn = dbConnect.getConnection();
         loadLeaveRecords();
         time();
         date();
@@ -71,7 +74,7 @@ public class LeaveManagement extends javax.swing.JFrame {
     }
 
     public void loadLeaveRecords() {
-    ArrayList<LeaveRecord> leaveRecords = dbConnect.leaveMngUserList();
+    ArrayList<LeaveRecord> leaveRecords = leaveDAO.leaveMngUserList();
     DefaultTableModel leaveTableModel = (DefaultTableModel) leaveTable.getModel();
     leaveTableModel.setRowCount(0); // clear previous rows
 
@@ -90,7 +93,7 @@ public class LeaveManagement extends javax.swing.JFrame {
     }
 }
     public ArrayList refreshList() {
-       ArrayList<LeaveRecord> leaveRecords = dbConnect.leaveMngUserList();
+       ArrayList<LeaveRecord> leaveRecords = leaveDAO.leaveMngUserList();
     DefaultTableModel leaveTableModel = (DefaultTableModel) leaveTable.getModel();
     leaveTableModel.setRowCount(0); // clear previous rows
 
@@ -544,7 +547,7 @@ public class LeaveManagement extends javax.swing.JFrame {
             );
 
             // Update the leave record in the database
-            if (dbConnect.updateLeaveRecord(leaveRecord)) {
+            if (leaveDAO.updateLeaveRecord(leaveRecord)) {
                 enddate_field.setText(leaveRecord.getEndDate());
                 JOptionPane.showMessageDialog(this, "Leave Record Updated!");
                 refreshList();
@@ -620,7 +623,7 @@ public class LeaveManagement extends javax.swing.JFrame {
             LeaveRecord leaveRecord = new LeaveRecord(leaveNum, null, null, null, null, null, null, null);
 
             // Attempt to delete the leave record
-            if (dbConnect.deleteLeaveRecord(leaveRecord)) {
+            if (leaveDAO.deleteLeaveRecord(leaveRecord)) {
                 JOptionPane.showMessageDialog(null, "Selected Record Deleted");
                 clear(); // Clear the fields after deletion
             } else {
@@ -640,8 +643,8 @@ public class LeaveManagement extends javax.swing.JFrame {
     private void id_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_id_fieldKeyReleased
         // serach by employee id
         String employeeId = id_field.getText();
-        conn = dbConnect.connect();
-        Admin_Class employee = dbConnect.getEmployeeDetails(employeeId);
+        conn = dbConnect.getConnection();
+        Admin_Class employee = employeeDAO.getEmployeeDetails(employeeId);
         if (employee != null) {
             firstName_field.setText(employee.getFirstName());
             lastName_field.setText(employee.getLastName());

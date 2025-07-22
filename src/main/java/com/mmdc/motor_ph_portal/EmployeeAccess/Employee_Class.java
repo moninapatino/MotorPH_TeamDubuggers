@@ -26,7 +26,7 @@ public class Employee_Class extends User {
                                   "Login Successful", JOptionPane.INFORMATION_MESSAGE);
 
     // Redirect to the Employee Access Profile with username for automatic data loading
-    EmployeeAccess_Profile empPortal = new EmployeeAccess_Profile(username); 
+    EmployeeAccessProfile empPortal = new EmployeeAccessProfile(username); 
     empPortal.setVisible(true);
     }
 

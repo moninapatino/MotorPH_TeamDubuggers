@@ -1,6 +1,7 @@
 
 package com.mmdc.motor_ph_portal.AdminAccess;
 
+import com.mmdc.motor_ph_portal.DAO.PayrollDAOImpl;
 import com.mmdc.motor_ph_util.DatabaseConnect;
 import java.awt.Desktop;
 import java.awt.Dimension;
@@ -29,9 +30,8 @@ public class Payroll extends javax.swing.JFrame {
     ResultSet rs = null;
     PreparedStatement pst = null;
    
-    DatabaseConnect dbConnect = new DatabaseConnect() {
-    };
-
+    DatabaseConnect dbConnect = new DatabaseConnect() {};
+    PayrollDAOImpl payrollDAO = new PayrollDAOImpl() {};
 
     public Payroll() {
         initComponents();
@@ -43,7 +43,7 @@ public class Payroll extends javax.swing.JFrame {
         Dimension size=toolkit.getScreenSize();
         setLocation(size.width/2-getWidth()/2,size.height/2-getHeight()/2);
         
-        conn = dbConnect.connect();
+        conn = dbConnect.getConnection();
         
         //Displaying date and Time
         time();
@@ -76,7 +76,7 @@ public class Payroll extends javax.swing.JFrame {
         int monthNumber = Month.valueOf(selectedMonth.toUpperCase()).getValue(); // Java 8+
 
         // Connect to DB
-        conn = dbConnect.connect();
+        conn = dbConnect.getConnection();
 
         // Compile report
         String reportPath = "C:\\Users\\user\\Desktop\\Monina\\MMDC\\Term 2 24-25\\MotorPHPortal\\src\\main\\java\\com\\mmdc\\motor_ph_util\\reportPayslipTemplate.jrxml";
@@ -721,7 +721,7 @@ public class Payroll extends javax.swing.JFrame {
     int monthNumber = Month.valueOf(selectedMonth.toUpperCase()).getValue();
 
     // Call the method with all 3 parameters
-    PayrollCalculation payroll = dbConnect.getPayrollDetails(employeeId, monthNumber);
+    PayrollCalculation payroll = payrollDAO.getPayrollDetails(employeeId, monthNumber);
 
     if (payroll != null) {
         populateFields(payroll);

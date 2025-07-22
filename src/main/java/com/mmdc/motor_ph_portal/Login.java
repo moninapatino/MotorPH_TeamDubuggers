@@ -198,7 +198,7 @@ public class Login extends javax.swing.JFrame {
 
         
         DatabaseConnect dbConnect = new DatabaseConnect() {};
-        conn = dbConnect.connect();
+        conn = dbConnect.getConnection();
 
         try {
             String sql = "SELECT e.employee_id, e.first_name, e.last_name, ur.role_name " +

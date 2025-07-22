@@ -1,90 +1,31 @@
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\mmdc\motor_ph_portal\AdminAccess\Admin_Class.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\mmdc\motor_ph_portal\AdminAccess\EmployeeAttendance.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\mmdc\motor_ph_portal\AdminAccess\EmployeePortal.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\mmdc\motor_ph_portal\AdminAccess\EmployeeProfileTabbed.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\mmdc\motor_ph_portal\AdminAccess\LeaveManagement.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\mmdc\motor_ph_portal\AdminAccess\Payroll.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\mmdc\motor_ph_portal\AdminAccess\PayrollCalculation.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\mmdc\motor_ph_portal\AdminAccess\PayrollDetails.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\mmdc\motor_ph_portal\AdminAccess\TimeLogEntry.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\mmdc\motor_ph_portal\EmployeeAccess\Employee_Class.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\mmdc\motor_ph_portal\EmployeeAccess\EmployeeAccess_Profile.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\mmdc\motor_ph_portal\ForgotPassword.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\mmdc\motor_ph_portal\LeaveRecord.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\mmdc\motor_ph_portal\Login.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\mmdc\motor_ph_portal\Motor_PH_Portal.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\mmdc\motor_ph_portal\NewPassword.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\mmdc\motor_ph_portal\User.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\mmdc\motor_ph_util\DatabaseConnect.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\annotation\RequiresAdmin.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\config\ApplicationConfig.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\dao\AttendanceDAO.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\dao\EmployeeDAO.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\dao\EmployeeDAOImpl.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\dao\impl\AttendanceDAOImpl.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\dao\impl\EmployeeDAOImpl.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\dao\impl\UserDAOImpl.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\dao\IUserAccountDAO.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\dao\LeaveRecordDAO.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\dao\LeaveRecordDAOImpl.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\dao\PasswordRecoveryDAO.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\dao\PasswordRecoveryDAOImpl.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\dao\PayrollDAO.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\dao\UserAccountDAO.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\dao\UserAccountDAOImpl.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\dao\UserDAO.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\exception\SecurityException.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\exception\ServiceException.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\model\Address.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\model\Attendance.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\model\AttendanceRecord.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\model\Employee.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\model\LeaveRecord.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\model\PasswordRecovery.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\model\PayrollCalculation.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\model\PayrollEntry.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\model\User.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\model\UserAccount.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\model\UserRole.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\MotorPhPortal.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\PayrollDAOImpl.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\security\LoginManager.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\security\RequiresAdmin.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\security\SecurityAspect.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\security\SecurityContext.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\service\AdminService.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\service\AttendanceService.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\service\AttendanceServiceImpl.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\service\AuthenticationService.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\service\AuthenticationServiceImpl.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\service\EmployeeService.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\service\EmployeeServiceImpl.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\service\IAuthenticationService.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\service\impl\AdminServiceImpl.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\service\impl\AttendanceServiceImpl.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\service\impl\AuthenticationServiceImpl.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\service\impl\EmployeeServiceImpl.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\service\impl\PayrollServiceImpl.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\service\LeaveManagementService.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\service\LeaveManagementServiceImpl.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\service\PasswordRecoveryService.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\service\PasswordRecoveryServiceImpl.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\service\PayrollService.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\service\PayrollServiceImpl.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\util\DatabaseConnectionManager.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\util\ServiceLocator.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\view\admin\AdminDashboard.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\view\admin\AttendanceManagementPanel.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\view\admin\EmployeeManagementPanel.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\view\admin\PayrollPanel.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\view\admin\ReportsPanel.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\view\AdminPortalFrame.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\view\employee\AttendancePanel.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\view\employee\EmployeeDashboard.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\view\employee\PayrollPanel.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\view\employee\ProfilePanel.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\view\EmployeePortalFrame.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\view\EmployeeProfileFrame.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\view\ForgotPasswordFrame.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\view\LoginFrame.java
-C:\Users\Administrator\Desktop\VSPractice\MotorPH_TeamDubuggers\src\main\java\com\motorph\view\NewPasswordFrame.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\DAO\LeaveManagementDAOImpl.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\DAO\PayrollDAOImpl.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\MotorPH_Login.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_util\DatabaseConnect.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\NewPassword.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\DAO\EmployeeAccessProfileDAOImpl.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\AdminAccess\EmployeeAttendance.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\EmployeeAccess\Employee_Class.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\AdminAccess\EmployeeProfile.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\AdminAccess\EmployeePortal.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\DAO\EmployeeAttendanceDAOImpl.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\Login.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\User.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\DAO\LeaveManagementDAO.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\DAO\PayrollDAO.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\DAO\EmployeeAccessProfileDAO.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\Motor_PH_Portal.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\LeaveRecord.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\AdminAccess\PayrollCalculation.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\AdminAccess\TimeLogEntry.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\EmployeeAccess\EmployeeAccessProfile.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\DAO\EmployeeProfileDAOImpl.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\ForgotPassword.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\AdminAccess\Payroll.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\AdminAccess\LeaveManagement.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\AdminAccess\PayrollDetails.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\DAO\EmployeeAttendanceDAO.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\DAO\LoginDAO.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\AdminAccess\Admin_Class.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\DAO\EmployeeProfileDAO.java
+C:\Users\user\Desktop\Monina\MMDC\Term 2 24-25\MotorPHPortal\src\main\java\com\mmdc\motor_ph_portal\DAO\LoginDAOImpl.java

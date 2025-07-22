@@ -8,7 +8,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import com.mmdc.motor_ph_portal.AdminAccess.LeaveManagement;
 import javax.swing.JTextField;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,7 +39,7 @@ public class LeaveManagementTest {
         adminLeave = null;
     }
 
-         @Test
+    @Test
     public void testApproveLeaveRequestAsAdmin() {
         JTable leaveTable = adminLeave.getLeaveTable();
         assertNotNull(leaveTable, "Leave table should not be null");
@@ -54,7 +53,7 @@ public class LeaveManagementTest {
         assertNotNull(leaveIdObj, "Leave ID should not be null");
 
         String leaveId = leaveIdObj.toString();
-        assertEquals("50042", leaveId, "Expected Leave ID 50042 in the last row");
+        assertEquals("10045", leaveId, "Expected Leave ID 10045 in the last row"); // Updated Leave ID
 
         // 🔘 Select and click the last row to trigger the auto-fill logic
         leaveTable.setRowSelectionInterval(lastRow, lastRow);
@@ -80,7 +79,7 @@ public class LeaveManagementTest {
         // ✅ Verify the Leave Number was populated
         JTextField leaveNumField = adminLeave.getLeaveNumberField();
         assertNotNull(leaveNumField, "Leave Number field should not be null");
-        assertEquals("50042", leaveNumField.getText().trim(), "Leave Number field should be auto-filled");
+        assertEquals("10045", leaveNumField.getText().trim(), "Leave Number field should be auto-filled"); // Updated Leave ID
 
         // 🔘 Click "Approve" radio button
         JRadioButton approveRadio = adminLeave.getApproveRadioButton();
@@ -104,26 +103,23 @@ public class LeaveManagementTest {
         assertEquals("Approved", updatedStatus, "Leave status should be updated to Approved");
     }
 
-
-        @Test
+    @Test
     public void testDeleteLeaveRequestAsAdmin() {
-        LeaveManagement adminLeave = new LeaveManagement();
-
         JTable leaveTable = adminLeave.getLeaveTable();
         assertNotNull(leaveTable, "Leave table should not be null");
         assertTrue(leaveTable.getRowCount() > 0, "Leave table should have at least one row");
 
-        // Find the row with Leave ID: 50041
+        // Find the row with Leave ID: 10042 (updated from 50041)
         int rowToDelete = -1;
         for (int i = 0; i < leaveTable.getRowCount(); i++) {
             Object leaveId = leaveTable.getValueAt(i, 0); // Column 0 = Leave ID
-            if (leaveId != null && leaveId.toString().equals("50041")) {
+            if (leaveId != null && leaveId.toString().equals("10043")) { // Updated Leave ID
                 rowToDelete = i;
                 break;
             }
         }
 
-        assertTrue(rowToDelete != -1, "Leave ID 50041 should exist in the table");
+        assertTrue(rowToDelete != -1, "Leave ID 10043 should exist in the table");
 
         // Select and simulate mouse click on the row
         leaveTable.setRowSelectionInterval(rowToDelete, rowToDelete);
@@ -150,17 +146,16 @@ public class LeaveManagementTest {
             Thread.currentThread().interrupt();
         }
 
-        // Ensure Leave ID 50041 no longer exists
+        // Ensure Leave ID 10042 no longer exists
         boolean stillExists = false;
         for (int i = 0; i < leaveTable.getRowCount(); i++) {
             Object leaveId = leaveTable.getValueAt(i, 0);
-            if (leaveId != null && leaveId.toString().equals("50041")) {
+            if (leaveId != null && leaveId.toString().equals("10042")) { // Updated Leave ID
                 stillExists = true;
                 break;
             }
         }
 
-        assertFalse(stillExists, "Leave ID 50041 should be deleted from the table");
+        assertFalse(stillExists, "Leave ID 10043 should be deleted from the table");
     }
-
 }

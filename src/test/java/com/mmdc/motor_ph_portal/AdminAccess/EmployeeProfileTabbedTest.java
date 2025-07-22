@@ -8,11 +8,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class EmployeeProfileTabbedTest {
     
-    private EmployeeProfileTabbed employeeProfileTabbed;
+    private EmployeeProfile employeeProfileTabbed;
 
     @BeforeEach
     void setUp() {
-        employeeProfileTabbed = new EmployeeProfileTabbed();
+        employeeProfileTabbed = new EmployeeProfile();
     }
 
     // Test Scenario for #4 - Junit test by Maricon C.

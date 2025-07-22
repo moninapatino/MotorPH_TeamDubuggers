@@ -1,7 +1,8 @@
 
 package com.mmdc.motor_ph_portal.AdminAccess;
 
-import com.mmdc.motor_ph_portal.EmployeeAccess.EmployeeAccess_Profile;
+import com.mmdc.motor_ph_portal.DAO.EmployeeProfileDAOImpl;
+import com.mmdc.motor_ph_portal.EmployeeAccess.EmployeeAccessProfile;
 import com.mmdc.motor_ph_portal.Login;
 import com.mmdc.motor_ph_util.DatabaseConnect;
 import java.awt.Dimension;
@@ -16,6 +17,7 @@ import javax.swing.JPasswordField;
 public class EmployeePortal extends javax.swing.JFrame {
     
     DatabaseConnect dbConnect = new DatabaseConnect() {};
+    EmployeeProfileDAOImpl employeeDAO = new EmployeeProfileDAOImpl() {};
     
     public EmployeePortal() {
         initComponents();
@@ -258,7 +260,7 @@ public class EmployeePortal extends javax.swing.JFrame {
 
     private void employeeProfileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employeeProfileButtonActionPerformed
         // go to Employee Profile
-        EmployeeProfileTabbed employeeProfile = new EmployeeProfileTabbed();
+        EmployeeProfile employeeProfile = new EmployeeProfile();
         employeeProfile.show();
         
         dispose();
@@ -317,13 +319,13 @@ public class EmployeePortal extends javax.swing.JFrame {
         }
 
         // Step 3: Verify admin credentials
-        if (!dbConnect.verifyCredentials(adminUsername, adminPassword)) {
+        if (!employeeDAO.verifyCredentials(adminUsername, adminPassword)) {
             JOptionPane.showMessageDialog(this, "Incorrect admin username or password.");
             return;
         }
 
         // Step 4: Get employee's username from employee ID
-        String employeeUsername = dbConnect.getUsernameByEmployeeID(employeeID);
+        String employeeUsername = employeeDAO.getUsernameByEmployeeID(employeeID);
 
         if (employeeUsername == null || employeeUsername.trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "No username found for employee ID: " + employeeID);
@@ -331,14 +333,14 @@ public class EmployeePortal extends javax.swing.JFrame {
         }
 
         // Step 6: Get employee info and open profile
-        Admin_Class employee = dbConnect.getEmployeeByUsername(employeeUsername);
+        Admin_Class employee = employeeDAO.getEmployeeByUsername(employeeUsername);
 
         if (employee == null) {
             JOptionPane.showMessageDialog(this, "Employee not found for username: " + employeeUsername);
             return;
         }
 
-        EmployeeAccess_Profile empPortal = new EmployeeAccess_Profile(
+        EmployeeAccessProfile empPortal = new EmployeeAccessProfile(
             employee.getEmployeeID(),
             employee.getFirstName(),
             employee.getLastName()

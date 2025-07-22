@@ -1,7 +1,7 @@
 
 package com.mmdc.motor_ph_portal.AdminAccess;
 
-import com.mmdc.motor_ph_util.DatabaseConnect;
+import com.mmdc.motor_ph_portal.DAO.EmployeeAttendanceDAOImpl;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.WindowConstants;
@@ -14,8 +14,8 @@ import javax.swing.table.TableRowSorter;
 
 
 public class EmployeeAttendance extends javax.swing.JFrame {
-    private String username;
-    DatabaseConnect dbConnect = new DatabaseConnect() {};
+    EmployeeAttendanceDAOImpl attendanceDAO = new EmployeeAttendanceDAOImpl() {};
+    
        
     public EmployeeAttendance() {
         initComponents();
@@ -44,7 +44,7 @@ public class EmployeeAttendance extends javax.swing.JFrame {
     
     public void show_table() {
     DefaultTableModel attendanceTable = (DefaultTableModel) attendance_table.getModel();
-    dbConnect.show_table(attendanceTable);  // This fills the table with data
+    attendanceDAO.showAttendanceTable(attendanceTable);  // This fills the table with data
 
     // ✅ Center text in all columns after populating the table
     DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();

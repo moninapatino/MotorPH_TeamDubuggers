@@ -1,6 +1,9 @@
 package com.mmdc.motor_ph_portal.EmployeeAccess;
 
 import com.mmdc.motor_ph_portal.AdminAccess.Admin_Class;
+import com.mmdc.motor_ph_portal.DAO.EmployeeAttendanceDAOImpl;
+import com.mmdc.motor_ph_portal.DAO.EmployeeProfileDAOImpl;
+import com.mmdc.motor_ph_portal.DAO.LeaveManagementDAOImpl;
 import com.mmdc.motor_ph_portal.LeaveRecord;
 import com.mmdc.motor_ph_portal.Login;
 import com.mmdc.motor_ph_util.DatabaseConnect;
@@ -30,17 +33,21 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 
 
-public class EmployeeAccess_Profile extends javax.swing.JFrame {
+public class EmployeeAccessProfile extends javax.swing.JFrame {
     Connection conn = null;
     ResultSet rs = null;
     PreparedStatement pst = null;
     DatabaseConnect dbConnect = new DatabaseConnect() {};
+    EmployeeProfileDAOImpl employeeDAO = new EmployeeProfileDAOImpl() {};
+    EmployeeAttendanceDAOImpl attendanceDAO = new EmployeeAttendanceDAOImpl() {};
+    LeaveManagementDAOImpl leaveDAO = new LeaveManagementDAOImpl() {};
+    
     private String username;
     private String employeeID;
     
 
      
-    public EmployeeAccess_Profile() {
+    public EmployeeAccessProfile() {
         initComponents();
         
         setTitle ("Motor PH Employee Profile");
@@ -59,7 +66,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         
     }
     
-    public EmployeeAccess_Profile(String employeeID, String firstName, String lastName) {
+    public EmployeeAccessProfile(String employeeID, String firstName, String lastName) {
         initComponents();
         
         setTitle ("Motor PH Employee Profile");
@@ -80,7 +87,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         monthComboBox.setSelectedItem("June");
     }
     
-    public EmployeeAccess_Profile(String username) {
+    public EmployeeAccessProfile(String username) {
         initComponents();
         
         setTitle ("Motor PH Employee Profile");
@@ -106,8 +113,8 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     
     private void loadEmployeeData(String employeeID) {
         try {
-            conn = dbConnect.connect();
-            Admin_Class employee = dbConnect.getEmployeeDetails(employeeID);
+            conn = dbConnect.getConnection();
+            Admin_Class employee = employeeDAO.getEmployeeDetails(employeeID);
             if (employee != null) {
                 // Set employee ID
                 id_field.setText(employee.getEmployeeID());
@@ -153,7 +160,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     }
 
     try {
-        Admin_Class employee = dbConnect.getEmployeeByUsername(username);
+        Admin_Class employee = employeeDAO.getEmployeeByUsername(username);
 
         if (employee != null) {
             this.employeeID = employee.getEmployeeID();
@@ -210,7 +217,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     
     public void autoFillLeaveId() {
     try {
-        int nextLeaveId = dbConnect.getNextLeaveId(); // Call your existing method
+        int nextLeaveId = leaveDAO.getNextLeaveId(); // Call your existing method
         
         // Assuming you have a JTextField for leave ID display
         if (leaveNum_field != null) {
@@ -239,7 +246,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         }
         
         try {
-            conn = dbConnect.connect();
+            conn = dbConnect.getConnection();
             String sql = "SELECT lr.leave_id, lr.employee_id, e.first_name, e.last_name, lr.start_date, lr.end_date, lr.leave_type, lr.status " +
                          "FROM leave_records lr JOIN employee e ON lr.employee_id = e.employee_id " +
                          "WHERE lr.employee_id = ?";
@@ -287,7 +294,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         }
         
         try {
-            conn = dbConnect.connect();
+            conn = dbConnect.getConnection();
             String sql = "SELECT lr.leave_id, lr.employee_id, e.first_name, e.last_name, lr.start_date, lr.end_date, lr.leave_type, lr.status " +
                          "FROM leave_records lr JOIN employee e ON lr.employee_id = e.employee_id " +
                          "WHERE lr.employee_id = ?";
@@ -332,7 +339,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
             return timeLog;
         }
         try {
-            conn = dbConnect.connect();
+            conn = dbConnect.getConnection();
             String sql = "SELECT e.first_name, e.last_name, ar.date, ar.time_in, ar.time_out " +
                          "FROM attendance_record ar " +
                          "JOIN employee e ON ar.employee_id = e.employee_id " +
@@ -392,7 +399,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
     }
 
     try {
-        conn = dbConnect.connect();
+        conn = dbConnect.getConnection();
 
         String sql = "SELECT p.payslip_number, p.employee_id, " +
                      "pp.start_date, pp.end_date, pp.pay_date, p.status " +
@@ -451,7 +458,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         int monthNumber = Month.valueOf(selectedMonth.toUpperCase()).getValue(); // Java 8+
 
         // Connect to DB
-        conn = dbConnect.connect();
+        conn = dbConnect.getConnection();
 
         // Compile report
         String reportPath = "C:\\Users\\user\\Desktop\\Monina\\MMDC\\Term 2 24-25\\MotorPHPortal\\src\\main\\java\\com\\mmdc\\motor_ph_util\\reportPayslipTemplate.jrxml";
@@ -1524,7 +1531,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         LeaveRecord leaveRecord = new LeaveRecord(leaveNum, employeeId, firstName, lastName, startDate, endDate, leaveType, status);
         
         // Add the leave request to the database
-        if (dbConnect.addLeaveRequest(leaveRecord)) {
+        if (leaveDAO.addLeaveRequest(leaveRecord)) {
             // Update the table model
             DefaultTableModel model = (DefaultTableModel) leaveTable.getModel();
             model.addRow(new Object[]{leaveNum, employeeId, firstName, lastName, startDate, endDate, leaveType, status});
@@ -1590,7 +1597,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         System.out.println("Date: " + dateStr);
         System.out.println("Time: " + formattedTime);
 
-        boolean success = dbConnect.logTimeOut(employeeId, dateStr, formattedTime);
+        boolean success = attendanceDAO.logTimeOut(employeeId, dateStr, formattedTime);
 
         if (success) {
             JOptionPane.showMessageDialog(this, 
@@ -1631,7 +1638,7 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         }
 
         // Call the logTimeIn method
-        boolean success = dbConnect.logTimeIn(employeeId, dateStr, timeStr);
+        boolean success = attendanceDAO.logTimeIn(employeeId, dateStr, timeStr);
 
         if (success) {
             JOptionPane.showMessageDialog(this, "Time In recorded successfully.");
@@ -1676,14 +1683,16 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EmployeeAccess_Profile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EmployeeAccessProfile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EmployeeAccess_Profile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EmployeeAccessProfile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EmployeeAccess_Profile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EmployeeAccessProfile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EmployeeAccess_Profile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EmployeeAccessProfile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
@@ -1691,8 +1700,8 @@ public class EmployeeAccess_Profile extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 // For testing, you can pass a username here
-                // new EmployeeAccess_Profile("test_username").setVisible(true);
-                new EmployeeAccess_Profile().setVisible(true);
+                // new EmployeeAccessProfile("test_username").setVisible(true);
+                new EmployeeAccessProfile().setVisible(true);
             }
         });
     }
