@@ -2,6 +2,8 @@ package com.mmdc.motor_ph_portal;
 
 import com.mmdc.motor_ph_portal.AdminAccess.Admin_Class;
 import com.mmdc.motor_ph_portal.EmployeeAccess.Employee_Class;
+import com.mmdc.motor_ph_portal.dao.LoginDAO;
+import com.mmdc.motor_ph_portal.dao.LoginDAOImpl;
 import com.mmdc.motor_ph_util.DatabaseConnect;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -16,7 +18,7 @@ public class Login extends javax.swing.JFrame {
     Connection conn = null;
     ResultSet rs = null;
     PreparedStatement pst = null;
-
+    
     public Login() {
         initComponents();
         setTitle("Motor PH Employee Portal");
@@ -182,64 +184,76 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void logInButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logInButtonActionPerformed
-        // login action
-        String username = userIDText.getText();
-        String password = passwordText.getText();
-        
-        if (username.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please Fill Out User ID");
-            return;
-        }
+    String username = userIDText.getText();
+    String password = passwordText.getText();
 
-        if (password.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please Fill Out Password");
-            return;
-        }
+    if (username.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Please Fill Out User ID");
+        return;
+    }
 
-        
+    if (password.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Please Fill Out Password");
+        return;
+    }
+
+    Connection conn = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+
+    try {
         DatabaseConnect dbConnect = new DatabaseConnect() {};
         conn = dbConnect.getConnection();
 
-        try {
-            String sql = "SELECT e.employee_id, e.first_name, e.last_name, ur.role_name " +
-             "FROM employee e " +
-             "JOIN position p ON e.employee_id = p.employee_id " +
-             "JOIN user_role ur ON p.position_id = ur.position_id " +
-             "WHERE p.username = ? AND p.password = ?";
+        String sql = "SELECT e.employee_id, e.first_name, e.last_name, ur.role_name " +
+                     "FROM employee e " +
+                     "JOIN position p ON e.employee_id = p.employee_id " +
+                     "JOIN user_role ur ON p.position_id = ur.position_id " +
+                     "WHERE p.username = ? AND p.password = ?";
 
-            pst = conn.prepareStatement(sql);
-            pst.setString(1, username);
-            pst.setString(2, password);
-            rs = pst.executeQuery();
+        pst = conn.prepareStatement(sql);
+        pst.setString(1, username);
+        pst.setString(2, password);
+        rs = pst.executeQuery();
 
-            if (rs.next()) {
-                String employeeID = rs.getString("employee_id");
-                String firstName = rs.getString("first_name");
-                String lastName = rs.getString("last_name");
-                String role = rs.getString("role_name");
+        if (rs.next()) {
+            String employeeID = rs.getString("employee_id");
+            String firstName = rs.getString("first_name");
+            String lastName = rs.getString("last_name");
+            String role = rs.getString("role_name");
 
-                if ("Admin".equalsIgnoreCase(role)) {
-                    Admin_Class admin = new Admin_Class(employeeID, firstName, lastName, null, null, null, null,
-                            null, null, null, null, null, null, null,
-                            null, username, password,role);
-                    admin.login(username, password);
-                    dispose();
-                } else {
-                    Employee_Class emp = new Employee_Class(employeeID, firstName, lastName, null, null, null, 
-                            null, null, null, null,null,
-                            null, null, null, null,null,
-                            username, password);
-                    emp.login(username, password);
-                    dispose();
-                }
-            
+            // Create an instance of the appropriate class based on the role
+            if ("Admin".equalsIgnoreCase(role)) {
+                Admin_Class admin = new Admin_Class(employeeID, firstName, lastName, null, null, null, null,
+                        null, null, null, null, null, null, null, null,
+                        null, username, password);
+                admin.login(username, password); // Call the login method to open the admin portal
             } else {
-                JOptionPane.showMessageDialog(null, "Wrong User ID or Password");
+                Employee_Class emp = new Employee_Class(employeeID, firstName, lastName, null, null, null, 
+                        null, null, null, null, null,
+                        null, null, null, null, null,
+                        username, password);
+                emp.login(username, password); // Call the login method to open the employee portal
             }
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Login Failed:" + ex.getMessage());
+            dispose(); // Close the login window
+        } else {
+            JOptionPane.showMessageDialog(null, "Wrong User ID or Password");
         }
+
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(null, "Login Failed: " + ex.getMessage());
+    } finally {
+        // Close resources
+        try {
+            if (rs != null) rs.close();
+            if (pst != null) pst.close();
+            if (conn != null) conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     }//GEN-LAST:event_logInButtonActionPerformed
 
     private void forgetPassTitleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_forgetPassTitleMouseClicked

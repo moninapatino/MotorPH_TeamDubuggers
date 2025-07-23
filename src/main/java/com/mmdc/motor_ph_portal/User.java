@@ -50,11 +50,8 @@ public abstract class User {
       
     }
     public abstract void login(String username, String password);
+        
     
-    public abstract void payrollCalc(String employeeId); {
-
-       
-}
     public String getEmployeeID() {
         return employeeID;
     }

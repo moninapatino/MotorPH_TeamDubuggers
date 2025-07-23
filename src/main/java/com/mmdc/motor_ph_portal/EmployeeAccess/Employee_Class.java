@@ -35,9 +35,5 @@ public class Employee_Class extends User {
         return "Employee";
     } 
 
-    @Override
-    public void payrollCalc(String employeeId) {
-    }
-   
   
 }

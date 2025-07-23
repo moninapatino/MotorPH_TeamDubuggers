@@ -4,13 +4,13 @@ import javax.swing.*;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class EmployeePortalTest {
+public class AdminPortalTest {
 
-    private EmployeePortal portal;
+    private AdminPortal portal;
 
     @BeforeEach
     public void setUp() {
-        portal = new EmployeePortal();
+        portal = new AdminPortal();
         portal.setVisible(true); // Open the portal GUI
     }
 

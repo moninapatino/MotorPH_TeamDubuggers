@@ -680,7 +680,7 @@ public class Payroll extends javax.swing.JFrame {
     @SuppressWarnings("deprecation")
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // go back to Employee Portal
-        EmployeePortal employeePortal = new EmployeePortal();
+        AdminPortal employeePortal = new AdminPortal();
         employeePortal.show();
         
         dispose();

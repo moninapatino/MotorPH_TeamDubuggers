@@ -14,12 +14,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 
 
-public class EmployeePortal extends javax.swing.JFrame {
+public class AdminPortal extends javax.swing.JFrame {
     
     DatabaseConnect dbConnect = new DatabaseConnect() {};
     EmployeeProfileDAOImpl employeeDAO = new EmployeeProfileDAOImpl() {};
     
-    public EmployeePortal() {
+    public AdminPortal() {
         initComponents();
         setTitle ("Employee Portal");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -367,21 +367,23 @@ public class EmployeePortal extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EmployeePortal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminPortal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EmployeePortal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminPortal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EmployeePortal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminPortal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EmployeePortal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminPortal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EmployeePortal().setVisible(true);
+                new AdminPortal().setVisible(true);
             }
         });
     }

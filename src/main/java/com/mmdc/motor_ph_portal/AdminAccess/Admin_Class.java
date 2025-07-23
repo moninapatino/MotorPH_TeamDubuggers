@@ -5,13 +5,13 @@ import javax.swing.JOptionPane;
 
 public class Admin_Class extends User {
 
-    private boolean loggedIn = false;  //  Make it mutable (no final) For Junit Testing
+    private boolean loggedIn = false;  // Mutable for testing purposes
 
     public Admin_Class(String employeeID, String firstName, String lastName, String email, String birthday, 
-                String addressID, String street, String barangay, String city, String province,
-                String postalcode,  String phoneNumber, String sssNum, 
-                String philHealthNum, String tinNum, String pagibigNum, 
-                String username, String password) {
+                       String addressID, String street, String barangay, String city, String province,
+                       String postalcode, String phoneNumber, String sssNum, 
+                       String philHealthNum, String tinNum, String pagibigNum, 
+                       String username, String password) {
         super(employeeID, firstName, lastName, birthday, 
               addressID, street, barangay, city, province,
               postalcode, email, phoneNumber, sssNum, 
@@ -21,32 +21,33 @@ public class Admin_Class extends User {
 
     @Override
     public void login(String username, String password) {
-        if ("Admin".equals(username) && "admin".equals(password)) {
-            loggedIn = true;
+        // Validate credentials against the instance's username and password
+        if (validateCredentials(username, password)) {
+            loggedIn = true; // Set loggedIn to true upon successful login
             JOptionPane.showMessageDialog(null, "Employee login successful for: " + firstName + " " + lastName, 
                                           "Login Successful", JOptionPane.INFORMATION_MESSAGE);
 
-            EmployeePortal empPortal = new EmployeePortal(); 
-            empPortal.setVisible(true);
+            // Open the admin portal
+            AdminPortal adminPortal = new AdminPortal(); // Replace with your actual admin portal class
+            adminPortal.setVisible(true);
         } else {
-            loggedIn = false;
+            loggedIn = false; // Set loggedIn to false if login fails
             JOptionPane.showMessageDialog(null, "Invalid credentials", 
                                           "Login Failed", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+    private boolean validateCredentials(String username, String password) {
+        // Check if the provided username and password match the instance's credentials
+        return this.username.equals(username) && this.password.equals(password);
+    }
+
     public boolean isLoggedIn() {
-        return loggedIn;
+        return loggedIn; // Return the login status
     }
 
     @Override
     public String getRole() {
         return "Admin";
     }
-
-    @Override
-    public void payrollCalc(String employeeId) {
-        // Not implemented yet
-    }
 }
-

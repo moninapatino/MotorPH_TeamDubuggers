@@ -1108,7 +1108,7 @@ public class EmployeeProfile extends javax.swing.JFrame {
 
     private void searchBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBackButtonActionPerformed
         // back to Employee Portal
-        EmployeePortal employeePortal = new EmployeePortal();
+        AdminPortal employeePortal = new AdminPortal();
         employeePortal.show();
 
         dispose();
@@ -1292,7 +1292,7 @@ public class EmployeeProfile extends javax.swing.JFrame {
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // back to Employee Portal
-        EmployeePortal employeePortal = new EmployeePortal();
+        AdminPortal employeePortal = new AdminPortal();
         employeePortal.show();
 
         dispose();
