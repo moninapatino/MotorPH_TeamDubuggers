@@ -1,4 +1,4 @@
-package com.mmdc.motor_ph_portal.dao;
+package com.mmdc.motor_ph_portal.DAO;
 
 import com.mmdc.motor_ph_util.DatabaseConnect;
 import org.junit.jupiter.api.AfterEach;

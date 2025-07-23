@@ -2,8 +2,8 @@ package com.mmdc.motor_ph_portal;
 
 import com.mmdc.motor_ph_portal.AdminAccess.Admin_Class;
 import com.mmdc.motor_ph_portal.EmployeeAccess.Employee_Class;
-import com.mmdc.motor_ph_portal.dao.LoginDAO;
-import com.mmdc.motor_ph_portal.dao.LoginDAOImpl;
+import com.mmdc.motor_ph_portal.DAO.LoginDAO;
+import com.mmdc.motor_ph_portal.DAO.LoginDAOImpl;
 import com.mmdc.motor_ph_util.DatabaseConnect;
 import java.awt.Dimension;
 import java.awt.Toolkit;
