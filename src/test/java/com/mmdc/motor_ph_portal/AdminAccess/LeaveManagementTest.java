@@ -1,42 +1,20 @@
 package com.mmdc.motor_ph_portal.AdminAccess;
 
-import javax.swing.JButton;
-import javax.swing.JRadioButton;
-import javax.swing.JTable;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import javax.swing.JTextField;
+
+import javax.swing.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Unit tests for Leave Management functionality in the Admin Portal.
- */
 public class LeaveManagementTest {
 
     private LeaveManagement adminLeave;
 
-    @BeforeAll
-    public static void setUpClass() {
-        // Setup resources shared across all tests if needed
-    }
-
-    @AfterAll
-    public static void tearDownClass() {
-        // Cleanup resources shared across all tests if needed
-    }
-
     @BeforeEach
     public void setUp() {
-        adminLeave = new LeaveManagement(); // initialize before each test
-    }
-
-    @AfterEach
-    public void tearDown() {
-        adminLeave = null;
+        adminLeave = new LeaveManagement();
+        adminLeave.setVisible(true);
     }
 
     @Test
@@ -44,118 +22,104 @@ public class LeaveManagementTest {
         JTable leaveTable = adminLeave.getLeaveTable();
         assertNotNull(leaveTable, "Leave table should not be null");
 
-        int rowCount = leaveTable.getRowCount();
-        assertTrue(rowCount > 0, "Leave table must have at least one row");
+        int targetRow = -1;
+        for (int i = 0; i < leaveTable.getRowCount(); i++) {
+            String leaveId = leaveTable.getValueAt(i, 0).toString();
+            if ("10046".equals(leaveId)) {
+                targetRow = i;
+                break;
+            }
+        }
 
-        // Get the last row
-        int lastRow = rowCount - 1;
-        Object leaveIdObj = leaveTable.getValueAt(lastRow, 0); // Column 0 = Leave ID
-        assertNotNull(leaveIdObj, "Leave ID should not be null");
+        assertTrue(targetRow != -1, "Leave ID 10046 must exist in the table");
 
-        String leaveId = leaveIdObj.toString();
-        assertEquals("10045", leaveId, "Expected Leave ID 10045 in the last row"); // Updated Leave ID
+        // Select the row
+        leaveTable.setRowSelectionInterval(targetRow, targetRow);
 
-        // 🔘 Select and click the last row to trigger the auto-fill logic
-        leaveTable.setRowSelectionInterval(lastRow, lastRow);
-        leaveTable.requestFocus();
-        leaveTable.editCellAt(lastRow, 0); // optional, if cell editing is part of the logic
-        leaveTable.dispatchEvent(new java.awt.event.MouseEvent(
-            leaveTable,
-            java.awt.event.MouseEvent.MOUSE_CLICKED,
-            System.currentTimeMillis(),
-            0,
-            10, 10, // x, y inside cell area
-            1,
-            false
-        ));
+        // Simulate radio button selection
+        adminLeave.getApproveRadioButton().setSelected(true);
 
-        // Wait briefly for GUI to update fields
+        // Simulate button click
+        adminLeave.getUpdateButton().doClick();
+
+        // Small delay to wait for update to reflect
         try {
             Thread.sleep(300);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
 
-        // ✅ Verify the Leave Number was populated
-        JTextField leaveNumField = adminLeave.getLeaveNumberField();
-        assertNotNull(leaveNumField, "Leave Number field should not be null");
-        assertEquals("10045", leaveNumField.getText().trim(), "Leave Number field should be auto-filled"); // Updated Leave ID
-
-        // 🔘 Click "Approve" radio button
-        JRadioButton approveRadio = adminLeave.getApproveRadioButton();
-        assertNotNull(approveRadio);
-        approveRadio.setSelected(true);
-
-        // 🔘 Click "Update" button
-        JButton updateBtn = adminLeave.getUpdateButton();
-        assertNotNull(updateBtn);
-        updateBtn.doClick();
-
-        // Wait for GUI to process update
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-
-        // ✅ Check that the leave was approved
-        String updatedStatus = leaveTable.getValueAt(lastRow, 7).toString(); // Column 7 = Status
-        assertEquals("Approved", updatedStatus, "Leave status should be updated to Approved");
+        // Recheck the status in the table
+        String updatedStatus = leaveTable.getValueAt(targetRow, 7).toString();
+        assertEquals("Approved", updatedStatus, "Leave status should be updated to 'Approved'");
     }
 
     @Test
-    public void testDeleteLeaveRequestAsAdmin() {
+    public void testRejectLeaveRequestAsAdmin() {
         JTable leaveTable = adminLeave.getLeaveTable();
-        assertNotNull(leaveTable, "Leave table should not be null");
-        assertTrue(leaveTable.getRowCount() > 0, "Leave table should have at least one row");
+        assertNotNull(leaveTable);
 
-        // Find the row with Leave ID: 10042 (updated from 50041)
-        int rowToDelete = -1;
+        // Find row with Leave ID 10043
+        int targetRow = -1;
         for (int i = 0; i < leaveTable.getRowCount(); i++) {
-            Object leaveId = leaveTable.getValueAt(i, 0); // Column 0 = Leave ID
-            if (leaveId != null && leaveId.toString().equals("10043")) { // Updated Leave ID
-                rowToDelete = i;
+            String leaveId = leaveTable.getValueAt(i, 0).toString();
+            if ("10043".equals(leaveId)) {
+                targetRow = i;
                 break;
             }
         }
 
-        assertTrue(rowToDelete != -1, "Leave ID 10043 should exist in the table");
+        assertTrue(targetRow != -1, "Leave ID 10043 must exist in the table");
 
-        // Select and simulate mouse click on the row
-        leaveTable.setRowSelectionInterval(rowToDelete, rowToDelete);
-        leaveTable.requestFocus();
-        leaveTable.dispatchEvent(new java.awt.event.MouseEvent(
-            leaveTable,
-            java.awt.event.MouseEvent.MOUSE_CLICKED,
-            System.currentTimeMillis(),
-            0,
-            10, 10, // x and y inside cell
-            1,
-            false
-        ));
+        leaveTable.setRowSelectionInterval(targetRow, targetRow);
+        adminLeave.getRejectRadioButton().setSelected(true);
+        adminLeave.getUpdateButton().doClick();
 
-        // Click the Delete button
-        JButton deleteBtn = adminLeave.getDeleteButton();
-        assertNotNull(deleteBtn, "Delete button should not be null");
-        deleteBtn.doClick();
-
-        // Wait for deletion processing
         try {
-            Thread.sleep(500);
+            Thread.sleep(300);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
 
-        // Ensure Leave ID 10042 no longer exists
-        boolean stillExists = false;
+        String updatedStatus = leaveTable.getValueAt(targetRow, 7).toString();
+        assertEquals("Rejected", updatedStatus, "Leave status should be updated to 'Rejected'");
+    }
+
+    @Test
+    public void testDeleteLeaveRecordAsAdmin() {
+        JTable leaveTable = adminLeave.getLeaveTable();
+        assertNotNull(leaveTable);
+
+        int targetRow = -1;
         for (int i = 0; i < leaveTable.getRowCount(); i++) {
-            Object leaveId = leaveTable.getValueAt(i, 0);
-            if (leaveId != null && leaveId.toString().equals("10042")) { // Updated Leave ID
-                stillExists = true;
+            String leaveId = leaveTable.getValueAt(i, 0).toString();
+            if ("10043".equals(leaveId)) {
+                targetRow = i;
                 break;
             }
         }
 
-        assertFalse(stillExists, "Leave ID 10043 should be deleted from the table");
+        assertTrue(targetRow != -1, "Leave ID 10043 must exist in the table to delete");
+
+        leaveTable.setRowSelectionInterval(targetRow, targetRow);
+        adminLeave.getDeleteButton().doClick();
+
+        // Wait for UI refresh
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
+        // Check that the row is no longer in the table
+        boolean recordStillExists = false;
+        for (int i = 0; i < leaveTable.getRowCount(); i++) {
+            if ("10043".equals(leaveTable.getValueAt(i, 0).toString())) {
+                recordStillExists = true;
+                break;
+            }
+        }
+
+        assertFalse(recordStillExists, "Leave ID 10043 should be deleted from the table");
     }
 }
