@@ -1,56 +1,70 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit5TestClass.java to edit this template
- */
 package com.mmdc.motor_ph_portal.DAO;
 
 import com.mmdc.motor_ph_portal.AdminAccess.PayrollCalculation;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import java.time.LocalDate;
+import org.junit.jupiter.api.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- *
- * @author user
+ * Unit test for PayrollDAOImpl#getPayrollDetails
  */
 public class PayrollDAOImplTest {
-    
-    public PayrollDAOImplTest() {
-    }
-    
-    @BeforeAll
-    public static void setUpClass() {
-    }
-    
-    @AfterAll
-    public static void tearDownClass() {
-    }
-    
+
+    private PayrollDAO payrollDAO;
+
     @BeforeEach
     public void setUp() {
-    }
-    
-    @AfterEach
-    public void tearDown() {
+        payrollDAO = new PayrollDAOImpl();
     }
 
-    /**
-     * Test of getPayrollDetails method, of class PayrollDAOImpl.
-     */
-    @Test
-    public void testGetPayrollDetails() {
-        System.out.println("getPayrollDetails");
-        String employeeId = "";
-        int monthNumber = 0;
-        PayrollDAOImpl instance = new PayrollDAOImpl();
-        PayrollCalculation expResult = null;
-        PayrollCalculation result = instance.getPayrollDetails(employeeId, monthNumber);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+   @Test
+    public void testGetPayrollDetails_validEmployeeAndMonth_shouldReturnPayrollCalculation() {
+        // Arrange
+        String employeeId = "10003"; // Make sure this ID exists in the test database
+        int monthNumber = 7; // July — period_start_date is in July
+
+        // Act
+        PayrollCalculation result = payrollDAO.getPayrollDetails(employeeId, monthNumber);
+
+        // Assert
+        assertNotNull(result, "PayrollCalculation should not be null for valid employee and month.");
+        assertEquals(employeeId, result.getEmployeeID(), "Employee ID should match.");
+
+        // Parse the pay date (assumes format YYYY-MM-DD)
+        LocalDate payDate = LocalDate.parse(result.getPayDate());
+
+        // Adjusted: payDate is expected to be in monthNumber + 1
+        int expectedPayDateMonth = (monthNumber % 12) + 1; // handle December wrap-around
+        assertEquals(expectedPayDateMonth, payDate.getMonthValue(), 
+                     "Pay date's month should be the month after the queried period start month.");
     }
-    
+
+
+
+    @Test
+    public void testGetPayrollDetails_invalidEmployee_shouldReturnNull() {
+        // Arrange
+        String invalidEmployeeId = "99999"; // Assume does not exist
+        int monthNumber = 6;
+
+        // Act
+        PayrollCalculation result = payrollDAO.getPayrollDetails(invalidEmployeeId, monthNumber);
+
+        // Assert
+        assertNull(result, "Should return null if employee does not exist.");
+    }
+
+    @Test
+    public void testGetPayrollDetails_noDataForMonth_shouldReturnNull() {
+        // Arrange
+        String employeeId = "10003"; // Assume valid
+        int monthNumber = 1; // Assume no data 
+
+        // Act
+        PayrollCalculation result = payrollDAO.getPayrollDetails(employeeId, monthNumber);
+
+        // Assert
+        assertNull(result, "Should return null if no payroll data exists for that month.");
+    }
 }

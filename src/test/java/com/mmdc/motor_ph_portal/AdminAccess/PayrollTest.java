@@ -22,7 +22,7 @@ public class PayrollTest {
     @Test
     public void testCalculateNetpay() {
         // Simulate input
-        JTextField employeeIdField = payroll.getEmployeeIdField();
+        JTextField employeeIdField = payroll.getEmployeeId();
         JComboBox<String> monthComboBox = payroll.getMonthComboBox();
         JTextField hoursWorkedField = payroll.getHoursWorkedField();
         JButton calculateBtn = payroll.getCalculateNetpayButton();
@@ -56,7 +56,7 @@ public class PayrollTest {
     @Test
     public void testGeneratePayslip() {
         // Fill required fields
-        JTextField employeeIdField = payroll.getEmployeeIdField();
+        JTextField employeeIdField = payroll.getEmployeeId();
         JComboBox<String> monthComboBox = payroll.getMonthComboBox();
         JButton generatePayslipBtn = payroll.getGeneratePayslipButton();
 

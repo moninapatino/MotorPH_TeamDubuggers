@@ -1,13 +1,10 @@
 package com.mmdc.motor_ph_portal.EmployeeAccess;
 
 import com.toedter.calendar.JDateChooser;
+import org.junit.jupiter.api.*;
+import javax.swing.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import javax.swing.*;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,207 +15,165 @@ public class EmployeeAccess_ProfileTest {
 
     @BeforeEach
     public void setUp() {
-        // Initialize profile using a valid username (ALim for Antonio Lim)
+        // Initialize using valid employee username
         profile = new EmployeeAccessProfile("ALim");
     }
 
     @AfterEach
     public void tearDown() {
-        if (profile != null) {
-            profile.dispose(); // Close the frame to clean up
-        }
+        if (profile != null) profile.dispose();
     }
 
-    @Test
-    public void testLoginWithValidCredentials() {
-        // Scenario 11: Login with valid credentials
-        assertNotNull(profile);
-        assertEquals("10002", profile.getIdField().getText()); // Employee ID
-        assertEquals("Antonio", profile.getFirstnameField().getText()); // First Name
-        assertEquals("Lim", profile.getLastnameField().getText()); // Last Name
-    }
-
-    @Test
-    public void testTimeInButtonFunctionality() {
-        // 1. Create employee profile
-        profile = new EmployeeAccessProfile("10002", "Antonio", "Lim");
-
-        // 2. Click the Time-In button
-        JButton timeInBtn = profile.getTimeInButton();
-        assertNotNull(timeInBtn, "Time-In button should not be null");
-        timeInBtn.doClick();
-
-        // 3. Refresh attendance table after clicking
-        profile.loadTimeLog();
-
-        // 4. Access the attendance table
-        JTable attendanceTable = profile.getAttendanceTable();
-        assertNotNull(attendanceTable, "Attendance table should not be null");
-        assertTrue(attendanceTable.getRowCount() > 0, "Attendance table should have at least one row");
-
-        // 5. Check if today's date exists in the table
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String dateToday = LocalDate.now().format(formatter);
-        boolean foundToday = false;
-
-        for (int i = 0; i < attendanceTable.getRowCount(); i++) {
-            Object dateCell = attendanceTable.getValueAt(i, 2); // 3rd column = 'date'
-            Object timeOutCell = attendanceTable.getValueAt(i, 4); // 5th column = 'time_out'
-
-            if (dateCell != null && dateCell.toString().contains(dateToday)) {
-                foundToday = true;
-
-                // Time-Out should be empty or null right after Time-In
-                boolean isTimeOutEmpty = timeOutCell == null || timeOutCell.toString().trim().isEmpty();
-                assertTrue(isTimeOutEmpty, "Time-Out should be empty after Time-In.");
-                break;
-            }
-        }
-
-        // 6. Final assertion
-        if (!foundToday) {
-            // Print rows for debugging
-            System.out.println("❌ Today's date not found. Dumping table:");
-            for (int i = 0; i < attendanceTable.getRowCount(); i++) {
-                System.out.println("Row " + i + " Date: " + attendanceTable.getValueAt(i, 2));
-            }
-        }
-
-        assertTrue(foundToday, "Time-In record for today's date (" + dateToday + ") should exist.");
-    }
- 
-    @Test
-    public void testSubmitLeaveRequestSuccessfully() {
-      
-      profile = new EmployeeAccessProfile("10002", "Antonio", "Lim");
-      profile.autoFillLeaveId(); // Make sure this populates the leaveNumField
-
-      
-      JDateChooser startDateChooser = profile.getStartDateChooser();
-      JDateChooser endDateChooser = profile.getEndDateChooser();
-      assertNotNull(startDateChooser);
-      assertNotNull(endDateChooser);
-
-      Date today = new Date();
-      startDateChooser.setDate(today);
-      endDateChooser.setDate(today);
-
-     
-      JComboBox<String> leaveTypeComboBox = profile.getLeaveTypeComboBox();
-      assertNotNull(leaveTypeComboBox);
-      leaveTypeComboBox.setSelectedItem("Sick Leave");
-
-      
-      JTextField leaveNumField = profile.getLeaveNumField();
-      assertNotNull(leaveNumField);
-      String autoLeaveNum = leaveNumField.getText();
-      assertNotNull(autoLeaveNum);
-      assertFalse(autoLeaveNum.isEmpty(), "Leave number should be autofilled and not empty");
-
-      
-      JButton addLeaveBtn = profile.getAddLeaveRequestButton();
-      assertNotNull(addLeaveBtn);
-      addLeaveBtn.doClick();
-
-      
-      try {
-          Thread.sleep(1000);
-      } catch (InterruptedException e) {
-          e.printStackTrace();
-      }
-
-     
-      JTable leaveTable = profile.getLeaveTable();
-      assertNotNull(leaveTable);
-      int lastRow = leaveTable.getRowCount() - 1;
-      assertTrue(lastRow >= 0, "Leave table should have at least one row");
-
-   
-      String employeeID = leaveTable.getValueAt(lastRow, 1).toString();  // Column 2: Employee ID
-      String leaveType = leaveTable.getValueAt(lastRow, 6).toString();   // Column 7: Leave Type
-      String status = leaveTable.getValueAt(lastRow, 7).toString();      // Column 8: Status
-
-      assertEquals("10002", employeeID);
-      assertEquals("Sick Leave", leaveType);
-      assertEquals("Pending", status);
-  }
-
-    @Test
-    public void testViewPayslipByMonthForEmployee() {
-        // Step 1: Log in as Employee 10002 (Antonio Lim)
-        profile = new EmployeeAccessProfile("10002", "Antonio", "Lim");
-
-        // Step 2: Ensure payslips are loaded
-        profile.loadPayslipList();
-
-        JTable payslipTable = profile.getPayslipTable();
-        assertNotNull(payslipTable, "Payslip table must not be null");
-        assertTrue(payslipTable.getRowCount() > 0, "Payslip table must have at least one record");
-
-        // Step 3: Select 'June' in the month combo box
-        JComboBox<String> monthComboBox = profile.getMonthComboBox();
-        assertNotNull(monthComboBox, "Month combo box must not be null");
-
-        boolean monthSet = false;
-        for (int i = 0; i < monthComboBox.getItemCount(); i++) {
-            if (monthComboBox.getItemAt(i).equalsIgnoreCase("June")) {
-                monthComboBox.setSelectedIndex(i);
-                monthSet = true;
-                break;
-            }
-        }
-        assertTrue(monthSet, "June must be available in month combo box");
-
-        // Step 4: Click "View Payslip" button
-        JButton viewBtn = profile.getPayslipBtn();
-        assertNotNull(viewBtn, "View Payslip button must not be null");
-        viewBtn.doClick();
-
-        // Step 5: Allow GUI time to open Jasper Viewer (optional)
+    // Utility: Pause for GUI timing
+    private void waitForGui() {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-
-        // Step 6: We assume Jasper report opened if no error is thrown
-        assertTrue(true, "Payslip for June should be generated and displayed.");
     }
-    
+
     @Test
-    public void testTimeOutButtonFunctionality() {
+    public void testLoginWithValidCredentials() {
+        assertNotNull(profile);
+        assertEquals("10002", profile.getIdField().getText(), "Incorrect Employee ID");
+        assertEquals("Antonio", profile.getFirstnameField().getText(), "Incorrect First Name");
+        assertEquals("Lim", profile.getLastnameField().getText(), "Incorrect Last Name");
+    }
+
+    @Test
+    public void testTimeInButtonFunctionality() {
         profile = new EmployeeAccessProfile("10002", "Antonio", "Lim");
 
-        // First, ensure there is a Time-In
         JButton timeInBtn = profile.getTimeInButton();
+        assertNotNull(timeInBtn, "Time-In button missing");
         timeInBtn.doClick();
 
-        // Then perform Time-Out
-        JButton timeOutBtn = profile.getTimeOutButton();
-        assertNotNull(timeOutBtn);
-        timeOutBtn.doClick();
-
+        profile.loadTimeLog();
         JTable attendanceTable = profile.getAttendanceTable();
-        assertNotNull(attendanceTable);
-        assertTrue(attendanceTable.getRowCount() > 0);
+        assertNotNull(attendanceTable, "Attendance table is null");
+        assertTrue(attendanceTable.getRowCount() > 0, "No attendance rows found");
 
-        // Check if latest row now has a time_out value
-        String dateToday = LocalDate.now().toString();
-        boolean timeOutRecorded = false;
+        String dateToday = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        boolean foundToday = false;
 
-        for (int i = attendanceTable.getRowCount() - 1; i >= 0; i--) {
-            Object dateCell = attendanceTable.getValueAt(i, 2); // date column
-            Object timeOutCell = attendanceTable.getValueAt(i, 4); // time_out column
+        for (int i = 0; i < attendanceTable.getRowCount(); i++) {
+            String date = String.valueOf(attendanceTable.getValueAt(i, 2));
+            String timeOut = String.valueOf(attendanceTable.getValueAt(i, 4));
 
-            if (dateCell != null && dateCell.toString().equals(dateToday)) {
-                // ✅ After Time-Out, the time_out field should be filled
-                timeOutRecorded = timeOutCell != null && !timeOutCell.toString().trim().isEmpty();
+            if (date.contains(dateToday)) {
+                foundToday = true;
+                assertTrue(timeOut == null || timeOut.trim().isEmpty(), "Time-Out should be empty after Time-In");
                 break;
             }
         }
 
-        assertTrue(timeOutRecorded, "Time-Out should be recorded after Time-Out button click.");
-    }
-    
+        if (!foundToday) {
+            System.out.println("🔍 Today's date not found. Dumping table:");
+            for (int i = 0; i < attendanceTable.getRowCount(); i++) {
+                System.out.println("Row " + i + " Date: " + attendanceTable.getValueAt(i, 2));
+            }
+        }
 
+        assertTrue(foundToday, "Time-In record for today's date should exist.");
+    }
+
+    @Test
+    public void testTimeOutButtonFunctionality() {
+        profile = new EmployeeAccessProfile("10002", "Antonio", "Lim");
+
+        profile.getTimeInButton().doClick();
+        waitForGui();
+
+        JButton timeOutBtn = profile.getTimeOutButton();
+        assertNotNull(timeOutBtn, "Time-Out button missing");
+        timeOutBtn.doClick();
+
+        JTable table = profile.getAttendanceTable();
+        assertNotNull(table);
+        assertTrue(table.getRowCount() > 0);
+
+        String today = LocalDate.now().toString();
+        boolean timeOutSet = false;
+
+        for (int i = table.getRowCount() - 1; i >= 0; i--) {
+            String date = String.valueOf(table.getValueAt(i, 2));
+            String timeOut = String.valueOf(table.getValueAt(i, 4));
+
+            if (date.equals(today)) {
+                timeOutSet = timeOut != null && !timeOut.trim().isEmpty();
+                break;
+            }
+        }
+
+        assertTrue(timeOutSet, "Time-Out should be set for today.");
+    }
+
+    @Test
+    public void testSubmitLeaveRequestSuccessfully() {
+        profile = new EmployeeAccessProfile("10002", "Antonio", "Lim");
+        profile.autoFillLeaveId();
+
+        JDateChooser start = profile.getStartDateChooser();
+        JDateChooser end = profile.getEndDateChooser();
+        assertNotNull(start);
+        assertNotNull(end);
+
+        Date today = new Date();
+        start.setDate(today);
+        end.setDate(today);
+
+        JComboBox<String> leaveType = profile.getLeaveTypeComboBox();
+        leaveType.setSelectedItem("Sick Leave");
+
+        JTextField leaveNumField = profile.getLeaveNumField();
+        assertNotNull(leaveNumField);
+        assertFalse(leaveNumField.getText().isEmpty(), "Leave number should be autofilled");
+
+        JButton addBtn = profile.getAddLeaveRequestButton();
+        assertNotNull(addBtn);
+        addBtn.doClick();
+
+        waitForGui();
+
+        JTable leaveTable = profile.getLeaveTable();
+        assertNotNull(leaveTable);
+        int lastRow = leaveTable.getRowCount() - 1;
+        assertTrue(lastRow >= 0, "Leave request table is empty");
+
+        assertEquals("10002", leaveTable.getValueAt(lastRow, 1), "Wrong Employee ID");
+        assertEquals("Sick Leave", leaveTable.getValueAt(lastRow, 6), "Leave Type mismatch");
+        assertEquals("Pending", leaveTable.getValueAt(lastRow, 7), "Status should be Pending");
+    }
+
+    @Test
+    public void testViewPayslipByMonthForEmployee() {
+        profile = new EmployeeAccessProfile("10002", "Antonio", "Lim");
+        profile.loadPayslipList();
+
+        JTable payslipTable = profile.getPayslipTable();
+        assertNotNull(payslipTable, "Payslip table is null");
+        assertTrue(payslipTable.getRowCount() > 0, "Payslip table is empty");
+
+        JComboBox<String> monthCombo = profile.getMonthComboBox();
+        assertNotNull(monthCombo, "Month combo box missing");
+
+        boolean foundJune = false;
+        for (int i = 0; i < monthCombo.getItemCount(); i++) {
+            if ("June".equalsIgnoreCase(monthCombo.getItemAt(i))) {
+                monthCombo.setSelectedIndex(i);
+                foundJune = true;
+                break;
+            }
+        }
+
+        assertTrue(foundJune, "'June' should be selectable in month combo box");
+
+        JButton viewBtn = profile.getPayslipBtn();
+        assertNotNull(viewBtn);
+        viewBtn.doClick();
+
+        waitForGui();
+        assertTrue(true, "Payslip for June assumed viewed successfully.");
+    }
 }

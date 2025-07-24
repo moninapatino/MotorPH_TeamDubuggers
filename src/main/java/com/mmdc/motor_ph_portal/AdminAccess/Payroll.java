@@ -168,7 +168,7 @@ public class Payroll extends javax.swing.JFrame {
      paydate_field.setText(payroll.getPayDate());
  }
 
-    public javax.swing.JTextField getEmployeeIdField() { return id_field; }
+    public javax.swing.JTextField getEmployeeId() { return id_field; }
     public javax.swing.JComboBox<String> getMonthComboBox() { return monthComboBox; }
     public javax.swing.JTextField getHoursWorkedField() { return hourlyRate_field; }
     public javax.swing.JButton getCalculateNetpayButton() { return calculateButton; }
