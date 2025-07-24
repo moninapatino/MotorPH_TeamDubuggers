@@ -4,6 +4,7 @@ import com.mmdc.motor_ph_util.DatabaseConnect; // Import your DatabaseConnect cl
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class EmployeeAttendanceDAOImpl implements EmployeeAttendanceDAO {
@@ -129,9 +130,9 @@ public class EmployeeAttendanceDAOImpl implements EmployeeAttendanceDAO {
                 Vector<String> row = new Vector<>();
                 row.add(rs.getString("attendance_id"));
                 row.add(rs.getString("employee_id"));
-                row.add(rs.getString("date"));
                 row.add(rs.getString("first_name"));
                 row.add(rs.getString("last_name"));
+                row.add(rs.getString("date"));
                 row.add(rs.getString("time_in"));
                 row.add(rs.getString("time_out"));
                 row.add(rs.getString("status"));
@@ -146,4 +147,45 @@ public class EmployeeAttendanceDAOImpl implements EmployeeAttendanceDAO {
             DatabaseConnect.closeResources(rs, pst, conn);
         }
     }
+    
+    @Override
+    public ArrayList<Vector<String>> getAttendanceRecordsByEmployeeId(String employeeId) {
+        ArrayList<Vector<String>> timeLog = new ArrayList<>();
+
+        String sql = """
+            SELECT 
+                e.first_name, 
+                e.last_name, 
+                ar.date, 
+                ar.time_in, 
+                ar.time_out
+            FROM attendance_record ar
+            JOIN employee e ON ar.employee_id = e.employee_id
+            WHERE ar.employee_id = ?
+        """;
+
+        try (
+            Connection conn = connect();
+            PreparedStatement pst = conn.prepareStatement(sql)
+        ) {
+            pst.setString(1, employeeId);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    Vector<String> row = new Vector<>();
+                    row.add(rs.getString("first_name"));
+                    row.add(rs.getString("last_name"));
+                    row.add(rs.getString("date"));
+                    row.add(rs.getString("time_in"));
+                    row.add(rs.getString("time_out"));
+                    timeLog.add(row);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // You can replace this with a logger
+        }
+
+        return timeLog;
+    }
+
 }

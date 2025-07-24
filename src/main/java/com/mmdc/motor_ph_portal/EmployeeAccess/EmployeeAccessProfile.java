@@ -4,6 +4,7 @@ import com.mmdc.motor_ph_portal.AdminAccess.Admin_Class;
 import com.mmdc.motor_ph_portal.DAO.EmployeeAttendanceDAOImpl;
 import com.mmdc.motor_ph_portal.DAO.EmployeeProfileDAOImpl;
 import com.mmdc.motor_ph_portal.DAO.LeaveManagementDAOImpl;
+import com.mmdc.motor_ph_portal.DAO.PayrollDAOImpl;
 import com.mmdc.motor_ph_portal.LeaveRecord;
 import com.mmdc.motor_ph_portal.Login;
 import com.mmdc.motor_ph_util.DatabaseConnect;
@@ -12,6 +13,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,6 +27,7 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -39,8 +42,10 @@ public class EmployeeAccessProfile extends javax.swing.JFrame {
     PreparedStatement pst = null;
     DatabaseConnect dbConnect = new DatabaseConnect() {};
     EmployeeProfileDAOImpl employeeDAO = new EmployeeProfileDAOImpl() {};
-    EmployeeAttendanceDAOImpl attendanceDAO = new EmployeeAttendanceDAOImpl() {};
-    LeaveManagementDAOImpl leaveDAO = new LeaveManagementDAOImpl() {};
+    PayrollDAOImpl payrollDAO = new PayrollDAOImpl() {};
+    EmployeeAttendanceDAOImpl attendanceDAO = new EmployeeAttendanceDAOImpl();
+    LeaveManagementDAOImpl leaveDAO = new LeaveManagementDAOImpl();
+
     
     private String username;
     private String employeeID;
@@ -127,7 +132,7 @@ public class EmployeeAccessProfile extends javax.swing.JFrame {
                 leaveFirstName_field.setText(employee.getFirstName());
                 leaveLastName_field.setText(employee.getLastName());
                 payslipFirstName_field.setText(employee.getFirstName());
-                payslipLastName_field.setText(employee.getFirstName());
+                payslipLastName_field.setText(employee.getLastName());
                 
                 // Set employee name display
                 String fullName = employee.getFirstName() + " " + employee.getLastName();
@@ -203,7 +208,6 @@ public class EmployeeAccessProfile extends javax.swing.JFrame {
     }
 }
 
-    
     public final void time(){
     DateTimeFormatter times = DateTimeFormatter.ofPattern("HH:mm:ss");
     LocalDateTime now =LocalDateTime.now();
@@ -217,231 +221,79 @@ public class EmployeeAccessProfile extends javax.swing.JFrame {
     
     public void autoFillLeaveId() {
     try {
-        int nextLeaveId = leaveDAO.getNextLeaveId(); // Call your existing method
-        
-        // Assuming you have a JTextField for leave ID display
-        if (leaveNum_field != null) {
-            leaveNum_field.setText(String.valueOf(nextLeaveId));
-            leaveNum_field.setEditable(false); // Make it read-only since it's auto-generated
-        }
-        
-        // Alternative: If you're using a JLabel to display the leave ID
-        // leaveIdLabel.setText("Leave ID: " + nextLeaveId);
-        
+        int nextLeaveId = leaveDAO.getNextLeaveId();
+        leaveNum_field.setText(String.valueOf(nextLeaveId));
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Error generating leave ID: " + e.getMessage());
-        // Set a default value in case of error
-         if (leaveNum_field != null) {
-            leaveNum_field.setText("50042"); 
-        }
+        leaveNum_field.setText("50042");
     }
 }
      
     public void loadLeaveRecords() {
-        autoFillLeaveId();
-        leaveTable.setRowSelectionAllowed(false);
-        // Only load leave records for the logged-in employee
-        if (this.employeeID == null || this.employeeID.trim().isEmpty()) {
-            return; // Skip if no employee ID is set
-        }
-        
-        try {
-            conn = dbConnect.getConnection();
-            String sql = "SELECT lr.leave_id, lr.employee_id, e.first_name, e.last_name, lr.start_date, lr.end_date, lr.leave_type, lr.status " +
-                         "FROM leave_records lr JOIN employee e ON lr.employee_id = e.employee_id " +
-                         "WHERE lr.employee_id = ?";
-            pst = conn.prepareStatement(sql);
-            pst.setString(1, this.employeeID);
-            rs = pst.executeQuery();
-            
-            DefaultTableModel leaveTableModel = (DefaultTableModel) leaveTable.getModel();
-            leaveTableModel.setRowCount(0); // Clear existing rows
+    autoFillLeaveId();
+    leaveTable.setRowSelectionAllowed(false);
 
-            while (rs.next()) {
-                Vector<String> row = new Vector<>();
-                row.add(rs.getString("leave_id"));
-                row.add(rs.getString("employee_id"));
-                row.add(rs.getString("first_name"));
-                row.add(rs.getString("last_name"));
-                row.add(rs.getString("start_date"));
-                row.add(rs.getString("end_date"));
-                row.add(rs.getString("leave_type"));
-                row.add(rs.getString("status"));
-                leaveTableModel.addRow(row);
-            } 
-            
-            refreshList();
-            
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error loading leave records: " + e.getMessage());
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (pst != null) pst.close();
-                if (conn != null) conn.close();
-            } catch (Exception e) {
-                // ignore
-            }
-        }
+    if (this.employeeID == null || this.employeeID.trim().isEmpty()) return;
+
+    List<Vector<String>> leaveRecords = leaveDAO.getLeaveRecordsByEmployeeId(this.employeeID);
+
+    DefaultTableModel leaveTableModel = (DefaultTableModel) leaveTable.getModel();
+    leaveTableModel.setRowCount(0); // Clear old data
+
+    for (Vector<String> row : leaveRecords) {
+        leaveTableModel.addRow(row);
     }
+
+}
     public void refreshLeaveId() {
     autoFillLeaveId();
 }
-    public ArrayList refreshList() {
-        // Only refresh leave records for the logged-in employee
-        if (this.employeeID == null || this.employeeID.trim().isEmpty()) {
-            return new ArrayList(); // Return empty list if no employee ID is set
-        }
-        
-        try {
-            conn = dbConnect.getConnection();
-            String sql = "SELECT lr.leave_id, lr.employee_id, e.first_name, e.last_name, lr.start_date, lr.end_date, lr.leave_type, lr.status " +
-                         "FROM leave_records lr JOIN employee e ON lr.employee_id = e.employee_id " +
-                         "WHERE lr.employee_id = ?";
-            pst = conn.prepareStatement(sql);
-            pst.setString(1, this.employeeID);
-            rs = pst.executeQuery();
-            
-            DefaultTableModel leaveTableModel = (DefaultTableModel) leaveTable.getModel();
-            leaveTableModel.setRowCount(0); // Clear existing rows
-
-            while (rs.next()) {
-                Vector<String> row = new Vector<>();
-                row.add(rs.getString("leave_id"));
-                row.add(rs.getString("employee_id"));
-                row.add(rs.getString("first_name"));
-                row.add(rs.getString("last_name"));
-                row.add(rs.getString("start_date"));
-                row.add(rs.getString("end_date"));
-                row.add(rs.getString("leave_type"));
-                row.add(rs.getString("status"));
-                leaveTableModel.addRow(row);
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error refreshing leave records: " + e.getMessage());
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (pst != null) pst.close();
-                if (conn != null) conn.close();
-            } catch (Exception e) {
-                // ignore
-            }
-        }
-        
-        return new ArrayList(); // Return empty list for compatibility
-    }
+  
     
-    public ArrayList loadTimeLog() {
-        ArrayList timeLog = new ArrayList();
-        attendance_table.setRowSelectionAllowed(false);
-        if (this.employeeID == null || this.employeeID.trim().isEmpty()) {
-            return timeLog;
-        }
-        try {
-            conn = dbConnect.getConnection();
-            String sql = "SELECT e.first_name, e.last_name, ar.date, ar.time_in, ar.time_out " +
-                         "FROM attendance_record ar " +
-                         "JOIN employee e ON ar.employee_id = e.employee_id " +
-                         "WHERE ar.employee_id = ?";
-            pst = conn.prepareStatement(sql);
-            pst.setString(1, this.employeeID);
-            rs = pst.executeQuery();
-            
-            DefaultTableModel timeLogTableModel = (DefaultTableModel)attendance_table.getModel();
-            timeLogTableModel.setRowCount(0);
-            while(rs.next()){
-                Vector<String> v=new Vector<>();
-                v.add(rs.getString("first_name"));
-                v.add(rs.getString("last_name"));
-                v.add(rs.getString("date"));
-                v.add(rs.getString("time_in"));
-                v.add(rs.getString("time_out"));
-                timeLogTableModel.addRow(v);
-            }    
-        } 
-        catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Error loading time log: " + ex.getMessage());
-        }  finally {
-            try {
-                if (rs != null) rs.close();
-                if (pst != null) pst.close();
-                if (conn != null) conn.close();
-            } catch (Exception e) {
-                // ignore
-            }
-        }
-        return timeLog;
-     }
-     
-     public void refreshTimeLog() {
-         loadTimeLog();
-     }
-    
-    private void setupTabChangeListener() {
-        tab.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                if (tab.getSelectedIndex() == 1) { // Time Log tab
-                    refreshTimeLog();
-                } else if (tab.getSelectedIndex() == 2) { // Leave tab
-                    loadLeaveRecords();
-                }
-            }
-        });
+  public void loadTimeLog() {
+    attendance_table.setRowSelectionAllowed(false);
+
+    if (this.employeeID == null || this.employeeID.trim().isEmpty()) return;
+
+    List<Vector<String>> timeLogs = attendanceDAO.getAttendanceRecordsByEmployeeId(this.employeeID);
+
+    DefaultTableModel timeLogTableModel = (DefaultTableModel) attendance_table.getModel();
+    timeLogTableModel.setRowCount(0); // Clear table
+
+    for (Vector<String> row : timeLogs) {
+        timeLogTableModel.addRow(row);
     }
-    
-   public ArrayList<Vector<String>> loadPayslipList() {
-    ArrayList<Vector<String>> payslipList = new ArrayList<>();
-    payslipTable.setRowSelectionAllowed(false);
-    
-    if (this.employeeID == null || this.employeeID.trim().isEmpty()) {
-        return payslipList;
-    }
-
-    try {
-        conn = dbConnect.getConnection();
-
-        String sql = "SELECT p.payslip_number, p.employee_id, " +
-                     "pp.start_date, pp.end_date, pp.pay_date, p.status " +
-                     "FROM payslip p " +
-                     "JOIN pay_period pp ON p.payperiod_id = pp.payperiod_id " +
-                     "WHERE p.employee_id = ? " +
-                     "ORDER BY pp.pay_date DESC";  // optional: shows latest first
-
-        pst = conn.prepareStatement(sql);
-        pst.setString(1, this.employeeID);
-        rs = pst.executeQuery();
-
-        DefaultTableModel payslipTableModel = (DefaultTableModel) payslipTable.getModel();
-        payslipTableModel.setRowCount(0); // Clear existing rows
-
-        while (rs.next()) {
-            Vector<String> row = new Vector<>();
-            row.add(rs.getString("pay_date"));
-            row.add(rs.getString("payslip_number"));
-            row.add(rs.getString("employee_id"));
-            row.add(rs.getString("start_date"));
-            row.add(rs.getString("end_date"));
-            row.add(rs.getString("status"));
-            
-            payslipTableModel.addRow(row);
-            payslipList.add(row);
-        }
-
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(null, "Error loading payslip list: " + ex.getMessage());
-    } finally {
-        try {
-            if (rs != null) rs.close();
-            if (pst != null) pst.close();
-            if (conn != null) conn.close();
-        } catch (Exception e) {
-            // ignore
-        }
-    }
-
-    return payslipList;
 }
+    
+   private void setupTabChangeListener() {
+    tab.addChangeListener(evt -> {
+        int selectedTabIndex = tab.getSelectedIndex();
+
+        switch (selectedTabIndex) {
+            case 1: // Time Log tab
+                loadTimeLog();
+                break;
+
+            case 2: // Leave tab
+                loadLeaveRecords();
+                break;
+
+            default:
+                break;
+        }
+    });
+}
+
+   public ArrayList<Vector<String>> loadPayslipList() {
+    ArrayList<Vector<String>> payslips = payrollDAO.getPayslipsByEmployeeId(employeeID);
+
+    DefaultTableModel model = (DefaultTableModel) payslipTable.getModel();
+    model.setRowCount(0); // Clear previous table data
+
+    payslips.forEach(model::addRow); // Add each row to the table
+
+    return payslips;
+}
+
 
     
    
@@ -530,6 +382,7 @@ public class EmployeeAccessProfile extends javax.swing.JFrame {
         }
     }
 }
+
 
    // Employee Details Fields
     public javax.swing.JTextField getIdField() { return id_field;}
@@ -1604,7 +1457,7 @@ public class EmployeeAccessProfile extends javax.swing.JFrame {
                 "Time Out Successfully Recorded",
                 "Success", 
                 JOptionPane.INFORMATION_MESSAGE);
-            refreshTimeLog();
+            loadTimeLog();
         } else {
             JOptionPane.showMessageDialog(this, 
             "Failed to record Time Out.",
@@ -1642,7 +1495,7 @@ public class EmployeeAccessProfile extends javax.swing.JFrame {
 
         if (success) {
             JOptionPane.showMessageDialog(this, "Time In recorded successfully.");
-            refreshTimeLog();
+            loadTimeLog();
         } else {
             JOptionPane.showMessageDialog(this, "You have already timed in today.");
         }

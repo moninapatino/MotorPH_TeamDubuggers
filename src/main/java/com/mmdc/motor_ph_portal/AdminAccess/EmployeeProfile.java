@@ -22,7 +22,7 @@ public class EmployeeProfile extends javax.swing.JFrame {
     ResultSet rs = null;
     PreparedStatement pst = null;
     DatabaseConnect dbConnect = new DatabaseConnect() {};
-    EmployeeProfileDAOImpl employeeDAO = new EmployeeProfileDAOImpl() {};
+    EmployeeProfileDAOImpl employeeDAO = new EmployeeProfileDAOImpl();
 
     public EmployeeProfile() {
         
@@ -88,23 +88,7 @@ public class EmployeeProfile extends javax.swing.JFrame {
         tin_field.setText("");
     }
  
-  public void autoFillEmployeeId() {
-    try {
-        int nextEmployeeId = employeeDAO.getNextEmployeeId(); // Call the method
-
-        if (id_field != null) {
-            id_field.setText(String.valueOf(nextEmployeeId));
-            id_field.setEditable(false); // Prevent manual editing
-        }
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Error generating Employee ID: " + e.getMessage());
-
-        if (id_field != null) {
-            id_field.setText("10001"); // Fallback
-        }
-    }
-}
+ 
   public void searchEmployee(String employeeId) {  
   if (employeeId.equals("10026")) {
         firstname_field.setText("Percival");
@@ -118,6 +102,14 @@ public class EmployeeProfile extends javax.swing.JFrame {
         tin_field.setText("502995671000");
         pagibig_field.setText("210897095686");
 }
+}
+  public void autoFillEmployeeId() {
+    try {
+        int nextLeaveId = employeeDAO.getNextEmployeeId();
+        id_field.setText(String.valueOf(nextLeaveId));
+    } catch (Exception e) {
+        id_field.setText("50042");
+    }
 }
 
     public javax.swing.JTextField getSearchIdField() { return searchId_field; }

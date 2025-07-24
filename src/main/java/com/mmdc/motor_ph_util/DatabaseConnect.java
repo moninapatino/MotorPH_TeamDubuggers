@@ -11,7 +11,7 @@ public class DatabaseConnect {
 
     private static final String url = "jdbc:mysql://localhost:3306/payrollsystem_db?useSSL=false";
     private static final String user = "root";
-    private static final String password = "enaxor";
+    private static final String password = "@dm1nistr4tor";
 
    
     public static Connection getConnection() {

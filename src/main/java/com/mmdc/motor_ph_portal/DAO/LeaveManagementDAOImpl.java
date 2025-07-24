@@ -4,6 +4,7 @@ import com.mmdc.motor_ph_portal.LeaveRecord;
 import com.mmdc.motor_ph_util.DatabaseConnect; // Import your DatabaseConnect class
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Vector;
 import javax.swing.JOptionPane;
 
 public class LeaveManagementDAOImpl implements LeaveManagementDAO {
@@ -154,4 +155,50 @@ public class LeaveManagementDAOImpl implements LeaveManagementDAO {
             return false; // Indicate failure
         }
     }
+
+    @Override
+    public ArrayList<Vector<String>> getLeaveRecordsByEmployeeId(String employeeId) {
+        String sql = """
+            SELECT 
+                lr.leave_id, 
+                lr.employee_id, 
+                e.first_name, 
+                e.last_name, 
+                lr.start_date, 
+                lr.end_date, 
+                lr.leave_type, 
+                lr.status 
+            FROM leave_records lr
+            JOIN employee e ON lr.employee_id = e.employee_id
+            WHERE lr.employee_id = ?
+        """;
+
+        ArrayList<Vector<String>> leaveList = new ArrayList<>();
+
+        try (
+            Connection conn = connect();
+            PreparedStatement pst = conn.prepareStatement(sql)
+        ) {
+            pst.setString(1, employeeId);
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    Vector<String> row = new Vector<>();
+                    row.add(rs.getString("leave_id"));
+                    row.add(rs.getString("employee_id"));
+                    row.add(rs.getString("first_name"));
+                    row.add(rs.getString("last_name"));
+                    row.add(rs.getString("start_date"));
+                    row.add(rs.getString("end_date"));
+                    row.add(rs.getString("leave_type"));
+                    row.add(rs.getString("status"));
+                    leaveList.add(row);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Optional: replace with Logger
+        }
+
+        return leaveList;
+    }
+
 }

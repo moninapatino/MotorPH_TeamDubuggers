@@ -166,10 +166,10 @@
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                          <Component id="calculateButton" linkSize="2" min="-2" pref="109" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                          <Component id="calculateButton" min="-2" pref="129" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                          <Component id="payslipBtn" linkSize="2" min="-2" pref="109" max="-2" attributes="0"/>
+                          <Component id="payslipBtn" min="-2" pref="109" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="paydateLbl" min="-2" max="-2" attributes="0"/>
