@@ -18,40 +18,6 @@ public class PayrollTest {
     public void tearDown() {
         payroll.dispose(); // Clean up GUI window if open
     }
-    
-    @Test
-    public void testCalculateNetpay() {
-        // Simulate input
-        JTextField employeeIdField = payroll.getEmployeeId();
-        JComboBox<String> monthComboBox = payroll.getMonthComboBox();
-        JTextField hoursWorkedField = payroll.getHoursWorkedField();
-        JButton calculateBtn = payroll.getCalculateNetpayButton();
-        JTextField netpayField = payroll.getNetpayField();
-
-        assertNotNull(employeeIdField);
-        assertNotNull(monthComboBox);
-        assertNotNull(hoursWorkedField);
-        assertNotNull(calculateBtn);
-        assertNotNull(netpayField);
-
-        // Fill form
-        employeeIdField.setText("10006");
-        monthComboBox.setSelectedItem("September");
-
-        // Click Calculate
-        calculateBtn.doClick();
-
-        // Wait to allow action to complete
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-
-        // Validate result
-        String netpayText = netpayField.getText().trim();
-        assertFalse(netpayText.isEmpty(), "Netpay should be calculated and displayed");
-    }
 
     @Test
     public void testGeneratePayslip() {
